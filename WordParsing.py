@@ -23,7 +23,6 @@ class WordProcess:
         if self.offline_detail_dict:
             if is_stem:
                 self.find_plain()
-            print(self.offline_detail_dict)
             self.word_detail.eng_explain = self.offline_detail_dict['definition']
             self.word_detail.collins = self.offline_detail_dict['collins']
             self.word_detail.tag = self.offline_detail_dict['tag']
@@ -32,12 +31,12 @@ class WordProcess:
     def find_plain(self):
         relation = Relation()
         exchange = self.offline_detail_dict['exchange']
-        match = re.findall(r"0:[^/]+|1:[^/]+", exchange)
-        print(match)
-        if len(match) == 2:
-            relation.plain_word = match[0][2:]
-            relation.relationship = match[1][2:]
+        match_0 = re.findall(r"0:[^/]+", exchange)
+        match_1 = re.findall(r"1:[^/]+", exchange)
 
+        if len(match_0) == 1 and len(match_1) == 1:
+            relation.plain_word = match_0[0][2:]
+            relation.relationship = match_1[0][2:]
             self.offline_detail_dict = offline_dict.query(relation.plain_word)
         else:
             relation.plain_word = self.request_word
