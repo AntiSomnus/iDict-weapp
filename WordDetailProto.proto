@@ -1,0 +1,30 @@
+syntax = "proto3";
+message WordDetail {
+    string word = 1;
+    Relation relation = 2;
+    Pron pron_bri = 3;
+    Pron pron_ame = 4;
+    int32 collins = 5;
+    string tag = 6;
+    string eng_explain = 7;
+    repeated Explain explain = 8;
+    repeated Sentence sentence = 9;
+
+}
+message Relation {
+    string plain_word = 1;
+    string relationship = 2;
+}
+message Pron {
+    string ps = 1;
+    string url = 2;
+}
+message Explain {
+    string pos = 1;
+    string meaning = 2;
+}
+message Sentence {
+    string eng = 1;
+    string chn = 2;
+}
+
