@@ -32,7 +32,8 @@ def get_source_uri(source_title):
 def get_article_list(page, count, source_title):
     q = QueryArticles(
         lang="eng",
-        sourceUri=get_source_uri(source_title)
+        sourceUri=get_source_uri(source_title),
+        dateEnd=datetime.datetime.now()
     )
     q.setRequestedResult \
         (RequestArticlesInfo
@@ -54,3 +55,26 @@ def get_article_list(page, count, source_title):
         article_detail_list.append(a)
     l.articles.extend(article_detail_list)
     return l
+
+
+def get_article_detail(article_uri):
+    q = QueryArticle(
+        article_uri
+    )
+    q.setRequestedResult \
+            (RequestArticleInfo
+            (returnInfo=ReturnInfo(
+            articleInfo=
+            ArticleInfoFlags
+            (body=True, categories=True, image=True, videos=False))))
+    res = er.execQuery(q)
+    a_proto = ArticleDetail()
+    a_json = res[article_uri]["info"]
+    a_proto.title = a_json["title"]
+    a_proto.body = a_json["body"]
+    a_proto.imageUrl = a_json["image"] if a_json["image"] else ""
+    cate_str = ""
+    for category in a_json["categories"]:
+        cate_str += category["label"].split("/")[-1] + "; "
+    a_proto.category = cate_str[:-2]
+    return a_proto
