@@ -29,11 +29,13 @@ def get_source_uri(source_title):
         return None
 
 
-def get_article_list(page, count, source_title):
-    q = QueryArticles(
+def get_article_list(page, count, source_title, keywords):
+    q = QueryArticlesIter(
         lang="eng",
         sourceUri=get_source_uri(source_title),
-        dateEnd=datetime.datetime.now()
+        dateEnd=datetime.datetime.now(),
+        keywords=keywords,
+        keywordsLoc="title"
     )
     q.setRequestedResult \
         (RequestArticlesInfo
