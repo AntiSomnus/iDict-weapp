@@ -5,7 +5,7 @@ from flask_restful import Resource, Api, reqparse, inputs
 from google.protobuf.json_format import MessageToJson, MessageToDict
 
 import WordParsing
-from ArticleParsing import get_article_list
+from ArticleParsing import get_article_list, get_article_detail
 from Dict.stardict import DictCsv, LemmaDB
 import requests
 
@@ -25,6 +25,11 @@ parser_article_list.add_argument('count', type=int, help='count number', default
 parser_article_list.add_argument('source', type=str, help='source plain name', default=None)
 parser_article_list.add_argument('json', type=inputs.boolean, help='whether get json', default=False)
 parser_article_list.add_argument('indent', type=int, help='json incident', default=4)
+
+parser_article_detail = reqparse.RequestParser()
+parser_article_detail.add_argument('uri', type=str, help='article uri', required=True)
+parser_article_detail.add_argument('json', type=inputs.boolean, help='whether get json', default=False)
+parser_article_detail.add_argument('indent', type=int, help='json incident', default=4)
 
 
 class Word(Resource):
@@ -74,7 +79,31 @@ class ArticleList(Resource):
         return Response(article_list.SerializeToString(), mimetype='application/x-protobuf')
 
 
+class ArticleDetail(Resource):
+
+    def get(self):
+        args = parser_article_detail.parse_args()
+        uri = args['uri']
+        is_json = args['json']
+        indent = args['indent']
+
+        article_detail = get_article_detail(article_uri=uri)
+
+        if is_json:
+            print(MessageToDict(article_detail))
+            return Response(
+                json.dumps(MessageToDict(article_detail), indent=indent,
+                           ensure_ascii=False,
+                           sort_keys=True
+                           ).encode(
+                    'utf-8').decode(),
+                content_type="application/json")
+        return Response(article_detail.SerializeToString(), mimetype='application/x-protobuf')
+
+
 api.add_resource(Word, '/')
 api.add_resource(ArticleList, '/articleList')
+api.add_resource(ArticleDetail, '/articleDetail')
+
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=True)
