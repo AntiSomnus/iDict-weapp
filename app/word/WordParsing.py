@@ -4,7 +4,7 @@ import xml.etree.cElementTree as ET
 import requests
 
 from Dict.stardict import DictCsv
-from WordDetailProto_pb2 import WordDetail, Pron, Explain, Sentence, Relation
+from .WordDetailProto_pb2 import WordDetail, Pron, Explain, Sentence, Relation
 
 offline_dict = DictCsv("static/ecdict.csv")
 print("init_finish")

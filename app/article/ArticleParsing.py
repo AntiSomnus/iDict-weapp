@@ -1,5 +1,5 @@
 from eventregistry import *
-from ArticleProto_pb2 import ArticleDetail, ArticleList
+from .ArticleProto_pb2 import ArticleDetail, ArticleList
 
 er = EventRegistry(apiKey='9a66d7d3-b8e3-4fc0-ab52-ed70d71fb121')
 
@@ -37,13 +37,11 @@ def get_article_list(page, count, source_title, keywords):
         keywords=keywords,
         keywordsLoc="title"
     )
-    q.setRequestedResult \
-        (RequestArticlesInfo
-         (page=page, count=count,
-          returnInfo=ReturnInfo(
-              articleInfo=
-              ArticleInfoFlags
-              (body=False, categories=False, image=True, videos=False))))
+    q.setRequestedResult(RequestArticlesInfo
+                         (page=page, count=count,
+                          returnInfo=ReturnInfo(
+                              articleInfo=ArticleInfoFlags
+                              (body=False, categories=False, image=True, videos=False))))
     res = er.execQuery(q)
     l = ArticleList()
     article_detail_list = []
@@ -63,12 +61,10 @@ def get_article_detail(article_uri):
     q = QueryArticle(
         article_uri
     )
-    q.setRequestedResult \
-            (RequestArticleInfo
-            (returnInfo=ReturnInfo(
-            articleInfo=
-            ArticleInfoFlags
-            (body=True, categories=True, image=True, videos=False))))
+    q.setRequestedResult(RequestArticleInfo
+                         (returnInfo=ReturnInfo(
+                             articleInfo=ArticleInfoFlags
+                             (body=True, categories=True, image=True, videos=False))))
     res = er.execQuery(q)
     a_proto = ArticleDetail()
     a_json = res[article_uri]["info"]
