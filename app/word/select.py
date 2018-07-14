@@ -22,14 +22,14 @@ class SelectSQL(object):
 
     def select_mini(self, key):
         sql = ('SELECT * '
-               'FROM mini '
+               'FROM word_mini '
                'WHERE word=\'{key}\'').format(key=key)
         data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
         else:
             times = data[-1] + 1
-            sql = ('UPDATE mini '
+            sql = ('UPDATE word_mini '
                    'SET frequency={times} '
                    'WHERE word=\'{key}\'').format(times=times, key=key)
             self.conn.execute(sql)
@@ -37,14 +37,14 @@ class SelectSQL(object):
 
     def select_slim(self, key):
         sql = ('SELECT * '
-               'FROM slim '
+               'FROM word_slim '
                'WHERE word=\'{key}\'').format(key=key)
         data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
         else:
             times = data[-1] + 1
-            sql = ('UPDATE slim '
+            sql = ('UPDATE word_slim '
                    'SET frequency={times} '
                    'WHERE word=\'{key}\'').format(times=times, key=key)
             self.conn.execute(sql)
@@ -52,14 +52,14 @@ class SelectSQL(object):
 
     def select_entire(self, key):
         sql = ('SELECT * '
-               'FROM entire '
+               'FROM word_entire '
                'WHERE word=\'{key}\'').format(key=key)
         data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
         else:
             times = data[-1] + 1
-            sql = ('UPDATE entire '
+            sql = ('UPDATE word_entire '
                    'SET frequency={times} '
                    'WHERE word=\'{key}\'').format(times=times, key=key)
             self.conn.execute(sql)
