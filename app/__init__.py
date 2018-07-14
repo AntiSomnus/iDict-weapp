@@ -7,12 +7,6 @@ host = ''
 port = ''
 db = ''
 
-user = 'root'
-passwd = '***REMOVED***'
-host = 'localhost'
-port = '3306'
-db = 'ireading'
-
 engine_str = 'mysql+pymysql://{user}:{passwd}@{host}:{port}/{db}'.format(
     user=user, passwd=passwd, host=host, port=port, db=db)
 engine = sqlalchemy.create_engine(engine_str, echo=False)
