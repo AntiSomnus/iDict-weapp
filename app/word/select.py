@@ -67,8 +67,11 @@ class SelectSQL(object):
 
     def tuple2dict(self, data):
         word = {'status': True}
+        data = [item for item in data]
         for i in range(len(self.fields)):
             field = self.fields[i]
+            if field in ('definition', 'translation'):
+                data[i] = data[i].replace('\\n', '\n')
             word[field] = data[i]
         if word['detail']:
             text = word['detail']
