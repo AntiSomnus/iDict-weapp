@@ -1,21 +1,16 @@
+import sqlalchemy
 from flask import Flask
 
-import json
+user = ''
+passwd = ''
+host = ''
+port = ''
+db = ''
 
-
-
-# import sqlalchemy
-
-# user = 'root'
-# passwd = ''
-# host = ''
-# port = ''
-# db = ''
-
-# engine_str = 'mysql+pymysql://{user}:{passwd}@{host}:{port}/{db}'.format(
-#     user=user, passwd=passwd, host=host, port=port, db=db)
-# engine = sqlalchemy.create_engine(engine_str, echo=False)
-# conn = engine.connect()
+engine_str = 'mysql+pymysql://{user}:{passwd}@{host}:{port}/{db}'.format(
+    user=user, passwd=passwd, host=host, port=port, db=db)
+engine = sqlalchemy.create_engine(engine_str, echo=False)
+conn = engine.connect()
 
 
 def create_app():
