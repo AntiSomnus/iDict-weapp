@@ -2,15 +2,15 @@ import json
 
 from flask import Response
 from flask_restful import Resource, inputs, reqparse
-from google.protobuf.json_format import MessageToDict, MessageToJson
+from google.protobuf.json_format import MessageToDict
 
 from .WordParsing import WordProcess
 
 from . import word_api
 
 parser_word = reqparse.RequestParser()
-parser_word.add_argument(
-    'word', type=str, help='The word for query', required=True)
+parser_word.add_argument('word', type=str, help='The word for query',
+                         required=True)
 parser_word.add_argument('stem', type=inputs.boolean,
                          help='whether get stem', default=True)
 parser_word.add_argument('json', type=inputs.boolean,
@@ -36,7 +36,8 @@ class Word(Resource):
                            ).encode(
                     'utf-8').decode(),
                 content_type="application/json")
-        return Response(word_processing.word_detail.SerializeToString(), mimetype='application/x-protobuf')
+        return Response(word_processing.word_detail.SerializeToString(),
+                        mimetype='application/x-protobuf')
 
 
 word_api.add_resource(Word, '/')
