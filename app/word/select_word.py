@@ -6,7 +6,8 @@ class SelectSQL(object):
         self.conn = conn
         self.fields = ('id', 'word', 'sw', 'phonetic', 'definition',
                        'translation', 'pos', 'collins', 'oxford', 'tag',
-                       'bnc', 'frq', 'exchange', 'detail', 'audio')
+                       'bnc', 'frq', 'base', 'exchange', 'detail',
+                       'oxford_detail', 'net_detail', 'audio')
 
     def select(self, key):
         result = self.select_mini(key)
@@ -28,11 +29,11 @@ class SelectSQL(object):
         if data is None:
             return {'status': False}
         else:
-            times = data[-1] + 1
-            sql = ('UPDATE word_mini '
-                   'SET frequency={times} '
-                   'WHERE word=\'{key}\'').format(times=times, key=key)
-            self.conn.execute(sql)
+            # times = data[-1] + 1
+            # sql = ('UPDATE word_mini '
+            #        'SET frequency={times} '
+            #        'WHERE word=\'{key}\'').format(times=times, key=key)
+            # self.conn.execute(sql)
             return {'status': True, 'data': data}
 
     def select_slim(self, key):
@@ -43,11 +44,11 @@ class SelectSQL(object):
         if data is None:
             return {'status': False}
         else:
-            times = data[-1] + 1
-            sql = ('UPDATE word_slim '
-                   'SET frequency={times} '
-                   'WHERE word=\'{key}\'').format(times=times, key=key)
-            self.conn.execute(sql)
+            # times = data[-1] + 1
+            # sql = ('UPDATE word_slim '
+            #        'SET frequency={times} '
+            #        'WHERE word=\'{key}\'').format(times=times, key=key)
+            # self.conn.execute(sql)
             return {'status': True, 'data': data}
 
     def select_entire(self, key):
@@ -58,11 +59,11 @@ class SelectSQL(object):
         if data is None:
             return {'status': False}
         else:
-            times = data[-1] + 1
-            sql = ('UPDATE word_entire '
-                   'SET frequency={times} '
-                   'WHERE word=\'{key}\'').format(times=times, key=key)
-            self.conn.execute(sql)
+            # times = data[-1] + 1
+            # sql = ('UPDATE word_entire '
+            #        'SET frequency={times} '
+            #        'WHERE word=\'{key}\'').format(times=times, key=key)
+            # self.conn.execute(sql)
             return {'status': True, 'data': data}
 
     def tuple2dict(self, data):
