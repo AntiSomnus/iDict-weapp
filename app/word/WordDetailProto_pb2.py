@@ -19,10 +19,41 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='WordDetailProto.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\x15WordDetailProto.proto\"\xd4\x01\n\nWordDetail\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x1b\n\x08relation\x18\x02 \x01(\x0b\x32\t.Relation\x12\x17\n\x08pron_bri\x18\x03 \x01(\x0b\x32\x05.Pron\x12\x17\n\x08pron_ame\x18\x04 \x01(\x0b\x32\x05.Pron\x12\x0f\n\x07\x63ollins\x18\x05 \x01(\x05\x12\x0b\n\x03tag\x18\x06 \x01(\t\x12\x13\n\x0b\x65ng_explain\x18\x07 \x01(\t\x12\x19\n\x07\x65xplain\x18\x08 \x03(\x0b\x32\x08.Explain\x12\x1b\n\x08sentence\x18\t \x03(\x0b\x32\t.Sentence\"4\n\x08Relation\x12\x12\n\nplain_word\x18\x01 \x01(\t\x12\x14\n\x0crelationship\x18\x02 \x01(\t\"\x1f\n\x04Pron\x12\n\n\x02ps\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\"\'\n\x07\x45xplain\x12\x0b\n\x03pos\x18\x01 \x01(\t\x12\x0f\n\x07meaning\x18\x02 \x01(\t\"$\n\x08Sentence\x12\x0b\n\x03\x65ng\x18\x01 \x01(\t\x12\x0b\n\x03\x63hn\x18\x02 \x01(\tb\x06proto3')
+  serialized_pb=_b('\n\x15WordDetailProto.proto\"+\n\x08WordList\x12\x1f\n\nwordDetail\x18\x01 \x03(\x0b\x32\x0b.WordDetail\"\x93\x02\n\nWordDetail\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x1b\n\x08relation\x18\x02 \x01(\x0b\x32\t.Relation\x12\x17\n\x08pron_bri\x18\x03 \x01(\x0b\x32\x05.Pron\x12\x17\n\x08pron_ame\x18\x04 \x01(\x0b\x32\x05.Pron\x12\x0f\n\x07\x63ollins\x18\x05 \x01(\x05\x12\x0b\n\x03tag\x18\x06 \x01(\t\x12\x10\n\x08tag_flag\x18\x07 \x03(\x08\x12\x0b\n\x03\x62nc\x18\x08 \x01(\x05\x12\x0b\n\x03\x66rq\x18\t \x01(\x05\x12\x13\n\x0b\x65ng_explain\x18\n \x01(\t\x12\x19\n\x07\x65xplain\x18\x0b \x03(\x0b\x32\x08.Explain\x12\x1b\n\x08sentence\x18\x0c \x03(\x0b\x32\t.Sentence\x12\x11\n\texchanges\x18\r \x03(\t\"4\n\x08Relation\x12\x12\n\nplain_word\x18\x01 \x01(\t\x12\x14\n\x0crelationship\x18\x02 \x01(\t\"\x1f\n\x04Pron\x12\n\n\x02ps\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\"\'\n\x07\x45xplain\x12\x0b\n\x03pos\x18\x01 \x01(\t\x12\x0f\n\x07meaning\x18\x02 \x01(\t\"4\n\x08Sentence\x12\x0b\n\x03\x65ng\x18\x01 \x01(\t\x12\x0b\n\x03\x63hn\x18\x02 \x01(\t\x12\x0e\n\x06source\x18\x03 \x01(\tb\x06proto3')
 )
 
 
+
+
+_WORDLIST = _descriptor.Descriptor(
+  name='WordList',
+  full_name='WordList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='wordDetail', full_name='WordList.wordDetail', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=25,
+  serialized_end=68,
+)
 
 
 _WORDDETAIL = _descriptor.Descriptor(
@@ -75,22 +106,50 @@ _WORDDETAIL = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='eng_explain', full_name='WordDetail.eng_explain', index=6,
-      number=7, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='explain', full_name='WordDetail.explain', index=7,
-      number=8, type=11, cpp_type=10, label=3,
+      name='tag_flag', full_name='WordDetail.tag_flag', index=6,
+      number=7, type=8, cpp_type=7, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='sentence', full_name='WordDetail.sentence', index=8,
-      number=9, type=11, cpp_type=10, label=3,
+      name='bnc', full_name='WordDetail.bnc', index=7,
+      number=8, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='frq', full_name='WordDetail.frq', index=8,
+      number=9, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='eng_explain', full_name='WordDetail.eng_explain', index=9,
+      number=10, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='explain', full_name='WordDetail.explain', index=10,
+      number=11, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='sentence', full_name='WordDetail.sentence', index=11,
+      number=12, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='exchanges', full_name='WordDetail.exchanges', index=12,
+      number=13, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -107,8 +166,8 @@ _WORDDETAIL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=26,
-  serialized_end=238,
+  serialized_start=71,
+  serialized_end=346,
 )
 
 
@@ -145,8 +204,8 @@ _RELATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=240,
-  serialized_end=292,
+  serialized_start=348,
+  serialized_end=400,
 )
 
 
@@ -183,8 +242,8 @@ _PRON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=294,
-  serialized_end=325,
+  serialized_start=402,
+  serialized_end=433,
 )
 
 
@@ -221,8 +280,8 @@ _EXPLAIN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=327,
-  serialized_end=366,
+  serialized_start=435,
+  serialized_end=474,
 )
 
 
@@ -247,6 +306,13 @@ _SENTENCE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='source', full_name='Sentence.source', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -259,21 +325,30 @@ _SENTENCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=368,
-  serialized_end=404,
+  serialized_start=476,
+  serialized_end=528,
 )
 
+_WORDLIST.fields_by_name['wordDetail'].message_type = _WORDDETAIL
 _WORDDETAIL.fields_by_name['relation'].message_type = _RELATION
 _WORDDETAIL.fields_by_name['pron_bri'].message_type = _PRON
 _WORDDETAIL.fields_by_name['pron_ame'].message_type = _PRON
 _WORDDETAIL.fields_by_name['explain'].message_type = _EXPLAIN
 _WORDDETAIL.fields_by_name['sentence'].message_type = _SENTENCE
+DESCRIPTOR.message_types_by_name['WordList'] = _WORDLIST
 DESCRIPTOR.message_types_by_name['WordDetail'] = _WORDDETAIL
 DESCRIPTOR.message_types_by_name['Relation'] = _RELATION
 DESCRIPTOR.message_types_by_name['Pron'] = _PRON
 DESCRIPTOR.message_types_by_name['Explain'] = _EXPLAIN
 DESCRIPTOR.message_types_by_name['Sentence'] = _SENTENCE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+WordList = _reflection.GeneratedProtocolMessageType('WordList', (_message.Message,), dict(
+  DESCRIPTOR = _WORDLIST,
+  __module__ = 'WordDetailProto_pb2'
+  # @@protoc_insertion_point(class_scope:WordList)
+  ))
+_sym_db.RegisterMessage(WordList)
 
 WordDetail = _reflection.GeneratedProtocolMessageType('WordDetail', (_message.Message,), dict(
   DESCRIPTOR = _WORDDETAIL,
