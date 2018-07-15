@@ -1,4 +1,7 @@
 syntax = "proto3";
+message WordList {
+    repeated WordDetail wordDetail = 1;
+}
 message WordDetail {
     string word = 1;
     Relation relation = 2;
@@ -6,9 +9,14 @@ message WordDetail {
     Pron pron_ame = 4;
     int32 collins = 5;
     string tag = 6;
-    string eng_explain = 7;
-    repeated Explain explain = 8;
-    repeated Sentence sentence = 9;
+    repeated bool tag_flag = 7;
+    int32 bnc = 8;
+    int32 frq = 9;
+    string eng_explain = 10;
+    repeated Explain explain = 11;
+    repeated Sentence sentence = 12;
+    repeated string exchanges = 13;
+
 
 }
 message Relation {
@@ -26,5 +34,6 @@ message Explain {
 message Sentence {
     string eng = 1;
     string chn = 2;
+    string source = 3;
 }
 
