@@ -24,7 +24,9 @@ class SelectSQL(object):
     def select_mini(self, key):
         sql = ('SELECT * '
                'FROM word_mini '
-               'WHERE word=\'{key}\'').format(key=key)
+               'WHERE word LIKE \'{key}%%\' '
+               'ORDER BY base '
+               'LIMIT 10').format(key=key)
         data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
@@ -39,7 +41,9 @@ class SelectSQL(object):
     def select_slim(self, key):
         sql = ('SELECT * '
                'FROM word_slim '
-               'WHERE word=\'{key}\'').format(key=key)
+               'WHERE word LIKE \'{key}%%\' '
+               'ORDER BY base '
+               'LIMIT 10').format(key=key)
         data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
@@ -54,7 +58,9 @@ class SelectSQL(object):
     def select_entire(self, key):
         sql = ('SELECT * '
                'FROM word_entire '
-               'WHERE word=\'{key}\'').format(key=key)
+               'WHERE word LIKE \'{key}%%\' '
+               'ORDER BY base '
+               'LIMIT 10').format(key=key)
         data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
