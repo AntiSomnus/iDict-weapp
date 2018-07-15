@@ -130,5 +130,8 @@ venv.bak/
 # IDEs' files and Editorss files
 .idea/
 .vscode/
+
+# Others
 dict/
 db/
+my.ini
