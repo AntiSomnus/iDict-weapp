@@ -33,6 +33,8 @@ class GetWordList(object):
         return word_list
 
     def get_tag_list(self, tag_str):
+        if not tag_str:
+            return []
         tag_list = []
         tag_list.append(1 if 'zk' in tag_str else 0)
         tag_list.append(1 if 'gk' in tag_str else 0)
@@ -63,7 +65,7 @@ class GetWordDetail(object):
         self.word_detail = WordDetail()
         self.word_detail.word = request_word
 
-        self.result = select_SQL.select(request_word, 'detail')
+        self.result = select_SQL.select(request_word, 'detail', 1)
         if self.result['status']:
             if is_stem:
                 self.find_plain()
@@ -86,10 +88,15 @@ class GetWordDetail(object):
                 sentence_list = self.result['oxford_detail'].split('\r\n')
                 if sentence_list[-1] == '':
                     sentence_list = sentence_list[:-1]
+                split_sentence_list = []
+                for s in sentence_list:
+                    s = s.split('\n')
+                    if len(s) == 1:
+                        s.append('')
+                    split_sentence_list.append(s)
                 sentence_list = [Sentence(source='oxford_detail',
-                                          eng=s.split('\n')[0],
-                                          chn=s.split('\n')[1])
-                                 for s in sentence_list]
+                                          eng=s[0], chn=s[1])
+                                 for s in split_sentence_list]
                 self.word_detail.sentence.extend(sentence_list)
             if self.result['net_detail']:
                 sentence_list = self.result['net_detail'].split('\r\n')

@@ -77,5 +77,5 @@ class WordDetail(Resource):
                         mimetype='application/x-protobuf')
 
 
-word_api.add_resource(WordDetail, '/')
+word_api.add_resource(WordDetail, '/worddetail')
 word_api.add_resource(WordList, '/wordlist')

@@ -1,9 +1,11 @@
+from configparser import ConfigParser
+from os import path
+
 import sqlalchemy
 from flask import Flask
-from configparser import ConfigParser
 
 
-fp = r'.\conf.ini'
+fp = path.join('.', 'conf.ini')
 conf = ConfigParser()
 conf.read(fp)
 user = conf.get('ireading-db', 'user')
