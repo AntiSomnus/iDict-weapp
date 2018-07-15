@@ -5,9 +5,11 @@ import requests
 
 from .. import conn
 from .select import SelectSQL
-from .WordDetailProto_pb2 import Explain, Pron, Relation, Sentence, WordDetail
+from .update_detail import UpdateDetail
+from .WordDetailProto_pb2 import Relation, WordDetail
 
 select_SQL = SelectSQL(conn)
+update_detail = UpdateDetail(conn)
 
 
 class WordProcess:
@@ -28,7 +30,8 @@ class WordProcess:
                 self.word_detail.eng_explain = self.offline_detail_dict['definition']
                 self.word_detail.collins = self.offline_detail_dict['collins']
                 self.word_detail.tag = self.offline_detail_dict['tag']
-            self.fetch_from_iciba()
+            self.word_detail = update_detail.fetch_from_iciba(
+                self.actual_query_word, self.word_detail)
 
     def find_plain(self):
         relation = Relation()
@@ -44,43 +47,3 @@ class WordProcess:
             relation.plain_word = self.request_word
         self.word_detail.relation.CopyFrom(relation)
         self.actual_query_word = relation.plain_word
-
-    def fetch_from_iciba(self):
-        params = {'w': self.actual_query_word,
-                  'key': '341DEFE6E5CA504E62A567082590D0BD'}
-        xml_bytes = requests.get(
-            'http://dict-co.iciba.com/api/dictionary.php', params=params).content
-        self.parsing_from_xml(xml_bytes)
-
-    def parsing_from_xml(self, xml_bytes):
-        # get root
-        root = ET.fromstring(xml_bytes)
-
-        # get ps and url
-        ps_list = root.findall('ps')
-        pron_list = root.findall('pron')
-        min_len = min(len(ps_list), len(pron_list))
-        if min_len > 0:
-            self.word_detail.pron_bri.CopyFrom(
-                Pron(ps=ps_list[0].text, url=pron_list[0].text))
-            if min_len > 1:
-                self.word_detail.pron_ame.CopyFrom(
-                    Pron(ps=ps_list[1].text, url=pron_list[1].text))
-
-        # get pos and meaning
-        pos_list = root.findall('pos')
-        meaning_list = root.findall('acceptation')
-        explain_list = []
-        min_len = min(len(pos_list), len(meaning_list))
-        for i in range(min_len):
-            explain_list.append(
-                Explain(pos=pos_list[i].text, meaning=meaning_list[i].text))
-        self.word_detail.explain.extend(explain_list)
-
-        # get sentence and translation
-        sentence_list = []
-        for sent in root.findall('sent'):
-            eng, chn = sent.getchildren()
-            sentence_list.append(
-                Sentence(eng=eng.text.strip(), chn=chn.text.strip()))
-        self.word_detail.sentence.extend(sentence_list)
