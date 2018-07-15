@@ -4,8 +4,9 @@ import json
 class SelectSQL(object):
     def __init__(self, conn):
         self.conn = conn
+        self.key = ''
         self.mode = ''
-        self.count = 1
+        self.count = 0
         self.fields = ('id', 'word', 'sw', 'phonetic', 'definition',
                        'translation', 'pos', 'collins', 'oxford', 'tag',
                        'bnc', 'frq', 'base', 'exchange', 'detail',
@@ -19,50 +20,55 @@ class SelectSQL(object):
                            'FROM {table} '
                            'WHERE word=\'{key}\' ')
 
-    def select(self, key, mode, count=1):
+    def select(self, key, mode, count):
         if mode not in ('list', 'detail'):
             return {'status': False}
+        # self.key = key.replace('\'', '\'\'').replace('%','%%')
+        self.key = key
         self.mode = mode
         self.count = count
-        result = self.select_mini(key)
+        result = self.select_mini()
         if result['status']:
             return self.tuple2dict(result['data'])
-        result = self.select_slim(key)
+        result = self.select_slim()
         if result['status']:
             return self.tuple2dict(result['data'])
-        result = self.select_entire(key)
+        result = self.select_entire()
         if result['status']:
             return self.tuple2dict(result['data'])
         return {'status': False}
 
-    def select_mini(self, key):
+    def select_mini(self):
         if self.mode == 'list':
-            sql = self.list_sql.format(table='word_mini', key=key, count=self.count)
+            sql = self.list_sql.format(table='word_mini', key=self.key, count=self.count)
+            data = self.conn.execute(sql).fetchall()
         if self.mode == 'detail':
-            sql = self.detail_sql.format(table='word_mini', key=key)
-        data = self.conn.execute(sql).fetchall()
+            sql = self.detail_sql.format(table='word_mini', key=self.key)
+            data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
         else:
             return {'status': True, 'data': data}
 
-    def select_slim(self, key):
+    def select_slim(self):
         if self.mode == 'list':
-            sql = self.list_sql.format(table='word_slim', key=key, count=self.count)
+            sql = self.list_sql.format(table='word_slim', key=self.key, count=self.count)
+            data = self.conn.execute(sql).fetchall()
         if self.mode == 'detail':
-            sql = self.detail_sql.format(table='word_slim', key=key)
-        data = self.conn.execute(sql).fetchall()
+            sql = self.detail_sql.format(table='word_slim', key=self.key)
+            data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
         else:
             return {'status': True, 'data': data}
 
-    def select_entire(self, key):
+    def select_entire(self):
         if self.mode == 'list':
-            sql = self.list_sql.format(table='word_entire', key=key, count=self.count)
+            sql = self.list_sql.format(table='word_entire', key=self.key, count=self.count)
+            data = self.conn.execute(sql).fetchall()
         if self.mode == 'detail':
-            sql = self.detail_sql.format(table='word_entire', key=key)
-        data = self.conn.execute(sql).fetchall()
+            sql = self.detail_sql.format(table='word_entire', key=self.key)
+            data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
         else:
