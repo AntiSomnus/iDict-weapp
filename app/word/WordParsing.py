@@ -6,13 +6,56 @@ import requests
 from .. import conn
 from .select_word import SelectSQL
 from .update_detail import UpdateDetail
-from .WordDetailProto_pb2 import Relation, Sentence, WordDetail
+from .WordDetailProto_pb2 import Explain, Relation, Sentence, WordDetail, WordList
 
 select_SQL = SelectSQL(conn)
 update_detail = UpdateDetail(conn)
 
+class GetWordList(object):
+    def get_word_list(self, request_word, count, is_divide, is_tag_list):
+        word_list = WordList()
+        result_list = select_SQL.select(request_word, 'list', count)
+        if result_list['status']:
+            for result_item in result_list['data']:
+                word_detail = WordDetail()
+                word_detail.word = result_item['word']
+                if is_tag_list:
+                    word_detail.tag_flag.extend(self.get_tag_list(result_item['tag']))
+                else:
+                    word_detail.tag = result_item['tag']
+                if is_divide:
+                    explains_list = self.get_word_chn_explains_in_list(result_item['translation'])
+                    for explain in explains_list:
+                        word_detail.explain.extend([Explain(pos=explain[0], meaning=explain[1])])
+                else:
+                    word_detail.explain.extend([Explain(pos='', meaning=result_item['translation'])])
+                word_list.wordDetail.extend([word_detail])
+        return word_list
 
-class WordProcess:
+    def get_tag_list(self, tag_str):
+        tag_list = []
+        tag_list.append(1 if 'zk' in tag_str else 0)
+        tag_list.append(1 if 'gk' in tag_str else 0)
+        tag_list.append(1 if 'ky' in tag_str else 0)
+        tag_list.append(1 if 'cet4' in tag_str else 0)
+        tag_list.append(1 if 'cet6' in tag_str else 0)
+        tag_list.append(1 if 'toefl' in tag_str else 0)
+        tag_list.append(1 if 'ielts' in tag_str else 0)
+        tag_list.append(1 if 'gre' in tag_str else 0)
+        return tag_list
+
+    def get_word_chn_explains_in_list(self, word_chn_explains_in_line):
+        l = []
+        for explain in word_chn_explains_in_line.split("\n"):
+            explain_pos_meaning = explain.split(' ', 1)
+            if len(explain_pos_meaning) == 2:
+                l.append(explain.split(' ', 1))
+            else:
+                l.append(['', explain])
+        return l
+
+
+class GetWordDetail(object):
     def __init__(self, request_word, is_stem):
         self.request_word = request_word
         self.actual_query_word = request_word
@@ -20,7 +63,7 @@ class WordProcess:
         self.word_detail = WordDetail()
         self.word_detail.word = request_word
 
-        self.result = select_SQL.select(request_word)
+        self.result = select_SQL.select(request_word, 'detail')
         if self.result['status']:
             if is_stem:
                 self.find_plain()
