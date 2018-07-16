@@ -62,17 +62,18 @@ class WordDetail(Resource):
         is_stem = args['stem']
         is_json = args['json']
         indent = args['indent']
-        word_processing = GetWordDetail(word, is_stem)
+        word_detailing = GetWordDetail()
+        word_detail_proto = word_detailing.get_word_detail(word, is_stem)
         if is_json:
-            # print(MessageToDict(word_processing.word_detail))
+            # print(MessageToDict(word_detail_proto))
             return Response(
-                json.dumps(MessageToDict(word_processing.word_detail), indent=indent,
+                json.dumps(MessageToDict(word_detail_proto), indent=indent,
                            ensure_ascii=False,
                            sort_keys=True).encode('utf-8').decode(),
                            content_type="application/json")
-        return Response(word_processing.word_detail.SerializeToString(),
+        return Response(word_detail_proto.SerializeToString(),
                         mimetype='application/x-protobuf')
 
 
-word_api.add_resource(WordDetail, '/word/detail')
 word_api.add_resource(WordList, '/word/list')
+word_api.add_resource(WordDetail, '/word/detail')

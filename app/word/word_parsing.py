@@ -11,7 +11,7 @@ update_detail = UpdateDetail(conn)
 class GetWordList(object):
     def get_word_list(self, request_word, count, is_divide, is_tag_list):
         word_list = WordList()
-        result_list = select_SQL.select(request_word, 'list', count)
+        result_list = select_SQL.select(request_word, mode='list', count=count)
         if result_list['status']:
             for result_item in result_list['data']:
                 word_detail = WordDetail()
@@ -55,14 +55,14 @@ class GetWordList(object):
 
 
 class GetWordDetail(object):
-    def __init__(self, request_word, is_stem):
+    def get_word_detail(self, request_word, is_stem):
         self.request_word = request_word
         self.actual_query_word = request_word
 
         self.word_detail = WordDetail()
         self.word_detail.word = request_word
 
-        self.result = select_SQL.select(request_word, 'detail', 1)
+        self.result = select_SQL.select(request_word, mode='detail')
         if self.result['status']:
             if is_stem:
                 self.find_plain()
@@ -72,15 +72,6 @@ class GetWordDetail(object):
                 self.word_detail.collins = self.result['collins']
             if self.result['tag']:
                 self.word_detail.tag = self.result['tag']
-            if self.result['detail']:
-                sentence_list = self.result['detail'].split('\r\n')
-                if sentence_list[-1] == '':
-                    sentence_list = sentence_list[:-1]
-                sentence_list = [Sentence(source='detail',
-                                          eng=s.split('\n')[0],
-                                          chn=s.split('\n')[1])
-                                 for s in sentence_list]
-                self.word_detail.sentence.extend(sentence_list)
             if self.result['oxford_detail']:
                 sentence_list = self.result['oxford_detail'].split('\r\n')
                 if sentence_list[-1] == '':
@@ -111,6 +102,7 @@ class GetWordDetail(object):
                                           eng=eng, chn=chn)
                                  for eng, chn in sentence_list]
                 self.word_detail.sentence.extend(sentence_list)
+        return self.word_detail
 
     def find_plain(self):
         relation = Relation()
@@ -121,7 +113,7 @@ class GetWordDetail(object):
         if len(match_0) == 1 and len(match_1) == 1:
             relation.plain_word = match_0[0][2:]
             relation.relationship = match_1[0][2:]
-            self.result = select_SQL.select(relation.plain_word)
+            self.result = select_SQL.select(relation.plain_word, mode='detail')
         else:
             relation.plain_word = self.request_word
         self.word_detail.relation.CopyFrom(relation)
