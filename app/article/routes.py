@@ -2,11 +2,10 @@ import json
 
 from flask import Response
 from flask_restful import Resource, inputs, reqparse
-from google.protobuf.json_format import MessageToDict, MessageToJson
-
-from .ArticleParsing import get_article_detail, get_article_list
+from google.protobuf.json_format import MessageToDict
 
 from . import article_api
+from .article_parsing import get_article_detail, get_article_list
 
 parser_article_list = reqparse.RequestParser()
 parser_article_list.add_argument(
@@ -41,19 +40,19 @@ class ArticleList(Resource):
         is_json = args['json']
         indent = args['indent']
 
-        article_list = get_article_list(
-            page=page, count=count, source_title=source_title, keywords=keywords)
+        article_list = get_article_list(page=page, count=count,
+                                        source_title=source_title,
+                                        keywords=keywords)
 
         if is_json:
-            print(MessageToDict(article_list))
+            # print(MessageToDict(article_list))
             return Response(
                 json.dumps(MessageToDict(article_list), indent=indent,
                            ensure_ascii=False,
-                           sort_keys=True
-                           ).encode(
-                    'utf-8').decode(),
-                content_type="application/json")
-        return Response(article_list.SerializeToString(), mimetype='application/x-protobuf')
+                           sort_keys=True).encode('utf-8').decode(),
+                           content_type="application/json")
+        return Response(article_list.SerializeToString(),
+                        mimetype='application/x-protobuf')
 
 
 class ArticleDetail(Resource):
@@ -66,16 +65,15 @@ class ArticleDetail(Resource):
         article_detail = get_article_detail(article_uri=uri)
 
         if is_json:
-            print(MessageToDict(article_detail))
+            # print(MessageToDict(article_detail))
             return Response(
                 json.dumps(MessageToDict(article_detail), indent=indent,
                            ensure_ascii=False,
-                           sort_keys=True
-                           ).encode(
-                    'utf-8').decode(),
-                content_type="application/json")
-        return Response(article_detail.SerializeToString(), mimetype='application/x-protobuf')
+                           sort_keys=True).encode('utf-8').decode(),
+                           content_type="application/json")
+        return Response(article_detail.SerializeToString(),
+                        mimetype='application/x-protobuf')
 
 
-article_api.add_resource(ArticleList, '/articleList')
-article_api.add_resource(ArticleDetail, '/articleDetail')
+article_api.add_resource(ArticleList, '/article/list')
+article_api.add_resource(ArticleDetail, '/article/detail')

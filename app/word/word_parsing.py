@@ -1,12 +1,9 @@
 import re
-import xml.etree.cElementTree as ET
-
-import requests
 
 from .. import conn
-from .select_word import SelectSQL
-from .update_detail import UpdateDetail
-from .WordDetailProto_pb2 import Explain, Relation, Sentence, WordDetail, WordList
+from .sql import SelectSQL, UpdateDetail
+from .WordDetailProto_pb2 import (Explain, Relation, Sentence, WordDetail,
+                                  WordList)
 
 select_SQL = SelectSQL(conn)
 update_detail = UpdateDetail(conn)

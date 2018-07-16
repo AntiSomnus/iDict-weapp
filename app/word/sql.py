@@ -1,4 +1,7 @@
 import json
+import xml.etree.cElementTree as ET
+
+import requests
 
 
 class SelectSQL(object):
@@ -40,10 +43,12 @@ class SelectSQL(object):
 
     def select_mini(self):
         if self.mode == 'list':
-            sql = self.list_sql.format(table='word_mini', key=self.key, count=self.count)
+            sql = self.list_sql.format(
+                table='word_mini', key=self.key, count=self.count)
             data = self.conn.execute(sql).fetchall()
         if self.mode == 'detail':
-            sql = self.detail_sql.format(table='word_mini', key=self.key)
+            sql = self.detail_sql.format(
+                table='word_mini', key=self.key)
             data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
@@ -52,10 +57,12 @@ class SelectSQL(object):
 
     def select_slim(self):
         if self.mode == 'list':
-            sql = self.list_sql.format(table='word_slim', key=self.key, count=self.count)
+            sql = self.list_sql.format(
+                table='word_slim', key=self.key, count=self.count)
             data = self.conn.execute(sql).fetchall()
         if self.mode == 'detail':
-            sql = self.detail_sql.format(table='word_slim', key=self.key)
+            sql = self.detail_sql.format(
+                table='word_slim', key=self.key)
             data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
@@ -64,10 +71,12 @@ class SelectSQL(object):
 
     def select_entire(self):
         if self.mode == 'list':
-            sql = self.list_sql.format(table='word_entire', key=self.key, count=self.count)
+            sql = self.list_sql.format(
+                table='word_entire', key=self.key, count=self.count)
             data = self.conn.execute(sql).fetchall()
         if self.mode == 'detail':
-            sql = self.detail_sql.format(table='word_entire', key=self.key)
+            sql = self.detail_sql.format(
+                table='word_entire', key=self.key)
             data = self.conn.execute(sql).fetchone()
         if data is None:
             return {'status': False}
@@ -100,3 +109,42 @@ class SelectSQL(object):
                     obj = None
                 word['detail'] = obj
             return word
+
+
+class UpdateDetail(object):
+    def __init__(self, conn):
+        self.conn = conn
+        self.key = ''
+
+    def fetch_from_iciba(self, key):
+        self.key = key
+        params = {'w': self.key, 'key': '341DEFE6E5CA504E62A567082590D0BD'}
+        xml_bytes = requests.get(
+            'http://dict-co.iciba.com/api/dictionary.php', params=params).content
+        return self.parsing_from_xml(xml_bytes)
+
+    def parsing_from_xml(self, xml_bytes):
+        root = ET.fromstring(xml_bytes)
+        sentence_list = []
+        for sent in root.findall('sent'):
+            eng, chn = sent.getchildren()
+            eng = eng.text.strip()
+            chn = chn.text.strip()
+            sentence_list.append((eng, chn))
+        sentence = ['\n'.join([eng.replace('\'', '\'\''),
+                               chn.replace('\'', '\'\'')])
+                    for eng, chn in sentence_list]
+        sentence = '\r\n'.join(sentence)
+        sql = ('UPDATE word_mini '
+               'SET net_detail=\'{sentence}\' '
+               'WHERE word=\'{key}\'').format(sentence=sentence, key=self.key)
+        self.conn.execute(sql)
+        sql = ('UPDATE word_slim '
+               'SET net_detail=\'{sentence}\' '
+               'WHERE word=\'{key}\'').format(sentence=sentence, key=self.key)
+        self.conn.execute(sql)
+        sql = ('UPDATE word_entire '
+               'SET net_detail=\'{sentence}\' '
+               'WHERE word=\'{key}\'').format(sentence=sentence, key=self.key)
+        self.conn.execute(sql)
+        return sentence_list

@@ -5,7 +5,7 @@ from flask_restful import Resource, inputs, reqparse
 from google.protobuf.json_format import MessageToDict
 
 from . import word_api
-from .WordParsing import GetWordDetail, GetWordList
+from .word_parsing import GetWordDetail, GetWordList
 
 parser_word_list = reqparse.RequestParser()
 parser_word_list.add_argument(
@@ -45,15 +45,14 @@ class WordList(Resource):
         word_list_proto = word_listing.get_word_list(
             word, count, is_divide, is_tag_list)
         if is_json:
-            print(MessageToDict(word_list_proto))
+            # print(MessageToDict(word_list_proto))
             return Response(
                 json.dumps(MessageToDict(word_list_proto), indent=indent,
                            ensure_ascii=False,
-                           sort_keys=True
-                           ).encode(
-                    'utf-8').decode(),
-                content_type="application/json")
-        return Response(word_list_proto.SerializeToString(), mimetype='application/x-protobuf')
+                           sort_keys=True).encode('utf-8').decode(),
+                           content_type="application/json")
+        return Response(word_list_proto.SerializeToString(),
+                        mimetype='application/x-protobuf')
 
 
 class WordDetail(Resource):
@@ -65,17 +64,15 @@ class WordDetail(Resource):
         indent = args['indent']
         word_processing = GetWordDetail(word, is_stem)
         if is_json:
-            print(MessageToDict(word_processing.word_detail))
+            # print(MessageToDict(word_processing.word_detail))
             return Response(
                 json.dumps(MessageToDict(word_processing.word_detail), indent=indent,
                            ensure_ascii=False,
-                           sort_keys=True
-                           ).encode(
-                    'utf-8').decode(),
-                content_type="application/json")
+                           sort_keys=True).encode('utf-8').decode(),
+                           content_type="application/json")
         return Response(word_processing.word_detail.SerializeToString(),
                         mimetype='application/x-protobuf')
 
 
-word_api.add_resource(WordDetail, '/worddetail')
-word_api.add_resource(WordList, '/wordlist')
+word_api.add_resource(WordDetail, '/word/detail')
+word_api.add_resource(WordList, '/word/list')
