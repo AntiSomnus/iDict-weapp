@@ -1,79 +1,101 @@
-import re
+# import re
+
+from sql import OperateDB
+from . import WordProto_pb2 as wp
 
 from .. import conn
-from .sql import SelectSQL, UpdateDetail
-from .WordDetailProto_pb2 import (Explain, Relation, Sentence, WordDetail,
-                                  WordList)
 
-select_SQL = SelectSQL(conn)
-update_detail = UpdateDetail(conn)
+sql = OperateDB(conn)
+
 
 class GetWordList(object):
-    def get_word_list(self, request_word, count, is_divide, is_tag_list):
-        word_list = WordList()
-        result_list = select_SQL.select(request_word, mode='list', count=count)
-        if result_list['status']:
-            for result_item in result_list['data']:
-                word_detail = WordDetail()
-                word_detail.word = result_item['word']
-                if is_tag_list:
-                    word_detail.tag_flag.extend(self.get_tag_list(result_item['tag']))
-                else:
-                    word_detail.tag = result_item['tag']
-                if is_divide:
-                    explains_list = self.get_word_chn_explains_in_list(result_item['translation'])
-                    for explain in explains_list:
-                        word_detail.explain.extend([Explain(pos=explain[0], meaning=explain[1])])
-                else:
-                    word_detail.explain.extend([Explain(pos='', meaning=result_item['translation'])])
-                word_list.wordDetail.extend([word_detail])
+    def get_word_list(self, request_word, **kwargs):
+        word_list = wp.WordList()
+        result = sql.select_list(request_word, **kwargs)
+        if result['status']:
+            for data in result['data']:
+                word_list.append(self.get_brief(data))
         return word_list
 
-    def get_tag_list(self, tag_str):
-        if not tag_str:
-            return []
-        tag_list = []
-        tag_list.append(1 if 'zk' in tag_str else 0)
-        tag_list.append(1 if 'gk' in tag_str else 0)
-        tag_list.append(1 if 'ky' in tag_str else 0)
-        tag_list.append(1 if 'cet4' in tag_str else 0)
-        tag_list.append(1 if 'cet6' in tag_str else 0)
-        tag_list.append(1 if 'toefl' in tag_str else 0)
-        tag_list.append(1 if 'ielts' in tag_str else 0)
-        tag_list.append(1 if 'gre' in tag_str else 0)
-        return tag_list
+    def get_brief(self, data):
+        word_brief = wp.WordBrief()
+        word_brief.word_in = data['word']
+        word_brief.word_out = data['word']
 
-    def get_word_chn_explains_in_list(self, word_chn_explains_in_line):
-        l = []
-        for explain in word_chn_explains_in_line.split("\n"):
-            explain_pos_meaning = explain.split(' ', 1)
-            if len(explain_pos_meaning) == 2:
-                l.append(explain.split(' ', 1))
-            else:
-                l.append(['', explain])
-        return l
+        word_lemma = wp.Lemma()
+        if 'lemma' in data:
+            word_lemma.isLemma = False
+            word_lemma.relation = data['lemma']['relation']
+            word_brief.word_out = data['lemma']['word']
+        else:
+            word_lemma.isLemma = True
+        word_brief.Lemma.MergeFrom(word_lemma)
+
+        # phonetic
+        # word_pron = wp.Pronunciation()
+        # if 'pron' in self.data:
+        # pass
+
+        if 'eng_def' in data:
+            eng_defs = data['eng_def']
+            for eng_def in eng_defs.split("\n"):
+                word_eng_def = wp.Definition()
+                pos_meaning = eng_def.split(' ', 1)
+                if len(pos_meaning) == 2:
+                    word_eng_def.pos = pos_meaning[0]
+                    word_eng_def.meaning = pos_meaning[1]
+                else:
+                    word_eng_def.meaning = eng_def
+                word_brief.eng_definitions.append(word_eng_def)
+        if 'chn_def' in data:
+            chn_defs = data['chn_def']
+            for chn_def in chn_defs.split("\n"):
+                word_chn_def = wp.Definition()
+                pos_meaning = chn_def.split(' ', 1)
+                if len(pos_meaning) == 2:
+                    word_chn_def.pos = pos_meaning[0]
+                    word_chn_def.meaning = pos_meaning[1]
+                else:
+                    word_chn_def.meaning = chn_def
+                word_brief.chn_definitions.append(word_chn_def)
+
+        if 'tag' in data:
+            tag_str = data['tag']
+            tag_list = []
+            tag_list.append(1 if 'zk' in tag_str else 0)
+            tag_list.append(1 if 'gk' in tag_str else 0)
+            tag_list.append(1 if 'ky' in tag_str else 0)
+            tag_list.append(1 if 'cet4' in tag_str else 0)
+            tag_list.append(1 if 'cet6' in tag_str else 0)
+            tag_list.append(1 if 'toefl' in tag_str else 0)
+            tag_list.append(1 if 'ielts' in tag_str else 0)
+            tag_list.append(1 if 'gre' in tag_str else 0)
+            word_brief.tags = tag_list
+
+        return word_brief
 
 
-class GetWordDetail(object):
-    def get_word_detail(self, request_word, is_stem):
-        self.request_word = request_word
-        self.actual_query_word = request_word
+class GetWordDetail(GetWordList):
+    def get_word_detail(self, request_word, **kwargs):
+        word_brief = self.get_word_list(request_word, **kwargs)
+        word_detail = WordDetail()
+        word_detail.word_brief = word_brief
+        request_word = word_brief.word_out
+        result = sql.select_detail(request_word)
+        if result['status']:
+            data = result['data']
 
-        self.word_detail = WordDetail()
-        self.word_detail.word = request_word
+            if 'collins' in data:
+                word_detail.collins = data['collins']
 
-        self.result = select_SQL.select(request_word, mode='detail')
-        if self.result['status']:
-            if is_stem:
-                self.find_plain()
-            if self.result['definition']:
-                self.word_detail.eng_explain = self.result['definition']
-            if self.result['collins']:
-                self.word_detail.collins = self.result['collins']
-            if self.result['tag']:
-                self.word_detail.tag = self.result['tag']
-            if self.result['oxford_detail']:
-                sentence_list = self.result['oxford_detail'].split('\r\n')
+            if 'bnc' in data:
+                word_detail.bnc = data['bnc']
+
+            if 'frq' in data:
+                word_detail.frq = data['frq']
+
+            if 'oxford_detail' in data:
+                sentence_list = data['oxford_detail'].split('\r\n')
                 if sentence_list[-1] == '':
                     sentence_list = sentence_list[:-1]
                 split_sentence_list = []
@@ -82,39 +104,33 @@ class GetWordDetail(object):
                     if len(s) == 1:
                         s.append('')
                     split_sentence_list.append(s)
-                sentence_list = [Sentence(source='oxford_detail',
-                                          eng=s[0], chn=s[1])
+                sentence_list = [wp.Sentence(source=1, eng=s[0], chn=s[1])
                                  for s in split_sentence_list]
-                self.word_detail.sentence.extend(sentence_list)
-            if self.result['net_detail']:
-                sentence_list = self.result['net_detail'].split('\r\n')
+                word_detail.sentences.extend(sentence_list)
+
+            if 'net_detail' in data:
+                sentence_list = data['net_detail'].split('\r\n')
                 if sentence_list[-1] == '':
                     sentence_list = sentence_list[:-1]
-                sentence_list = [Sentence(source='net_detail',
-                                          eng=s.split('\n')[0],
-                                          chn=s.split('\n')[1])
+                split_sentence_list = []
+                for s in sentence_list:
+                    s = s.split('\n')
+                    if len(s) == 1:
+                        s.append('')
+                    split_sentence_list.append(s)
+                sentence_list = [wp.Sentence(source=0, eng=s[0], chn=s[1])
                                  for s in sentence_list]
-                self.word_detail.sentence.extend(sentence_list)
-            else:
-                sentence_list = update_detail.fetch_from_iciba(
-                    self.actual_query_word)
-                sentence_list = [Sentence(source='net_detail',
-                                          eng=eng, chn=chn)
-                                 for eng, chn in sentence_list]
-                self.word_detail.sentence.extend(sentence_list)
-        return self.word_detail
+                word_detail.sentence.extend(sentence_list)
+            # iciba
+            # else:
+            #     sentence_list = sql.update_detail(request_word)
+            #     sentence_list = [wp.Sentence(source=0, eng=eng, chn=chn)
+            #                      for eng, chn in sentence_list]
+            #     word_detail.sentence.extend(sentence_list)
 
-    def find_plain(self):
-        relation = Relation()
-        exchange = self.result['exchange']
-        match_0 = re.findall(r"0:[^/]+", exchange)
-        match_1 = re.findall(r"1:[^/]+", exchange)
+            if 'derivative' in data:
+                for item in data['derivative']:
+                    d = wp.Derivative(item[0], item[1])
+                    word_detail.derivatives.append(d)
 
-        if len(match_0) == 1 and len(match_1) == 1:
-            relation.plain_word = match_0[0][2:]
-            relation.relationship = match_1[0][2:]
-            self.result = select_SQL.select(relation.plain_word, mode='detail')
-        else:
-            relation.plain_word = self.request_word
-        self.word_detail.relation.CopyFrom(relation)
-        self.actual_query_word = relation.plain_word
+        return word_detail

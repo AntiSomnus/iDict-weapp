@@ -1,0 +1,75 @@
+syntax = "proto3";
+/**
+ * WordList
+ * list of WordBrief
+*/
+message WordList {
+    repeated WordBrief word_brief = 1; //list of WordBrief entities
+}
+/**
+ * WordBrief
+ * brief information of a word
+ * @minimal required:
+ *      word_in
+ *      word_out
+ *      chn_definitions
+*/
+message WordBrief {
+    string word_in = 1; //@required: input word from front-end
+    string word_out = 2; //@required: if findLamma == True: word_out = lemma, else: word_out = word_in
+    Pronunciation pron_bri = 3; //British pronunciation for `word_out` if pron=True
+    Pronunciation pron_ame = 4; //American pronunciation for `word_out` if pron=True
+    repeated Definition chn_definitions = 5; //@required: Chinese definitions for `word_out`
+    repeated Definition eng_definitions = 6; //English definitions for `word_out` if eng=True
+    repeated bool tags = 7; //tag list for `word_out` if tag=True
+    Lemma lemma = 8; //describe `word_input` and its lemma if findLamma == True
+
+    message Pronunciation {
+        string ps = 1; // phonetic alphabet
+        string url = 2; // audio url
+    }
+    message Definition {
+        string pos = 1; //part of speech
+        string meaning = 2; //meaning
+    }
+
+    message Lemma {
+        //required if findLemma == True
+        bool isLemma = 1; //whether `word_in` is the lemma
+        string relation = 2; //relation between `word_in` and `word_out`(lemma) if isLemma == True
+    }
+
+
+}
+/**
+ * WordDetail
+ * Detail information of a word
+ * @required: all of them if not otherwise specified
+*/
+message WordDetail {
+    WordBrief word_brief = 1; //WordBrief entity, word_in = word_out, findLemma = True
+    int32 collins = 2; //collins star
+    int32 bnc = 3; //bnc index
+    int32 frq = 4; //frq index
+    repeated Sentence sentences = 5; //sentence sample
+    repeated Derivative derivatives = 6; //all derivatives of `lemma`
+
+    message Sentence {
+        string eng = 1; //eng sentence
+        string chn = 2; //chn sentenc
+        enum Source {
+            ONLINE = 0;
+            OXFORD = 1;
+        }
+        Source source = 3; //sentence source
+    }
+    message Derivative {
+        //existed only if isLemma == True
+        string word = 1; // word of one of the derivatives
+        string relation = 2; //relation between `word` and `word_in`
+
+    }
+}
+
+
+
