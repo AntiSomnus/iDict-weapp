@@ -1,6 +1,6 @@
 # import re
 
-from sql import OperateDB
+from .sql import OperateDB
 from . import WordProto_pb2 as wp
 
 from .. import conn
