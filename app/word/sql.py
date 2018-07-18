@@ -34,6 +34,7 @@ class OperateDB(object):
             result = self.conn.execute(sql).fetchone()
             if result:
                 findlemma = True
+                word_in = word
                 word = result[2]
                 exchange_str = self.get_exchange_str(result[3:])
 
@@ -58,6 +59,7 @@ class OperateDB(object):
             item = list(item)
             d = {}
             if findlemma:
+                d['word_in'] = word_in
                 d['lemma'] = {'word': word, 'relation': exchange_str}
             for i in range(len(fields_list)):
                 if item[i]:

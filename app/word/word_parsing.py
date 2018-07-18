@@ -27,6 +27,7 @@ class GetWordList(object):
             word_lemma.isLemma = False
             word_lemma.relation = data['lemma']['relation']
             word_brief.word_out = data['lemma']['word']
+            word_brief.word_in = data['word_in']
         else:
             word_lemma.isLemma = True
         word_brief.lemma.MergeFrom(word_lemma)
