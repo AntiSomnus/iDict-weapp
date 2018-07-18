@@ -30,7 +30,7 @@ class OperateDB(object):
         if count == 1:
             sql = ('SELECT * '
                    'FROM exchange '
-                   'WHERE word=\'{word}\' ').format(word=word)
+                   'WHERE word=\'{word}\'').format(word=word)
             result = self.conn.execute(sql).fetchone()
             if result:
                 findlemma = True
@@ -140,5 +140,6 @@ class OperateDB(object):
     def get_exchange_str(self, exchange_list):
         if not any(exchange_list):
             return ''
-        l = ["过去式、", "过去分词、", "现在分词、", "第三人称单数、", "比较级、", "最高级、", "名词复数、"]
+        l = ["过去式、", "过去分词、", "现在分词、", "第三人称单数、",
+             "比较级、", "最高级、", "名词复数、"]
         return ''.join(list(map(lambda x, y: x if y else '', l, exchange_list)))[:-1]

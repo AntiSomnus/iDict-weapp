@@ -46,10 +46,10 @@ class GetWordList(object):
                 word_eng_def = wp.WordBrief.Definition()
                 pos_meaning = re.match(r'[a-zA-Z]+\.\s', eng_def)
                 if pos_meaning is None:
-                    word_eng_def.meaning = eng_def
+                    word_eng_def.meaning = eng_def.strip()
                 else:
                     word_eng_def.pos = pos_meaning.group()[:-1]
-                    word_eng_def.meaning = eng_def[len(word_eng_def.pos) + 1:]
+                    word_eng_def.meaning = eng_def[len(word_eng_def.pos):].strip()
                 word_brief.eng_definitions.extend([word_eng_def])
         if 'chn_def' in data:
             chn_defs = data['chn_def']
@@ -57,10 +57,10 @@ class GetWordList(object):
                 word_chn_def = wp.WordBrief.Definition()
                 pos_meaning = re.match(r'[a-zA-Z]+\.\s', chn_def)
                 if pos_meaning is None:
-                    word_chn_def.meaning = chn_def
+                    word_chn_def.meaning = chn_def.strip()
                 else:
                     word_chn_def.pos = pos_meaning.group()[:-1]
-                    word_chn_def.meaning = chn_def[len(word_chn_def.pos) + 1:]
+                    word_chn_def.meaning = chn_def[len(word_chn_def.pos):].strip()
                 word_brief.chn_definitions.extend([word_chn_def])
 
         if 'tag' in data:
@@ -125,7 +125,7 @@ class GetWordDetail(GetWordList):
                 sentence_list = [wp.WordDetail.Sentence(
                     source=wp.WordDetail.Sentence.ONLINE, eng=eng, chn=chn)
                     for eng, chn in sentence_list]
-                word_detail.sentence.extend(sentence_list)
+                word_detail.sentences.extend(sentence_list)
 
             if 'derivative' in data:
                 derivative_list = [wp.WordDetail.Derivative(word=w, relation=r)
