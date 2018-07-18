@@ -42,25 +42,25 @@ class GetWordList(object):
 
         if 'eng_def' in data:
             eng_defs = data['eng_def']
-            for eng_def in eng_defs.split("\n"):
+            for eng_def in eng_defs.replace('\\n', '\n').split('\n'):
                 word_eng_def = wp.WordBrief.Definition()
-                pos_meaning = re.match('[a-zA-Z]+\.\s', eng_def)
+                pos_meaning = re.match(r'[a-zA-Z]+\.\s', eng_def)
                 if pos_meaning is None:
                     word_eng_def.meaning = eng_def
                 else:
                     word_eng_def.pos = pos_meaning.group()[:-1]
-                    word_eng_def.meaning = eng_def[len(word_eng_def.pos):]
+                    word_eng_def.meaning = eng_def[len(word_eng_def.pos) + 1:]
                 word_brief.eng_definitions.extend([word_eng_def])
         if 'chn_def' in data:
             chn_defs = data['chn_def']
-            for chn_def in chn_defs.split("\n"):
+            for chn_def in chn_defs.replace('\\n', '\n').split('\n'):
                 word_chn_def = wp.WordBrief.Definition()
-                pos_meaning = re.match('[a-zA-Z]+\.\s', chn_def)
+                pos_meaning = re.match(r'[a-zA-Z]+\.\s', chn_def)
                 if pos_meaning is None:
                     word_chn_def.meaning = chn_def
                 else:
                     word_chn_def.pos = pos_meaning.group()[:-1]
-                    word_chn_def.meaning = chn_def[len(word_chn_def.pos):]
+                    word_chn_def.meaning = chn_def[len(word_chn_def.pos) + 1:]
                 word_brief.chn_definitions.extend([word_chn_def])
 
         if 'tag' in data:
