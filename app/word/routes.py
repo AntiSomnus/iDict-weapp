@@ -50,7 +50,7 @@ class WordList(Resource):
                 json.dumps(MessageToDict(word_list_proto), indent=indent,
                            ensure_ascii=False,
                            sort_keys=True).encode('utf-8').decode(),
-                           content_type="application/json")
+                content_type="application/json")
         return Response(word_list_proto.SerializeToString(),
                         mimetype='application/x-protobuf')
 
@@ -74,10 +74,10 @@ class WordDetail(Resource):
                 json.dumps(MessageToDict(word_detail_proto), indent=indent,
                            ensure_ascii=False,
                            sort_keys=True).encode('utf-8').decode(),
-                           content_type="application/json")
+                content_type="application/json")
         return Response(word_detail_proto.SerializeToString(),
                         mimetype='application/x-protobuf')
 
 
-word_api.add_resource(WordList, '/word/list')
-word_api.add_resource(WordDetail, '/word/detail')
+word_api.add_resource(WordList, '/word/list/')
+word_api.add_resource(WordDetail, '/word/detail/')

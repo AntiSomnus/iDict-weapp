@@ -38,29 +38,29 @@ class GetWordList(object):
         if 'us_pron' in data:
             us_pron = wp.WordBrief.Pronunciation()
             us_pron.ps = data['us_pron']
-            word_brief.uk_pron.MergeFrom(us_pron)
+            word_brief.us_pron.MergeFrom(us_pron)
 
         if 'eng_def' in data:
             eng_defs = data['eng_def']
             for eng_def in eng_defs.split("\n"):
                 word_eng_def = wp.WordBrief.Definition()
-                pos_meaning = eng_def.split(' ', 1)
-                if len(pos_meaning) == 2:
-                    word_eng_def.pos = pos_meaning[0]
-                    word_eng_def.meaning = pos_meaning[1]
-                else:
+                pos_meaning = re.match('[a-zA-Z]+\.\s', eng_def)
+                if pos_meaning is None:
                     word_eng_def.meaning = eng_def
+                else:
+                    word_eng_def.pos = pos_meaning.group()[:-1]
+                    word_eng_def.meaning = eng_def[len(word_eng_def.pos):]
                 word_brief.eng_definitions.extend([word_eng_def])
         if 'chn_def' in data:
             chn_defs = data['chn_def']
             for chn_def in chn_defs.split("\n"):
                 word_chn_def = wp.WordBrief.Definition()
-                pos_meaning = chn_def.split(' ', 1)
-                if len(pos_meaning) == 2:
-                    word_chn_def.pos = pos_meaning[0]
-                    word_chn_def.meaning = pos_meaning[1]
-                else:
+                pos_meaning = re.match('[a-zA-Z]+\.\s', chn_def)
+                if pos_meaning is None:
                     word_chn_def.meaning = chn_def
+                else:
+                    word_chn_def.pos = pos_meaning.group()[:-1]
+                    word_chn_def.meaning = chn_def[len(word_chn_def.pos):]
                 word_brief.chn_definitions.extend([word_chn_def])
 
         if 'tag' in data:
@@ -77,7 +77,6 @@ class GetWordList(object):
             word_brief.tags.extend(tag_list)
 
         return word_brief
-
 
 
 class GetWordDetail(GetWordList):
@@ -133,7 +132,6 @@ class GetWordDetail(GetWordList):
                                    for w, r in data['derivative'].items()]
                 word_detail.derivatives.extend(derivative_list)
         return word_detail
-
 
     def get_sentence(self, sentences):
         sentence_list = sentences.split('\r\n')
