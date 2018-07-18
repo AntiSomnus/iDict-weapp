@@ -1,4 +1,5 @@
 import re
+from werkzeug.exceptions import BadRequest
 
 from .sql import OperateDB
 from . import WordProto_pb2 as wp
@@ -15,7 +16,9 @@ class GetWordList(object):
         if result['status']:
             for data in result['data']:
                 word_list.word_briefs.extend([self.get_brief(data)])
-        return word_list
+            return word_list
+        else:
+            raise BadRequest('No Data for the keyword')
 
     def get_brief(self, data):
         word_brief = wp.WordBrief()
@@ -82,8 +85,8 @@ class GetWordList(object):
 
 class GetWordDetail(GetWordList):
     def get_detail(self, request_word, **kwargs):
-        word_brief = self.get_list(request_word, **kwargs).word_briefs
-        word_brief = word_brief[0]
+        word_list = self.get_list(request_word, **kwargs).word_briefs
+        word_brief = word_list[0]
         word_detail = wp.WordDetail()
         word_detail.word_brief.MergeFrom(word_brief)
         request_word = word_brief.word_out
