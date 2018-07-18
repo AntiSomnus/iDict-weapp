@@ -1,4 +1,4 @@
-# import re
+import re
 
 from .sql import OperateDB
 from . import WordProto_pb2 as wp
@@ -9,12 +9,12 @@ sql = OperateDB(conn)
 
 
 class GetWordList(object):
-    def get_word_list(self, request_word, **kwargs):
+    def get_list(self, request_word, **kwargs):
         word_list = wp.WordList()
         result = sql.select_list(request_word, **kwargs)
         if result['status']:
             for data in result['data']:
-                word_list.append(self.get_brief(data))
+                word_list.word_briefs.extend([self.get_brief(data)])
         return word_list
 
     def get_brief(self, data):
@@ -22,42 +22,46 @@ class GetWordList(object):
         word_brief.word_in = data['word']
         word_brief.word_out = data['word']
 
-        word_lemma = wp.Lemma()
+        word_lemma = wp.WordBrief.Lemma()
         if 'lemma' in data:
             word_lemma.isLemma = False
             word_lemma.relation = data['lemma']['relation']
             word_brief.word_out = data['lemma']['word']
         else:
             word_lemma.isLemma = True
-        word_brief.Lemma.MergeFrom(word_lemma)
+        word_brief.lemma.MergeFrom(word_lemma)
 
-        # phonetic
-        # word_pron = wp.Pronunciation()
-        # if 'pron' in self.data:
-        # pass
+        if 'uk_pron' in data:
+            uk_pron = wp.WordBrief.Pronunciation()
+            uk_pron.ps = data['uk_pron']
+            word_brief.uk_pron.MergeFrom(uk_pron)
+        if 'us_pron' in data:
+            us_pron = wp.WordBrief.Pronunciation()
+            us_pron.ps = data['us_pron']
+            word_brief.uk_pron.MergeFrom(us_pron)
 
         if 'eng_def' in data:
             eng_defs = data['eng_def']
             for eng_def in eng_defs.split("\n"):
-                word_eng_def = wp.Definition()
+                word_eng_def = wp.WordBrief.Definition()
                 pos_meaning = eng_def.split(' ', 1)
                 if len(pos_meaning) == 2:
                     word_eng_def.pos = pos_meaning[0]
                     word_eng_def.meaning = pos_meaning[1]
                 else:
                     word_eng_def.meaning = eng_def
-                word_brief.eng_definitions.append(word_eng_def)
+                word_brief.eng_definitions.extend([word_eng_def])
         if 'chn_def' in data:
             chn_defs = data['chn_def']
             for chn_def in chn_defs.split("\n"):
-                word_chn_def = wp.Definition()
+                word_chn_def = wp.WordBrief.Definition()
                 pos_meaning = chn_def.split(' ', 1)
                 if len(pos_meaning) == 2:
                     word_chn_def.pos = pos_meaning[0]
                     word_chn_def.meaning = pos_meaning[1]
                 else:
                     word_chn_def.meaning = chn_def
-                word_brief.chn_definitions.append(word_chn_def)
+                word_brief.chn_definitions.extend([word_chn_def])
 
         if 'tag' in data:
             tag_str = data['tag']
@@ -70,16 +74,18 @@ class GetWordList(object):
             tag_list.append(1 if 'toefl' in tag_str else 0)
             tag_list.append(1 if 'ielts' in tag_str else 0)
             tag_list.append(1 if 'gre' in tag_str else 0)
-            word_brief.tags = tag_list
+            word_brief.tags.extend(tag_list)
 
         return word_brief
 
 
+
 class GetWordDetail(GetWordList):
-    def get_word_detail(self, request_word, **kwargs):
-        word_brief = self.get_word_list(request_word, **kwargs)
-        word_detail = WordDetail()
-        word_detail.word_brief = word_brief
+    def get_detail(self, request_word, **kwargs):
+        word_brief = self.get_list(request_word, **kwargs).word_briefs
+        word_brief = word_brief[0]
+        word_detail = wp.WordDetail()
+        word_detail.word_brief.MergeFrom(word_brief)
         request_word = word_brief.word_out
         result = sql.select_detail(request_word)
         if result['status']:
@@ -95,42 +101,48 @@ class GetWordDetail(GetWordList):
                 word_detail.frq = data['frq']
 
             if 'oxford_detail' in data:
-                sentence_list = data['oxford_detail'].split('\r\n')
-                if sentence_list[-1] == '':
-                    sentence_list = sentence_list[:-1]
-                split_sentence_list = []
-                for s in sentence_list:
-                    s = s.split('\n')
-                    if len(s) == 1:
-                        s.append('')
-                    split_sentence_list.append(s)
-                sentence_list = [wp.Sentence(source=1, eng=s[0], chn=s[1])
-                                 for s in split_sentence_list]
+                sentence_list = self.get_sentence(data['oxford_detail'])
+                sentence_list = [wp.WordDetail.Sentence(
+                    source=wp.WordDetail.Sentence.OXFORD, eng=s[0], chn=s[1])
+                    for s in sentence_list]
+                word_detail.sentences.extend(sentence_list)
+
+            if 'collins_detail' in data:
+                sentence_list = self.get_sentence(data['collins_detail'])
+                sentence_list = [wp.WordDetail.Sentence(
+                    source=wp.WordDetail.Sentence.COLLINS, eng=s[0], chn=s[1])
+                    for s in sentence_list]
                 word_detail.sentences.extend(sentence_list)
 
             if 'net_detail' in data:
-                sentence_list = data['net_detail'].split('\r\n')
-                if sentence_list[-1] == '':
-                    sentence_list = sentence_list[:-1]
-                split_sentence_list = []
-                for s in sentence_list:
-                    s = s.split('\n')
-                    if len(s) == 1:
-                        s.append('')
-                    split_sentence_list.append(s)
-                sentence_list = [wp.Sentence(source=0, eng=s[0], chn=s[1])
-                                 for s in sentence_list]
+                sentence_list = self.get_sentence(data['net_detail'])
+                sentence_list = [wp.WordDetail.Sentence(
+                    source=wp.WordDetail.Sentence.ONLINE, eng=s[0], chn=s[1])
+                    for s in sentence_list]
+                word_detail.sentences.extend(sentence_list)
+
+            if len(word_detail.sentences) == 0:
+                sentence_list = sql.request_iciba(request_word)
+                sentence_list = [wp.WordDetail.Sentence(
+                    source=wp.WordDetail.Sentence.ONLINE, eng=eng, chn=chn)
+                    for eng, chn in sentence_list]
                 word_detail.sentence.extend(sentence_list)
-            # iciba
-            # else:
-            #     sentence_list = sql.update_detail(request_word)
-            #     sentence_list = [wp.Sentence(source=0, eng=eng, chn=chn)
-            #                      for eng, chn in sentence_list]
-            #     word_detail.sentence.extend(sentence_list)
 
             if 'derivative' in data:
-                for item in data['derivative']:
-                    d = wp.Derivative(item[0], item[1])
-                    word_detail.derivatives.append(d)
-
+                derivative_list = [wp.WordDetail.Derivative(word=w, relation=r)
+                                   for w, r in data['derivative'].items()]
+                word_detail.derivatives.extend(derivative_list)
         return word_detail
+
+
+    def get_sentence(self, sentences):
+        sentence_list = sentences.split('\r\n')
+        if sentence_list[-1] == '':
+            sentence_list = sentence_list[:-1]
+        split_sentence_list = []
+        for s in sentence_list:
+            s = s.split('\n')
+            if len(s) == 1:
+                s.append('')
+            split_sentence_list.append(s)
+        return split_sentence_list

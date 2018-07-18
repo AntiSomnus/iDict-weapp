@@ -13,9 +13,11 @@ parser_word_list.add_argument(
 parser_word_list.add_argument(
     'count', type=int, help='how much to receive', default=10)
 parser_word_list.add_argument(
-    'divide', type=inputs.boolean, help='whether divide meaning', default=False)
+    'tag', type=inputs.boolean, help='whether return tag', default=True)
 parser_word_list.add_argument(
-    'taglist', type=inputs.boolean, help='whether return taglist', default=True)
+    'pron', type=inputs.boolean, help='whether return pronunciation', default=True)
+parser_word_list.add_argument(
+    'eng', type=inputs.boolean, help='whether return English definition', default=True)
 parser_word_list.add_argument(
     'json', type=inputs.boolean, help='whether get json', default=False)
 parser_word_list.add_argument(
@@ -25,7 +27,7 @@ parser_word = reqparse.RequestParser()
 parser_word.add_argument(
     'word', type=str, help='The word for query', required=True)
 parser_word.add_argument(
-    'stem', type=inputs.boolean, help='whether get stem', default=True)
+    'findLemma', type=inputs.boolean, help='whether get lemma', default=True)
 parser_word.add_argument(
     'json', type=inputs.boolean, help='whether get json', default=False)
 parser_word.add_argument(
@@ -33,17 +35,15 @@ parser_word.add_argument(
 
 
 class WordList(Resource):
+    def __init__(self):
+        self.get_word_list = GetWordList()
+
     def get(self):
         args = parser_word_list.parse_args()
         word = args['word']
-        count = args['count']
         is_json = args['json']
-        is_divide = args['divide']
-        is_tag_list = args['taglist']
         indent = args['indent']
-        word_listing = GetWordList()
-        word_list_proto = word_listing.get_word_list(
-            word, count, is_divide, is_tag_list)
+        word_list_proto = self.get_word_list.get_list(word, kwargs=args)
         if is_json:
             # print(MessageToDict(word_list_proto))
             return Response(
@@ -56,14 +56,18 @@ class WordList(Resource):
 
 
 class WordDetail(Resource):
+    def __init__(self):
+        self.get_word_detail = GetWordDetail()
+
     def get(self):
         args = parser_word.parse_args()
         word = args['word']
-        is_stem = args['stem']
+        args['tag'] = True
+        args['pron'] = True
+        args['eng'] = True
         is_json = args['json']
         indent = args['indent']
-        word_detailing = GetWordDetail()
-        word_detail_proto = word_detailing.get_word_detail(word, is_stem)
+        word_detail_proto = self.get_word_detail.get_detail(word, kwargs=args)
         if is_json:
             # print(MessageToDict(word_detail_proto))
             return Response(

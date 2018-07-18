@@ -4,7 +4,7 @@ syntax = "proto3";
  * list of WordBrief
 */
 message WordList {
-    repeated WordBrief word_brief = 1; //list of WordBrief entities
+    repeated WordBrief word_briefs = 1; //list of WordBrief entities
 }
 /**
  * WordBrief
@@ -17,8 +17,8 @@ message WordList {
 message WordBrief {
     string word_in = 1; //@required: input word from front-end
     string word_out = 2; //@required: if findLamma == True: word_out = lemma, else: word_out = word_in
-    Pronunciation pron_bri = 3; //British pronunciation for `word_out` if pron=True
-    Pronunciation pron_ame = 4; //American pronunciation for `word_out` if pron=True
+    Pronunciation uk_pron = 3; //UK pronunciation for `word_out` if pron=True
+    Pronunciation us_pron = 4; //US pronunciation for `word_out` if pron=True
     repeated Definition chn_definitions = 5; //@required: Chinese definitions for `word_out`
     repeated Definition eng_definitions = 6; //English definitions for `word_out` if eng=True
     repeated bool tags = 7; //tag list for `word_out` if tag=True
@@ -60,6 +60,7 @@ message WordDetail {
         enum Source {
             ONLINE = 0;
             OXFORD = 1;
+            COLLINS = 2;
         }
         Source source = 3; //sentence source
     }
