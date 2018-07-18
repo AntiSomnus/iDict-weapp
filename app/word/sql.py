@@ -26,6 +26,7 @@ class OperateDB(object):
                 fields_list.append(optional_fields[field])
         fields = ', '.join(fields_list)
 
+        data = []
         findlemma = False
         if count == 1:
             sql = ('SELECT * '
@@ -37,24 +38,33 @@ class OperateDB(object):
                 word_in = word
                 word = result[2]
                 exchange_str = self.get_exchange_str(result[3:])
-
-        data = []
-        for t in self.table:
-            list_sql = ('SELECT {fields} '
-                        'FROM {table} '
-                        'WHERE word LIKE \'{word}%%\' AND is_lemma=1 '
-                        'ORDER BY base '
-                        'LIMIT {count}').format(
-                            fields=fields, table=t, word=word, count=count)
-            result = self.conn.execute(list_sql).fetchall()
-            count -= len(result)
-            data.extend(result)
-            if count == 0:
-                break
+            for t in self.table:
+                list_sql = ('SELECT {fields} '
+                            'FROM {table} '
+                            'WHERE word=\'{word}\'').format(
+                                fields=fields, table=t, word=word)
+                result = self.conn.execute(list_sql).fetchone()
+                if result:
+                    data.append(result)
+                    break
+        else:
+            for t in self.table:
+                list_sql = ('SELECT {fields} '
+                            'FROM {table} '
+                            'WHERE word LIKE \'{word}%%\' AND is_lemma=1 '
+                            'ORDER BY base '
+                            'LIMIT {count}').format(
+                                fields=fields, table=t, word=word, count=count)
+                result = self.conn.execute(list_sql).fetchall()
+                count -= len(result)
+                data.extend(result)
+                if count == 0:
+                    break
 
         if len(data) == 0:
             return {'status': False}
         result = {'status': True, 'data': []}
+        print(data)
         for item in data:
             item = list(item)
             d = {}
