@@ -22,7 +22,7 @@ class GetWordList(object):
 
     def get_brief(self, data):
         word_brief = wp.WordBrief()
-        word_brief.word_in = data['word']
+        word_brief.word_in = data['word_in']
         word_brief.word_out = data['word']
 
         word_lemma = wp.WordBrief.Lemma()
@@ -91,7 +91,7 @@ class GetWordDetail(GetWordList):
         word_brief = word_list.word_briefs[0]
         word_detail = wp.WordDetail()
         word_detail.word_brief.MergeFrom(word_brief)
-        request_word = word_brief.word_out
+        # request_word = word_brief.word_out
         result = sql.select_detail(request_word)
         if result['status']:
             data = result['data']
