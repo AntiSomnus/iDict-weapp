@@ -44,15 +44,17 @@ class WordList(Resource):
         is_json = args['json']
         indent = args['indent']
         word_list_proto = self.get_word_list.get_list(word, kwargs=args)
-        if is_json:
-            # print(MessageToDict(word_list_proto))
-            return Response(
-                json.dumps(MessageToDict(word_list_proto), indent=indent,
-                           ensure_ascii=False,
-                           sort_keys=True).encode('utf-8').decode(),
-                content_type="application/json")
-        return Response(word_list_proto.SerializeToString(),
-                        mimetype='application/x-protobuf')
+        if word_list_proto:
+            if is_json:
+                # print(MessageToDict(word_list_proto))
+                return Response(
+                    json.dumps(MessageToDict(word_list_proto), indent=indent,
+                            ensure_ascii=False,
+                            sort_keys=True).encode('utf-8').decode(),
+                    content_type="application/json")
+            return Response(word_list_proto.SerializeToString(),
+                            mimetype='application/x-protobuf')
+        return Response(status=451)
 
 
 class WordDetail(Resource):
@@ -68,15 +70,17 @@ class WordDetail(Resource):
         is_json = args['json']
         indent = args['indent']
         word_detail_proto = self.get_word_detail.get_detail(word, kwargs=args)
-        if is_json:
-            # print(MessageToDict(word_detail_proto))
-            return Response(
-                json.dumps(MessageToDict(word_detail_proto), indent=indent,
-                           ensure_ascii=False,
-                           sort_keys=True).encode('utf-8').decode(),
-                content_type="application/json")
-        return Response(word_detail_proto.SerializeToString(),
-                        mimetype='application/x-protobuf')
+        if word_detail_proto:
+            if is_json:
+                # print(MessageToDict(word_detail_proto))
+                return Response(
+                    json.dumps(MessageToDict(word_detail_proto), indent=indent,
+                            ensure_ascii=False,
+                            sort_keys=True).encode('utf-8').decode(),
+                    content_type="application/json")
+            return Response(word_detail_proto.SerializeToString(),
+                            mimetype='application/x-protobuf')
+        return Response(status=450)
 
 
 word_api.add_resource(WordList, '/word/list/')
