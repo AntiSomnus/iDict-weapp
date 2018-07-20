@@ -104,32 +104,40 @@ class GetWordDetail(GetWordList):
                 word_detail.frq = data['frq']
 
             if 'oxford_detail' in data:
-                sentence_list = self.get_sentence(data['oxford_detail'])
-                sentence_list = [wp.WordDetail.Sentence(
-                    source=wp.WordDetail.Sentence.OXFORD, eng=s[0], chn=s[1])
-                    for s in sentence_list]
-                word_detail.sentences.extend(sentence_list)
+                sentences = self.get_sentence(data['oxford_detail'])
+                sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
+                             for s in sentences]
+                sentence_list = wp.WordDetail.SentenceList()
+                sentence_list.source = wp.WordDetail.SentenceList.OXFORD
+                sentence_list.sentences.extend(sentences)
+                word_detail.sentence_lists.extend([sentence_list])
 
             if 'collins_detail' in data:
-                sentence_list = self.get_sentence(data['collins_detail'])
-                sentence_list = [wp.WordDetail.Sentence(
-                    source=wp.WordDetail.Sentence.COLLINS, eng=s[0], chn=s[1])
-                    for s in sentence_list]
-                word_detail.sentences.extend(sentence_list)
+                sentences = self.get_sentence(data['collins_detail'])
+                sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
+                             for s in sentences]
+                sentence_list = wp.WordDetail.SentenceList()
+                sentence_list.source = wp.WordDetail.SentenceList.COLLINS
+                sentence_list.sentences.extend(sentences)
+                word_detail.sentence_lists.extend([sentence_list])
 
             if 'net_detail' in data:
-                sentence_list = self.get_sentence(data['net_detail'])
-                sentence_list = [wp.WordDetail.Sentence(
-                    source=wp.WordDetail.Sentence.ONLINE, eng=s[0], chn=s[1])
-                    for s in sentence_list]
-                word_detail.sentences.extend(sentence_list)
+                sentences = self.get_sentence(data['net_detail'])
+                sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
+                             for s in sentences]
+                sentence_list = wp.WordDetail.SentenceList()
+                sentence_list.source = wp.WordDetail.SentenceList.ONLINE
+                sentence_list.sentences.extend(sentences)
+                word_detail.sentence_lists.extend([sentence_list])
 
-            if len(word_detail.sentences) == 0:
-                sentence_list = sql.request_iciba(request_word)
-                sentence_list = [wp.WordDetail.Sentence(
-                    source=wp.WordDetail.Sentence.ONLINE, eng=eng, chn=chn)
-                    for eng, chn in sentence_list]
-                word_detail.sentences.extend(sentence_list)
+            if len(word_detail.sentence_lists) == 0:
+                sentences = sql.request_iciba(request_word)
+                sentences = [wp.WordDetail.SentenceList.Sentence(eng=eng, chn=chn)
+                             for eng, chn in sentences]
+                sentence_list = wp.WordDetail.SentenceList()
+                sentence_list.source = wp.WordDetail.SentenceList.ONLINE
+                sentence_list.sentences.extend(sentences)
+                word_detail.sentence_lists.extend([sentence_list])
 
             if 'derivative' in data:
                 derivative_list = [wp.WordDetail.Derivative(word=w, relation=r)
@@ -137,12 +145,12 @@ class GetWordDetail(GetWordList):
                 word_detail.derivatives.extend(derivative_list)
         return word_detail
 
-    def get_sentence(self, sentences):
-        sentence_list = sentences.split('\r\n')
-        if sentence_list[-1] == '':
-            sentence_list = sentence_list[:-1]
+    def get_sentence(self, sentence_lists):
+        sentences = sentence_lists.split('\r\n')
+        if sentences[-1] == '':
+            sentences = sentences[:-1]
         split_sentence_list = []
-        for s in sentence_list:
+        for s in sentences:
             s = s.split('\n')
             if len(s) == 1:
                 s.append('')

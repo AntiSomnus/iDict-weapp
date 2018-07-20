@@ -64,7 +64,6 @@ class OperateDB(object):
         if len(data) == 0:
             return {'status': False}
         result = {'status': True, 'data': []}
-        print(data)
         for item in data:
             item = list(item)
             d = {}

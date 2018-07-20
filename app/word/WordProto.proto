@@ -51,19 +51,23 @@ message WordDetail {
     int32 collins = 2; //collins star
     int32 bnc = 3; //bnc index
     int32 frq = 4; //frq index
-    repeated Sentence sentences = 5; //sentence sample
+    repeated SentenceList sentence_lists = 5; //sentence lists
     repeated Derivative derivatives = 6; //all derivatives of `lemma`
 
-    message Sentence {
-        string eng = 1; //eng sentence
-        string chn = 2; //chn sentenc
+    message SentenceList {
+        Source source = 1; //sentence source
+        repeated Sentence sentences = 2; //sentence in this source
         enum Source {
-            ONLINE = 0;
-            OXFORD = 1;
-            COLLINS = 2;
+            OXFORD = 0;
+            COLLINS = 1;
+            ONLINE = 2;
         }
-        Source source = 3; //sentence source
+        message Sentence {
+            string eng = 1; //eng sentence
+            string chn = 2; //chn sentence
+        }
     }
+
     message Derivative {
         //existed only if isLemma == True
         string word = 1; // word of one of the derivatives

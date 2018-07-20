@@ -19,36 +19,36 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='WordProto.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\x0fWordProto.proto\"+\n\x08WordList\x12\x1f\n\x0bword_briefs\x18\x01 \x03(\x0b\x32\n.WordBrief\"\x95\x03\n\tWordBrief\x12\x0f\n\x07word_in\x18\x01 \x01(\t\x12\x10\n\x08word_out\x18\x02 \x01(\t\x12)\n\x07uk_pron\x18\x03 \x01(\x0b\x32\x18.WordBrief.Pronunciation\x12)\n\x07us_pron\x18\x04 \x01(\x0b\x32\x18.WordBrief.Pronunciation\x12.\n\x0f\x63hn_definitions\x18\x05 \x03(\x0b\x32\x15.WordBrief.Definition\x12.\n\x0f\x65ng_definitions\x18\x06 \x03(\x0b\x32\x15.WordBrief.Definition\x12\x0c\n\x04tags\x18\x07 \x03(\x08\x12\x1f\n\x05lemma\x18\x08 \x01(\x0b\x32\x10.WordBrief.Lemma\x1a(\n\rPronunciation\x12\n\n\x02ps\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x1a*\n\nDefinition\x12\x0b\n\x03pos\x18\x01 \x01(\t\x12\x0f\n\x07meaning\x18\x02 \x01(\t\x1a*\n\x05Lemma\x12\x0f\n\x07isLemma\x18\x01 \x01(\x08\x12\x10\n\x08relation\x18\x02 \x01(\t\"\xde\x02\n\nWordDetail\x12\x1e\n\nword_brief\x18\x01 \x01(\x0b\x32\n.WordBrief\x12\x0f\n\x07\x63ollins\x18\x02 \x01(\x05\x12\x0b\n\x03\x62nc\x18\x03 \x01(\x05\x12\x0b\n\x03\x66rq\x18\x04 \x01(\x05\x12\'\n\tsentences\x18\x05 \x03(\x0b\x32\x14.WordDetail.Sentence\x12+\n\x0b\x64\x65rivatives\x18\x06 \x03(\x0b\x32\x16.WordDetail.Derivative\x1a\x80\x01\n\x08Sentence\x12\x0b\n\x03\x65ng\x18\x01 \x01(\t\x12\x0b\n\x03\x63hn\x18\x02 \x01(\t\x12+\n\x06source\x18\x03 \x01(\x0e\x32\x1b.WordDetail.Sentence.Source\"-\n\x06Source\x12\n\n\x06ONLINE\x10\x00\x12\n\n\x06OXFORD\x10\x01\x12\x0b\n\x07\x43OLLINS\x10\x02\x1a,\n\nDerivative\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x10\n\x08relation\x18\x02 \x01(\tb\x06proto3')
+  serialized_pb=_b('\n\x0fWordProto.proto\"+\n\x08WordList\x12\x1f\n\x0bword_briefs\x18\x01 \x03(\x0b\x32\n.WordBrief\"\x95\x03\n\tWordBrief\x12\x0f\n\x07word_in\x18\x01 \x01(\t\x12\x10\n\x08word_out\x18\x02 \x01(\t\x12)\n\x07uk_pron\x18\x03 \x01(\x0b\x32\x18.WordBrief.Pronunciation\x12)\n\x07us_pron\x18\x04 \x01(\x0b\x32\x18.WordBrief.Pronunciation\x12.\n\x0f\x63hn_definitions\x18\x05 \x03(\x0b\x32\x15.WordBrief.Definition\x12.\n\x0f\x65ng_definitions\x18\x06 \x03(\x0b\x32\x15.WordBrief.Definition\x12\x0c\n\x04tags\x18\x07 \x03(\x08\x12\x1f\n\x05lemma\x18\x08 \x01(\x0b\x32\x10.WordBrief.Lemma\x1a(\n\rPronunciation\x12\n\n\x02ps\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x1a*\n\nDefinition\x12\x0b\n\x03pos\x18\x01 \x01(\t\x12\x0f\n\x07meaning\x18\x02 \x01(\t\x1a*\n\x05Lemma\x12\x0f\n\x07isLemma\x18\x01 \x01(\x08\x12\x10\n\x08relation\x18\x02 \x01(\t\"\xb1\x03\n\nWordDetail\x12\x1e\n\nword_brief\x18\x01 \x01(\x0b\x32\n.WordBrief\x12\x0f\n\x07\x63ollins\x18\x02 \x01(\x05\x12\x0b\n\x03\x62nc\x18\x03 \x01(\x05\x12\x0b\n\x03\x66rq\x18\x04 \x01(\x05\x12\x30\n\x0esentence_lists\x18\x05 \x03(\x0b\x32\x18.WordDetail.SentenceList\x12+\n\x0b\x64\x65rivatives\x18\x06 \x03(\x0b\x32\x16.WordDetail.Derivative\x1a\xca\x01\n\x0cSentenceList\x12/\n\x06source\x18\x01 \x01(\x0e\x32\x1f.WordDetail.SentenceList.Source\x12\x34\n\tsentences\x18\x02 \x03(\x0b\x32!.WordDetail.SentenceList.Sentence\x1a$\n\x08Sentence\x12\x0b\n\x03\x65ng\x18\x01 \x01(\t\x12\x0b\n\x03\x63hn\x18\x02 \x01(\t\"-\n\x06Source\x12\n\n\x06OXFORD\x10\x00\x12\x0b\n\x07\x43OLLINS\x10\x01\x12\n\n\x06ONLINE\x10\x02\x1a,\n\nDerivative\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x10\n\x08relation\x18\x02 \x01(\tb\x06proto3')
 )
 
 
 
-_WORDDETAIL_SENTENCE_SOURCE = _descriptor.EnumDescriptor(
+_WORDDETAIL_SENTENCELIST_SOURCE = _descriptor.EnumDescriptor(
   name='Source',
-  full_name='WordDetail.Sentence.Source',
+  full_name='WordDetail.SentenceList.Source',
   filename=None,
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='ONLINE', index=0, number=0,
+      name='OXFORD', index=0, number=0,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='OXFORD', index=1, number=1,
+      name='COLLINS', index=1, number=1,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='COLLINS', index=2, number=2,
+      name='ONLINE', index=2, number=2,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=732,
-  serialized_end=777,
+  serialized_start=815,
+  serialized_end=860,
 )
-_sym_db.RegisterEnumDescriptor(_WORDDETAIL_SENTENCE_SOURCE)
+_sym_db.RegisterEnumDescriptor(_WORDDETAIL_SENTENCELIST_SOURCE)
 
 
 _WORDLIST = _descriptor.Descriptor(
@@ -273,31 +273,24 @@ _WORDBRIEF = _descriptor.Descriptor(
 )
 
 
-_WORDDETAIL_SENTENCE = _descriptor.Descriptor(
+_WORDDETAIL_SENTENCELIST_SENTENCE = _descriptor.Descriptor(
   name='Sentence',
-  full_name='WordDetail.Sentence',
+  full_name='WordDetail.SentenceList.Sentence',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='eng', full_name='WordDetail.Sentence.eng', index=0,
+      name='eng', full_name='WordDetail.SentenceList.Sentence.eng', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='chn', full_name='WordDetail.Sentence.chn', index=1,
+      name='chn', full_name='WordDetail.SentenceList.Sentence.chn', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='source', full_name='WordDetail.Sentence.source', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
@@ -306,7 +299,6 @@ _WORDDETAIL_SENTENCE = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
-    _WORDDETAIL_SENTENCE_SOURCE,
   ],
   options=None,
   is_extendable=False,
@@ -314,8 +306,46 @@ _WORDDETAIL_SENTENCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=649,
-  serialized_end=777,
+  serialized_start=777,
+  serialized_end=813,
+)
+
+_WORDDETAIL_SENTENCELIST = _descriptor.Descriptor(
+  name='SentenceList',
+  full_name='WordDetail.SentenceList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='source', full_name='WordDetail.SentenceList.source', index=0,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='sentences', full_name='WordDetail.SentenceList.sentences', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_WORDDETAIL_SENTENCELIST_SENTENCE, ],
+  enum_types=[
+    _WORDDETAIL_SENTENCELIST_SOURCE,
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=658,
+  serialized_end=860,
 )
 
 _WORDDETAIL_DERIVATIVE = _descriptor.Descriptor(
@@ -351,8 +381,8 @@ _WORDDETAIL_DERIVATIVE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=779,
-  serialized_end=823,
+  serialized_start=862,
+  serialized_end=906,
 )
 
 _WORDDETAIL = _descriptor.Descriptor(
@@ -391,7 +421,7 @@ _WORDDETAIL = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='sentences', full_name='WordDetail.sentences', index=4,
+      name='sentence_lists', full_name='WordDetail.sentence_lists', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -407,7 +437,7 @@ _WORDDETAIL = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_WORDDETAIL_SENTENCE, _WORDDETAIL_DERIVATIVE, ],
+  nested_types=[_WORDDETAIL_SENTENCELIST, _WORDDETAIL_DERIVATIVE, ],
   enum_types=[
   ],
   options=None,
@@ -417,7 +447,7 @@ _WORDDETAIL = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=473,
-  serialized_end=823,
+  serialized_end=906,
 )
 
 _WORDLIST.fields_by_name['word_briefs'].message_type = _WORDBRIEF
@@ -429,12 +459,14 @@ _WORDBRIEF.fields_by_name['us_pron'].message_type = _WORDBRIEF_PRONUNCIATION
 _WORDBRIEF.fields_by_name['chn_definitions'].message_type = _WORDBRIEF_DEFINITION
 _WORDBRIEF.fields_by_name['eng_definitions'].message_type = _WORDBRIEF_DEFINITION
 _WORDBRIEF.fields_by_name['lemma'].message_type = _WORDBRIEF_LEMMA
-_WORDDETAIL_SENTENCE.fields_by_name['source'].enum_type = _WORDDETAIL_SENTENCE_SOURCE
-_WORDDETAIL_SENTENCE.containing_type = _WORDDETAIL
-_WORDDETAIL_SENTENCE_SOURCE.containing_type = _WORDDETAIL_SENTENCE
+_WORDDETAIL_SENTENCELIST_SENTENCE.containing_type = _WORDDETAIL_SENTENCELIST
+_WORDDETAIL_SENTENCELIST.fields_by_name['source'].enum_type = _WORDDETAIL_SENTENCELIST_SOURCE
+_WORDDETAIL_SENTENCELIST.fields_by_name['sentences'].message_type = _WORDDETAIL_SENTENCELIST_SENTENCE
+_WORDDETAIL_SENTENCELIST.containing_type = _WORDDETAIL
+_WORDDETAIL_SENTENCELIST_SOURCE.containing_type = _WORDDETAIL_SENTENCELIST
 _WORDDETAIL_DERIVATIVE.containing_type = _WORDDETAIL
 _WORDDETAIL.fields_by_name['word_brief'].message_type = _WORDBRIEF
-_WORDDETAIL.fields_by_name['sentences'].message_type = _WORDDETAIL_SENTENCE
+_WORDDETAIL.fields_by_name['sentence_lists'].message_type = _WORDDETAIL_SENTENCELIST
 _WORDDETAIL.fields_by_name['derivatives'].message_type = _WORDDETAIL_DERIVATIVE
 DESCRIPTOR.message_types_by_name['WordList'] = _WORDLIST
 DESCRIPTOR.message_types_by_name['WordBrief'] = _WORDBRIEF
@@ -481,10 +513,17 @@ _sym_db.RegisterMessage(WordBrief.Lemma)
 
 WordDetail = _reflection.GeneratedProtocolMessageType('WordDetail', (_message.Message,), dict(
 
-  Sentence = _reflection.GeneratedProtocolMessageType('Sentence', (_message.Message,), dict(
-    DESCRIPTOR = _WORDDETAIL_SENTENCE,
+  SentenceList = _reflection.GeneratedProtocolMessageType('SentenceList', (_message.Message,), dict(
+
+    Sentence = _reflection.GeneratedProtocolMessageType('Sentence', (_message.Message,), dict(
+      DESCRIPTOR = _WORDDETAIL_SENTENCELIST_SENTENCE,
+      __module__ = 'WordProto_pb2'
+      # @@protoc_insertion_point(class_scope:WordDetail.SentenceList.Sentence)
+      ))
+    ,
+    DESCRIPTOR = _WORDDETAIL_SENTENCELIST,
     __module__ = 'WordProto_pb2'
-    # @@protoc_insertion_point(class_scope:WordDetail.Sentence)
+    # @@protoc_insertion_point(class_scope:WordDetail.SentenceList)
     ))
   ,
 
@@ -499,7 +538,8 @@ WordDetail = _reflection.GeneratedProtocolMessageType('WordDetail', (_message.Me
   # @@protoc_insertion_point(class_scope:WordDetail)
   ))
 _sym_db.RegisterMessage(WordDetail)
-_sym_db.RegisterMessage(WordDetail.Sentence)
+_sym_db.RegisterMessage(WordDetail.SentenceList)
+_sym_db.RegisterMessage(WordDetail.SentenceList.Sentence)
 _sym_db.RegisterMessage(WordDetail.Derivative)
 
 
