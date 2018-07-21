@@ -79,8 +79,8 @@ class OperateDB(object):
 
     def select_detail(self, word):
         word = word.replace('\'', '\'\'').replace('%', '%%')
-        fields_list = ['collins', 'bnc', 'frq', 'oxford_detail',
-                       'collins_detail', 'net_detail', 'exchange']
+        fields_list = ['collins', 'bnc', 'frq', 'oxford_detail', 'cambridge_detail',
+                       'longman_detail', 'collins_detail', 'net_detail', 'exchange']
         fields = ', '.join(fields_list)
 
         for t in self.table:

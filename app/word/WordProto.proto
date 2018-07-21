@@ -59,8 +59,10 @@ message WordDetail {
         repeated Sentence sentences = 2; //sentence in this source
         enum Source {
             OXFORD = 0;
-            COLLINS = 1;
-            ONLINE = 2;
+            CAMBRIDGE = 1;
+            LONGMAN = 2;
+            COLLINS = 3;
+            ONLINE = 4;
         }
         message Sentence {
             string eng = 1; //eng sentence

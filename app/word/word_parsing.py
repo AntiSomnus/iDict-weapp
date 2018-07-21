@@ -114,6 +114,24 @@ class GetWordDetail(GetWordList):
                 sentence_list.sentences.extend(sentences)
                 word_detail.sentence_lists.extend([sentence_list])
 
+            if 'cambridge_detail' in data:
+                sentences = self.get_sentence(data['cambridge_detail'])
+                sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
+                             for s in sentences]
+                sentence_list = wp.WordDetail.SentenceList()
+                sentence_list.source = wp.WordDetail.SentenceList.CAMBRIDGE
+                sentence_list.sentences.extend(sentences)
+                word_detail.sentence_lists.extend([sentence_list])
+
+            if 'longman_detail' in data:
+                sentences = self.get_sentence(data['longman_detail'])
+                sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
+                             for s in sentences]
+                sentence_list = wp.WordDetail.SentenceList()
+                sentence_list.source = wp.WordDetail.SentenceList.LONGMAN
+                sentence_list.sentences.extend(sentences)
+                word_detail.sentence_lists.extend([sentence_list])
+
             if 'collins_detail' in data:
                 sentences = self.get_sentence(data['collins_detail'])
                 sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])

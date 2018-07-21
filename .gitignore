@@ -110,3 +110,4 @@ venv.bak/
 dict/
 db/
 my.ini
+conf.ini
