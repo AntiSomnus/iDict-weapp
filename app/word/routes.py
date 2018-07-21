@@ -54,7 +54,7 @@ class WordList(Resource):
                     content_type="application/json")
             return Response(word_list_proto.SerializeToString(),
                             mimetype='application/x-protobuf')
-        return Response(status=451)
+        return Response(status=251)
 
 
 class WordDetail(Resource):
@@ -80,7 +80,7 @@ class WordDetail(Resource):
                     content_type="application/json")
             return Response(word_detail_proto.SerializeToString(),
                             mimetype='application/x-protobuf')
-        return Response(status=450)
+        return Response(status=250)
 
 
 word_api.add_resource(WordList, '/word/list/')
