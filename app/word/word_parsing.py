@@ -150,15 +150,6 @@ class GetWordDetail(GetWordList):
                 sentence_list.sentences.extend(sentences)
                 word_detail.sentence_lists.extend([sentence_list])
 
-            if len(word_detail.sentence_lists) == 0:
-                sentences = sql.request_iciba(request_word)
-                sentences = [wp.WordDetail.SentenceList.Sentence(eng=eng, chn=chn)
-                             for eng, chn in sentences]
-                sentence_list = wp.WordDetail.SentenceList()
-                sentence_list.source = wp.WordDetail.SentenceList.ONLINE
-                sentence_list.sentences.extend(sentences)
-                word_detail.sentence_lists.extend([sentence_list])
-
             if 'derivative' in data:
                 derivative_list = [wp.WordDetail.Derivative(word=w, relation=r)
                                    for w, r in data['derivative'].items()]

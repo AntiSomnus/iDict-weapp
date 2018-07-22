@@ -120,35 +120,6 @@ class OperateDB(object):
         result = {'status': True, 'data': d}
         return result
 
-    def request_iciba(self, word):
-        params = {'w': word, 'key': '341DEFE6E5CA504E62A567082590D0BD'}
-        xml_bytes = requests.get(
-            'http://dict-co.iciba.com/api/dictionary.php', params=params).content
-        root = ET.fromstring(xml_bytes)
-        sentence_list = []
-        for sent in root.findall('sent'):
-            eng, chn = sent.getchildren()
-            eng = eng.text.strip()
-            chn = chn.text.strip()
-            sentence_list.append((eng, chn))
-        sentence = ['\n'.join([eng.replace('\'', '\'\''),
-                               chn.replace('\'', '\'\'')])
-                    for eng, chn in sentence_list]
-        sentence = '\r\n'.join(sentence)
-        sql = ('UPDATE word_mini '
-               'SET net_detail=\'{sentence}\' '
-               'WHERE word=\'{word}\'').format(sentence=sentence, word=word)
-        self.conn.execute(sql)
-        sql = ('UPDATE word_slim '
-               'SET net_detail=\'{sentence}\' '
-               'WHERE word=\'{word}\'').format(sentence=sentence, word=word)
-        self.conn.execute(sql)
-        sql = ('UPDATE word_entire '
-               'SET net_detail=\'{sentence}\' '
-               'WHERE word=\'{word}\'').format(sentence=sentence, word=word)
-        self.conn.execute(sql)
-        return sentence_list
-
     def get_exchange_str(self, exchange_list):
         if not any(exchange_list):
             return ''
