@@ -61,7 +61,7 @@ class OperateDB(object):
         if 'pron' in kwargs and kwargs['pron'] == True:
             kwargs['uk_pron'] = True
             kwargs['us_pron'] = True
-        count = kwargs['count'] if 'count' in kwargs else 1
+        count = kwargs['count']
         fields_list = ['word', 'chn_def']
         optional_fields = {'uk_pron': 'uk_pron',
                            'us_pron': 'us_pron',
@@ -117,6 +117,7 @@ class OperateDB(object):
         if data:
             findlemma = True
             word_in = word
+            word_out = data[2]
             exchange_str = self.get_exchange_str(data[3:])
         for t in self.table:
             sql = ('SELECT {fields} '
@@ -136,7 +137,7 @@ class OperateDB(object):
                     d[brief_fields[i]] = brief_data[i]
             if findlemma:
                 d['word_in'] = word_in
-                d['lemma'] = {'word': word, 'relation': exchange_str}
+                d['lemma'] = {'word': word_out, 'relation': exchange_str}
             result['brief'] = d
 
         detail_fields = ['collins', 'bnc', 'frq', 'oxford_detail',

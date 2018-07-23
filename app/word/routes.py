@@ -11,8 +11,6 @@ parser_word_brief = reqparse.RequestParser()
 parser_word_brief.add_argument(
     'word', type=str, help='The word for query', required=True)
 parser_word_brief.add_argument(
-    'count', type=int, help='how much to receive', default=10)
-parser_word_brief.add_argument(
     'tag', type=inputs.boolean, help='whether return tag', default=True)
 parser_word_brief.add_argument(
     'pron', type=inputs.boolean, help='whether return pronunciation', default=True)

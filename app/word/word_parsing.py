@@ -97,6 +97,7 @@ class GetWordDetail(GetWordBrief):
         if result['status'] == False:
             return False
         word_brief = self.process_brief(result['brief'])
+        word_brief.word_out = request_word
         word_detail = wp.WordDetail()
         word_detail.word_brief.MergeFrom(word_brief)
 
