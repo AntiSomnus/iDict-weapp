@@ -9,10 +9,61 @@ class OperateDB(object):
         self.conn = conn
         self.table = ('word_mini', 'word_slim', 'word_entire')
 
+    def select_brief(self, word, **kwargs):
+        word = word.replace('\'', '\'\'').replace('%', '%%')
+        kwargs = kwargs['kwargs']
+        if 'pron' in kwargs and kwargs['pron'] == True:
+            kwargs['uk_pron'] = True
+            kwargs['us_pron'] = True
+        fields_list = ['word', 'chn_def']
+        optional_fields = {'uk_pron': 'uk_pron',
+                           'us_pron': 'us_pron',
+                           'eng': 'eng_def',
+                           'tag': 'tag'}
+        for field in optional_fields.keys():
+            if field in kwargs and kwargs[field] == True:
+                fields_list.append(optional_fields[field])
+        fields = ', '.join(fields_list)
+        data = []
+        findlemma = False
+        sql = ('SELECT * '
+               'FROM exchange '
+               'WHERE word=\'{word}\'').format(word=word)
+        data = self.conn.execute(sql).fetchone()
+        if data:
+            findlemma = True
+            word_in = word
+            word_out = data[2]
+            exchange_str = self.get_exchange_str(data[3:])
+        for t in self.table:
+            list_sql = ('SELECT {fields} '
+                        'FROM {table} '
+                        'WHERE word=\'{word}\'').format(
+                            fields=fields, table=t, word=word)
+            data = self.conn.execute(list_sql).fetchone()
+            if data:
+                data = list(data)
+                break
+
+        result = {'status': False}
+        if len(data) == 0:
+            return result
+        result['status'] = True
+        d = {}
+        for i in range(len(fields_list)):
+            d['word_in'] = word
+            if data[i]:
+                d[fields_list[i]] = data[i]
+        if findlemma:
+            d['word_in'] = word_in
+            d['lemma'] = {'word': word_out, 'relation': exchange_str}
+        result['data'] = d
+        return result
+
     def select_list(self, word, **kwargs):
         word = word.replace('\'', '\'\'').replace('%', '%%')
         kwargs = kwargs['kwargs']
-        if 'pron' in kwargs:
+        if 'pron' in kwargs and kwargs['pron'] == True:
             kwargs['uk_pron'] = True
             kwargs['us_pron'] = True
         count = kwargs['count'] if 'count' in kwargs else 1
@@ -27,49 +78,27 @@ class OperateDB(object):
         fields = ', '.join(fields_list)
 
         data = []
-        findlemma = False
-        if count == 1:
-            sql = ('SELECT * '
-                   'FROM exchange '
-                   'WHERE word=\'{word}\'').format(word=word)
-            result = self.conn.execute(sql).fetchone()
-            if result:
-                findlemma = True
-                word_in = word
-                # word = result[2]
-                exchange_str = self.get_exchange_str(result[3:])
-            for t in self.table:
-                list_sql = ('SELECT {fields} '
-                            'FROM {table} '
-                            'WHERE word=\'{word}\'').format(
-                                fields=fields, table=t, word=word)
-                result = self.conn.execute(list_sql).fetchone()
-                if result:
-                    data.append(result)
-                    break
-        else:
-            for t in self.table:
-                list_sql = ('SELECT {fields} '
-                            'FROM {table} '
-                            'WHERE word LIKE \'{word}%%\' AND is_lemma=1 '
-                            'ORDER BY base '
-                            'LIMIT {count}').format(
-                                fields=fields, table=t, word=word, count=count)
-                result = self.conn.execute(list_sql).fetchall()
-                count -= len(result)
-                data.extend(result)
-                if count == 0:
-                    break
+        for t in self.table:
+            sql = ('SELECT {fields} '
+                   'FROM {table} '
+                   'WHERE word LIKE \'{word}%%\' '
+                   'ORDER BY base '
+                   'LIMIT {count}').format(
+                       fields=fields, table=t, word=word, count=count)
+            temp_data = self.conn.execute(sql).fetchall()
+            count -= len(temp_data)
+            data.extend(temp_data)
+            if count == 0:
+                break
 
+        result = {'status': False}
         if len(data) == 0:
-            return {'status': False}
-        result = {'status': True, 'data': []}
+            return result
+        result['status'] = True
+        result['data'] = []
         for item in data:
             item = list(item)
             d = {}
-            if findlemma:
-                d['word_in'] = word_in
-                d['lemma'] = {'word': word, 'relation': exchange_str}
             for i in range(len(fields_list)):
                 d['word_in'] = word
                 if item[i]:
@@ -79,17 +108,52 @@ class OperateDB(object):
 
     def select_detail(self, word):
         word = word.replace('\'', '\'\'').replace('%', '%%')
-        fields_list = ['collins', 'bnc', 'frq', 'oxford_detail', 'cambridge_detail',
-                       'longman_detail', 'collins_detail', 'net_detail', 'exchange']
-        fields = ', '.join(fields_list)
+        brief_fields = ['word', 'chn_def', 'uk_pron',
+                        'us_pron', 'eng_def', 'tag']
+        fields = ', '.join(brief_fields)
+        brief_data = []
+        findlemma = False
+        sql = ('SELECT * '
+               'FROM exchange '
+               'WHERE word=\'{word}\'').format(word=word)
+        data = self.conn.execute(sql).fetchone()
+        if data:
+            findlemma = True
+            word_in = word
+            exchange_str = self.get_exchange_str(data[3:])
+        for t in self.table:
+            sql = ('SELECT {fields} '
+                   'FROM {table} '
+                   'WHERE word=\'{word}\'').format(
+                       fields=fields, table=t, word=word)
+            data = self.conn.execute(sql).fetchone()
+            if data:
+                brief_data = list(data)
+                break
+        result = {'status': False}
+        if len(brief_data) != 0:
+            result['status'] = True
+            d = {}
+            for i in range(len(brief_fields)):
+                d['word_in'] = word
+                if brief_data[i]:
+                    d[brief_fields[i]] = brief_data[i]
+            if findlemma:
+                d['word_in'] = word_in
+                d['lemma'] = {'word': word, 'relation': exchange_str}
+            result['brief'] = d
+
+        detail_fields = ['collins', 'bnc', 'frq', 'oxford_detail', 'cambridge_detail',
+                         'longman_detail', 'collins_detail', 'net_detail', 'exchange']
+        fields = ', '.join(detail_fields)
 
         for t in self.table:
             detail_sql = ('SELECT {fields} '
                           'FROM {table} '
-                          'WHERE word =\'{word}\'').format(fields=fields, table=t, word=word)
-            result = self.conn.execute(detail_sql).fetchone()
-            if result is not None:
-                data = result
+                          'WHERE word =\'{word}\'').format(
+                              fields=fields, table=t, word=word)
+            data = self.conn.execute(detail_sql).fetchone()
+            if data is not None:
                 break
 
         exchange = data[-1]
@@ -110,14 +174,14 @@ class OperateDB(object):
                     [form in total_form for form in l])
 
         if len(data) == 0:
-            return {'status': False}
+            return result
         d = {}
         if derivative_dict != []:
             d['derivative'] = derivative_dict
-        for i in range(len(fields_list[:-1])):
+        for i in range(len(detail_fields[:-1])):
             if data[i]:
-                d[fields_list[i]] = data[i]
-        result = {'status': True, 'data': d}
+                d[detail_fields[i]] = data[i]
+        result['data'] = d
         return result
 
     def get_exchange_str(self, exchange_list):

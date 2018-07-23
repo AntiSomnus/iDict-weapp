@@ -35,8 +35,8 @@ message WordBrief {
 
     message Lemma {
         //required if findLemma == True
-        bool isLemma = 1; //whether `word_in` is the lemma
-        string relation = 2; //relation between `word_in` and `word_out`(lemma) if isLemma == True
+        string lemma = 1; //the lemma of `word_in`
+        string relation = 2; //relation between `word_in` and `lemma`
     }
 
 
