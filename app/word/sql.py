@@ -139,8 +139,9 @@ class OperateDB(object):
                 d['lemma'] = {'word': word, 'relation': exchange_str}
             result['brief'] = d
 
-        detail_fields = ['collins', 'bnc', 'frq', 'oxford_detail', 'cambridge_detail',
-                         'longman_detail', 'collins_detail', 'net_detail', 'exchange']
+        detail_fields = ['collins', 'bnc', 'frq', 'oxford_detail',
+                         'cambridge_detail', 'longman_detail',
+                         'collins_detail', 'net_detail', 'exchange']
         fields = ', '.join(detail_fields)
 
         for t in self.table:
@@ -185,4 +186,5 @@ class OperateDB(object):
             return ''
         l = ["过去式、", "过去分词、", "现在分词、", "第三人称单数、",
              "比较级、", "最高级、", "名词复数、"]
-        return ''.join(list(map(lambda x, y: x if y else '', l, exchange_list)))[:-1]
+        return ''.join(
+            list(map(lambda x, y: x if y else '', l, exchange_list)))[:-1]
