@@ -1,9 +1,3 @@
-import json
-import xml.etree.cElementTree as ET
-
-import requests
-
-
 class OperateDB(object):
     def __init__(self, conn):
         self.conn = conn
@@ -24,6 +18,8 @@ class OperateDB(object):
             if field in kwargs and kwargs[field] == True:
                 fields_list.append(optional_fields[field])
         fields = ', '.join(fields_list)
+
+        result = {'status': False}
         data = []
         findlemma = False
         sql = ('SELECT * '
@@ -44,10 +40,9 @@ class OperateDB(object):
             if data:
                 data = list(data)
                 break
-
-        result = {'status': False}
-        if len(data) == 0:
+        else:
             return result
+
         result['status'] = True
         d = {}
         for i in range(len(fields_list)):
@@ -77,6 +72,7 @@ class OperateDB(object):
                 fields_list.append(optional_fields[field])
         fields = ', '.join(fields_list)
 
+        result = {'status': False}
         data = []
         for t in self.table:
             sql = ('SELECT {fields} '
@@ -90,10 +86,9 @@ class OperateDB(object):
             data.extend(temp_data)
             if count == 0:
                 break
-
-        result = {'status': False}
-        if len(data) == 0:
+        else:
             return result
+
         result['status'] = True
         result['data'] = []
         for item in data:
@@ -111,6 +106,8 @@ class OperateDB(object):
         brief_fields = ['word', 'chn_def', 'uk_pron',
                         'us_pron', 'eng_def', 'tag']
         fields = ', '.join(brief_fields)
+
+        result = {'status': False}
         brief_data = []
         findlemma = False
         sql = ('SELECT * '
@@ -130,7 +127,6 @@ class OperateDB(object):
             if data:
                 brief_data = list(data)
                 break
-        result = {'status': False}
         if len(brief_data) != 0:
             result['status'] = True
             d = {}
@@ -155,6 +151,8 @@ class OperateDB(object):
             data = self.conn.execute(detail_sql).fetchone()
             if data is not None:
                 break
+        else:
+            return result
 
         exchange = data[-1]
         derivative_dict = []
@@ -173,8 +171,6 @@ class OperateDB(object):
                 derivative_dict[derivative] = self.get_exchange_str(
                     [form in total_form for form in l])
 
-        if len(data) == 0:
-            return result
         d = {}
         if derivative_dict != []:
             d['derivative'] = derivative_dict

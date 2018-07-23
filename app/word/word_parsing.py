@@ -1,12 +1,11 @@
 import re
-from werkzeug.exceptions import BadRequest
 
-from .sql import OperateDB
 from . import WordProto_pb2 as wp
-
 from .. import conn
+from .sql import OperateDB
 
 sql = OperateDB(conn)
+
 
 class GetWordBrief(object):
     def get_brief(self, request_word, **kwargs):
@@ -21,13 +20,12 @@ class GetWordBrief(object):
         word_brief.word_in = data['word_in']
         word_brief.word_out = data['word']
 
-        word_lemma = wp.WordBrief.Lemma()
         if 'lemma' in data:
+            word_lemma = wp.WordBrief.Lemma()
             word_lemma.lemma = data['lemma']['word']
             word_lemma.relation = data['lemma']['relation']
             word_brief.word_out = data['lemma']['word']
-            word_brief.word_in = data['word_in']
-        word_brief.lemma.MergeFrom(word_lemma)
+            word_brief.lemma.MergeFrom(word_lemma)
 
         if 'uk_pron' in data:
             uk_pron = wp.WordBrief.Pronunciation()
@@ -47,7 +45,8 @@ class GetWordBrief(object):
                     word_eng_def.meaning = eng_def.strip()
                 else:
                     word_eng_def.pos = pos_meaning.group()[:-1]
-                    word_eng_def.meaning = eng_def[len(word_eng_def.pos):].strip()
+                    word_eng_def.meaning = eng_def[
+                        len(word_eng_def.pos):].strip()
                 word_brief.eng_definitions.extend([word_eng_def])
         if 'chn_def' in data:
             chn_defs = data['chn_def']
@@ -58,7 +57,8 @@ class GetWordBrief(object):
                     word_chn_def.meaning = chn_def.strip()
                 else:
                     word_chn_def.pos = pos_meaning.group()[:-1]
-                    word_chn_def.meaning = chn_def[len(word_chn_def.pos):].strip()
+                    word_chn_def.meaning = chn_def[
+                        len(word_chn_def.pos):].strip()
                 word_brief.chn_definitions.extend([word_chn_def])
 
         if 'tag' in data:
@@ -75,6 +75,7 @@ class GetWordBrief(object):
             word_brief.tags.extend(tag_list)
 
         return word_brief
+
 
 class GetWordList(GetWordBrief):
     def get_list(self, request_word, **kwargs):
@@ -111,7 +112,7 @@ class GetWordDetail(GetWordBrief):
         if 'oxford_detail' in data:
             sentences = self.get_sentence(data['oxford_detail'])
             sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
-                            for s in sentences]
+                         for s in sentences]
             sentence_list = wp.WordDetail.SentenceList()
             sentence_list.source = wp.WordDetail.SentenceList.OXFORD
             sentence_list.sentences.extend(sentences)
@@ -120,7 +121,7 @@ class GetWordDetail(GetWordBrief):
         if 'cambridge_detail' in data:
             sentences = self.get_sentence(data['cambridge_detail'])
             sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
-                            for s in sentences]
+                         for s in sentences]
             sentence_list = wp.WordDetail.SentenceList()
             sentence_list.source = wp.WordDetail.SentenceList.CAMBRIDGE
             sentence_list.sentences.extend(sentences)
@@ -129,7 +130,7 @@ class GetWordDetail(GetWordBrief):
         if 'longman_detail' in data:
             sentences = self.get_sentence(data['longman_detail'])
             sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
-                            for s in sentences]
+                         for s in sentences]
             sentence_list = wp.WordDetail.SentenceList()
             sentence_list.source = wp.WordDetail.SentenceList.LONGMAN
             sentence_list.sentences.extend(sentences)
@@ -138,7 +139,7 @@ class GetWordDetail(GetWordBrief):
         if 'collins_detail' in data:
             sentences = self.get_sentence(data['collins_detail'])
             sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
-                            for s in sentences]
+                         for s in sentences]
             sentence_list = wp.WordDetail.SentenceList()
             sentence_list.source = wp.WordDetail.SentenceList.COLLINS
             sentence_list.sentences.extend(sentences)
@@ -147,7 +148,7 @@ class GetWordDetail(GetWordBrief):
         if 'net_detail' in data:
             sentences = self.get_sentence(data['net_detail'])
             sentences = [wp.WordDetail.SentenceList.Sentence(eng=s[0], chn=s[1])
-                            for s in sentences]
+                         for s in sentences]
             sentence_list = wp.WordDetail.SentenceList()
             sentence_list.source = wp.WordDetail.SentenceList.ONLINE
             sentence_list.sentences.extend(sentences)
@@ -156,7 +157,7 @@ class GetWordDetail(GetWordBrief):
         if len(word_detail.sentence_lists) == 0:
             sentences = sql.request_iciba(request_word)
             sentences = [wp.WordDetail.SentenceList.Sentence(eng=eng, chn=chn)
-                            for eng, chn in sentences]
+                         for eng, chn in sentences]
             sentence_list = wp.WordDetail.SentenceList()
             sentence_list.source = wp.WordDetail.SentenceList.ONLINE
             sentence_list.sentences.extend(sentences)
@@ -164,7 +165,7 @@ class GetWordDetail(GetWordBrief):
 
         if 'derivative' in data:
             derivative_list = [wp.WordDetail.Derivative(word=w, relation=r)
-                                for w, r in data['derivative'].items()]
+                               for w, r in data['derivative'].items()]
             word_detail.derivatives.extend(derivative_list)
         return word_detail
 

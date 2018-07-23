@@ -47,6 +47,7 @@ parser_word_detail.add_argument(
 parser_word_detail.add_argument(
     'indent', type=int, help='json incident', default=4)
 
+
 class WordBrief(Resource):
     def __init__(self):
         self.get_word_brief = GetWordBrief()
@@ -62,12 +63,13 @@ class WordBrief(Resource):
                 # print(MessageToDict(word_breif_proto))
                 return Response(
                     json.dumps(MessageToDict(word_brief_proto), indent=indent,
-                            ensure_ascii=False,
-                            sort_keys=True).encode('utf-8').decode(),
+                               ensure_ascii=False,
+                               sort_keys=True).encode('utf-8').decode(),
                     content_type="application/json")
             return Response(word_brief_proto.SerializeToString(),
                             mimetype='application/x-protobuf')
-        return Response(status=251)
+        return Response(status=250)
+
 
 class WordList(Resource):
     def __init__(self):
@@ -84,8 +86,8 @@ class WordList(Resource):
                 # print(MessageToDict(word_list_proto))
                 return Response(
                     json.dumps(MessageToDict(word_list_proto), indent=indent,
-                            ensure_ascii=False,
-                            sort_keys=True).encode('utf-8').decode(),
+                               ensure_ascii=False,
+                               sort_keys=True).encode('utf-8').decode(),
                     content_type="application/json")
             return Response(word_list_proto.SerializeToString(),
                             mimetype='application/x-protobuf')
@@ -107,12 +109,12 @@ class WordDetail(Resource):
                 # print(MessageToDict(word_detail_proto))
                 return Response(
                     json.dumps(MessageToDict(word_detail_proto), indent=indent,
-                            ensure_ascii=False,
-                            sort_keys=True).encode('utf-8').decode(),
+                               ensure_ascii=False,
+                               sort_keys=True).encode('utf-8').decode(),
                     content_type="application/json")
             return Response(word_detail_proto.SerializeToString(),
                             mimetype='application/x-protobuf')
-        return Response(status=250)
+        return Response(status=252)
 
 
 word_api.add_resource(WordBrief, '/word/brief/')
