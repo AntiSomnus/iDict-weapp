@@ -29,7 +29,7 @@ class OperateDB(object):
         if data:
             findlemma = True
             word_in = word
-            word_out = data[2]
+            word = data[2]
             exchange_str = self.get_exchange_str(data[3:])
         for t in self.table:
             list_sql = ('SELECT {fields} '
@@ -51,7 +51,7 @@ class OperateDB(object):
                 d[fields_list[i]] = data[i]
         if findlemma:
             d['word_in'] = word_in
-            d['lemma'] = {'word': word_out, 'relation': exchange_str}
+            d['lemma'] = {'word': word, 'relation': exchange_str}
         result['data'] = d
         return result
 
