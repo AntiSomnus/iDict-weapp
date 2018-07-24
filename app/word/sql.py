@@ -77,7 +77,18 @@ class OperateDB(object):
         for t in self.table:
             sql = ('SELECT {fields} '
                    'FROM {table} '
-                   'WHERE word LIKE \'{word}%%\' '
+                   'WHERE word=\'{word}\' ').format(
+                       fields=fields, table=t, word=word)
+            temp_data = self.conn.execute(sql).fetchone()
+            if temp_data:
+                data.append(temp_data)
+                count -= 1
+                break
+
+        for t in self.table:
+            sql = ('SELECT {fields} '
+                   'FROM {table} '
+                   'WHERE word LIKE \'{word}%%\' AND word!=\'{word}\' '
                    'ORDER BY base '
                    'LIMIT {count}').format(
                        fields=fields, table=t, word=word, count=count)
@@ -87,7 +98,8 @@ class OperateDB(object):
             if count == 0:
                 break
         else:
-            return result
+            if len(data) == 0:
+                return result
 
         result['status'] = True
         result['data'] = []
