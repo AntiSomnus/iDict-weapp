@@ -6,7 +6,7 @@ class OperateDB(object):
     def select_brief(self, word, **kwargs):
         word = word.replace('\'', '\'\'').replace('%', '%%')
         kwargs = kwargs['kwargs']
-        if 'pron' in kwargs and kwargs['pron'] == True:
+        if kwargs['pron'] == True:
             kwargs['uk_pron'] = True
             kwargs['us_pron'] = True
         fields_list = ['word', 'chn_def']
@@ -58,7 +58,7 @@ class OperateDB(object):
     def select_list(self, word, **kwargs):
         word = word.replace('\'', '\'\'').replace('%', '%%')
         kwargs = kwargs['kwargs']
-        if 'pron' in kwargs and kwargs['pron'] == True:
+        if kwargs['pron'] == True:
             kwargs['uk_pron'] = True
             kwargs['us_pron'] = True
         count = kwargs['count']
