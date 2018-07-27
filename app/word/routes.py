@@ -45,17 +45,18 @@ parser_word_detail.add_argument(
 parser_word_detail.add_argument(
     'indent', type=int, help='json incident', default=4)
 
+get_word_brief = GetWordBrief()
+get_word_list = GetWordList()
+get_word_detail = GetWordDetail()
+
 
 class WordBrief(Resource):
-    def __init__(self):
-        self.get_word_brief = GetWordBrief()
-
     def get(self):
         args = parser_word_brief.parse_args()
         word = args['word']
         is_json = args['json']
         indent = args['indent']
-        word_brief_proto = self.get_word_brief.get_brief(word, kwargs=args)
+        word_brief_proto = get_word_brief.get_brief(word, kwargs=args)
         if word_brief_proto:
             if is_json:
                 # print(MessageToDict(word_breif_proto))
@@ -70,15 +71,12 @@ class WordBrief(Resource):
 
 
 class WordList(Resource):
-    def __init__(self):
-        self.get_word_list = GetWordList()
-
     def get(self):
         args = parser_word_list.parse_args()
         word = args['word']
         is_json = args['json']
         indent = args['indent']
-        word_list_proto = self.get_word_list.get_list(word, kwargs=args)
+        word_list_proto = get_word_list.get_list(word, kwargs=args)
         if word_list_proto:
             if is_json:
                 # print(MessageToDict(word_list_proto))
@@ -93,15 +91,12 @@ class WordList(Resource):
 
 
 class WordDetail(Resource):
-    def __init__(self):
-        self.get_word_detail = GetWordDetail()
-
     def get(self):
         args = parser_word_detail.parse_args()
         word = args['word']
         is_json = args['json']
         indent = args['indent']
-        word_detail_proto = self.get_word_detail.get_detail(word)
+        word_detail_proto = get_word_detail.get_detail(word)
         if word_detail_proto:
             if is_json:
                 # print(MessageToDict(word_detail_proto))

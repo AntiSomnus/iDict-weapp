@@ -10,14 +10,13 @@ parser_support.add_argument(
 parser_support.add_argument(
     'details', type=str, help='bug description', required=True)
 
+bug_reporter = BugReporter()
+
 
 class Reporter(Resource):
-    def __init__(self):
-        self.bug_reporter = BugReporter()
-
     def post(self):
         args = parser_support.parse_args()
-        self.bug_reporter.report(args)
+        bug_reporter.report(args)
         return Response(status=200)
 
 
