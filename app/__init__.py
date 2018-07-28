@@ -26,11 +26,9 @@ def create_app():
 
     from .article import article_blueprint
     from .word import word_blueprint
-    from .spell import spell_blueprint
     from .support import support_blueprint
     app.register_blueprint(article_blueprint)
     app.register_blueprint(word_blueprint)
-    app.register_blueprint(spell_blueprint)
     app.register_blueprint(support_blueprint)
 
     return app
