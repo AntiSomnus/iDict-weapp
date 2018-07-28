@@ -82,10 +82,20 @@ class GetWordBrief(object):
 class GetWordList(GetWordBrief):
     def get_list(self, request_word, **kwargs):
         word_list = wp.WordList()
+        spelling = sql.candidates(request_word)
+        flag = False
+        if spelling != {}:
+            flag = True
+            for item in spelling:
+                word_brief = wp.WordBrief()
+                word_brief.word_out = item
+                word_list.word_suggestions.extend([word_brief])
         result = sql.select_list(request_word, **kwargs)
         if result['status']:
+            flag = True
             for data in result['data']:
                 word_list.word_briefs.extend([self.process_brief(data)])
+        if flag:
             return word_list
         else:
             return False

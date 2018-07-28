@@ -103,7 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# IDEs' files and Editorss files
+# IDEs' files and Editors' files
 .vscode/
 
 # Others

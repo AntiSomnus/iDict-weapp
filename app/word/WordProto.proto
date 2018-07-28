@@ -5,6 +5,7 @@ syntax = "proto3";
 */
 message WordList {
     repeated WordBrief word_briefs = 1; //list of WordBrief entities
+    repeated WordBrief word_suggestions = 2; //list of suggestions
 }
 /**
  * WordBrief
@@ -77,6 +78,5 @@ message WordDetail {
 
     }
 }
-
 
 
