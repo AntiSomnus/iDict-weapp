@@ -22,7 +22,7 @@ A better English to Chinese Dictionary in Weapp.
   All the sentence examples are selected from famous dictionaries for the best reference.
   -  **OALD** _(Oxford Advanced Learner's Dictionary)_
   -  **CALD** _(Cambridge Advanced Learner's Dictionary)_
-  -  **LDCE** _(Longman Dictionary of Contemporary English)_
+  -  **LDOCE** _(Longman Dictionary of Contemporary English)_
   -  **CLED** _(Collins Learner's English-Chinese Dictionary)_
 
 ## Acknowledgement
