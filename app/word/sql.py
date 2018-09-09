@@ -1,3 +1,9 @@
+from weighted_levenshtein import lev
+
+from . import keyboard
+import numpy as np
+
+
 class OperateDB(object):
     def __init__(self, conn):
         self.conn = conn
@@ -5,6 +11,15 @@ class OperateDB(object):
         sql = ('SELECT word, base FROM word_mini')
         data = self.conn.execute(sql).fetchall()
         self.spelling = {item[0]: item[1] for item in data}
+        self.substitute_costs = np.ones((256, 256), dtype=np.float64)
+        self.insert_costs = np.full(256, 2.4)
+        self.delete_costs = np.full(256, 3.0)
+
+        letters = 'abcdefghijklmnopqrstuvwxyz'
+        for letter in letters:
+            for letter_second in letters:
+                self.substitute_costs[ord(letter), ord(letter_second)] = \
+                    keyboard.euclideanKeyboardDistance(letter, letter_second)
 
     # corrector
     def correction(self, word):
@@ -18,7 +33,14 @@ class OperateDB(object):
         candidates = {**self.known([word]),
                       **self.known(self.edits1(word)),
                       **self.known(self.edits2(word))}
-        return sorted(candidates, key=candidates.get, reverse=False)
+        l = []
+        for candidate in candidates:
+            l.append((word, candidate, candidates[candidate], lev(word.lower(), candidate.lower(),
+                                                                  substitute_costs=self.substitute_costs,
+                                                                  insert_costs=self.insert_costs,
+                                                                  delete_costs=self.delete_costs)))
+        l.sort(key=lambda x: (x[-1], x[-2]))
+        return [k[1] for k in l[:10]]
 
     def known(self, words):
         return {w: self.spelling[w] for w in words if w in self.spelling.keys()}
@@ -68,7 +90,7 @@ class OperateDB(object):
             list_sql = ('SELECT {fields} '
                         'FROM {table} '
                         'WHERE word=\'{word}\'').format(
-                            fields=fields, table=t, word=word)
+                fields=fields, table=t, word=word)
             data = self.conn.execute(list_sql).fetchone()
             if data:
                 data = list(data)
@@ -112,7 +134,7 @@ class OperateDB(object):
             sql = ('SELECT {fields} '
                    'FROM {table} '
                    'WHERE word=\'{word}\' ').format(
-                       fields=fields, table=t, word=word)
+                fields=fields, table=t, word=word)
             temp_data = self.conn.execute(sql).fetchone()
             if temp_data:
                 data.append(temp_data)
@@ -125,7 +147,7 @@ class OperateDB(object):
                    'WHERE word LIKE \'{word}%%\' AND word!=\'{word}\' '
                    'ORDER BY base '
                    'LIMIT {count}').format(
-                       fields=fields, table=t, word=word, count=count)
+                fields=fields, table=t, word=word, count=count)
             temp_data = self.conn.execute(sql).fetchall()
             count -= len(temp_data)
             data.extend(temp_data)
@@ -170,7 +192,7 @@ class OperateDB(object):
             sql = ('SELECT {fields} '
                    'FROM {table} '
                    'WHERE word=\'{word}\'').format(
-                       fields=fields, table=t, word=word)
+                fields=fields, table=t, word=word)
             data = self.conn.execute(sql).fetchone()
             if data:
                 brief_data = list(data)
@@ -196,7 +218,7 @@ class OperateDB(object):
             detail_sql = ('SELECT {fields} '
                           'FROM {table} '
                           'WHERE word =\'{word}\'').format(
-                              fields=fields, table=t, word=word)
+                fields=fields, table=t, word=word)
             data = self.conn.execute(detail_sql).fetchone()
             if data is not None:
                 break

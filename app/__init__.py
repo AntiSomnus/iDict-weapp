@@ -14,7 +14,7 @@ host = conf.get('ireading-db', 'host')
 port = conf.get('ireading-db', 'port')
 db = conf.get('ireading-db', 'db')
 
-engine_str = 'mysql+pymysql://{user}:{passwd}@{host}:{port}/{db}'.format(
+engine_str = 'mysql+pymysql://{user}:{passwd}@{host}:{port}/{db}?autocommit=true'.format(
     user=user, passwd=passwd, host=host, port=port, db=db)
 engine = sqlalchemy.create_engine(engine_str, echo=False)
 conn = engine.connect()
