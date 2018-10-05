@@ -1,4 +1,3 @@
-ents.txt 
 aniso8601==3.0.2
 asn1crypto==0.24.0
 certifi==2018.8.24
