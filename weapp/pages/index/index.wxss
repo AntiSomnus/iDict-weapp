@@ -1,0 +1,123 @@
+/**index.wxss**/
+
+.fixed-top-after {
+  height: 76rpx;
+  position: fixed;
+  width: 100%;
+  padding-bottom: 10rpx;
+  z-index: 999;
+}
+
+.fixed-top-before {
+  height: 76rpx;
+  position: fixed;
+  padding-bottom: 10rpx;
+  width: 100%;
+}
+
+.search-outside {
+  margin: 0, auto;
+}
+
+.search-inside {
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  position: relative;
+}
+
+.hide-tab {
+  visibility: hidden;
+}
+
+.show-tab {
+  visibility: visible;
+}
+
+.search-button::after {
+  border: none;
+}
+
+.search-input {
+  border: lightgrey;
+  border-style: solid;
+  border-width: 2rpx;
+  padding-left: 30rpx;
+  padding-right: 60rpx;
+  font-size: 30rpx;
+  border-radius: 70rpx;
+  height: 75rpx;
+}
+
+.icon-delete {
+  position: absolute;
+  height: 75rpx;
+  top: 0rpx;
+  right: 50rpx;
+  display: flex;
+  align-items: center;
+}
+
+.item-word-container {
+  border-bottom: 2rpx solid #eee;
+  padding: 20rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+
+.item-word-tags-container {
+  display: flex;
+  align-items: center;
+}
+
+.item-word {
+  display: flex;
+  font-size: 28rpx;
+  margin-right: 20rpx;
+}
+
+.item-meaning {
+  display: flex;
+  font-size: 26rpx;
+  color: #80848f;
+}
+
+.container-detail {
+  background: #f5f5f5;
+  height: 100%;
+}
+
+.view-show {
+  display: block;
+}
+
+.view-padding-horizonal {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.view-hide {
+  display: none;
+}
+
+.i-cell-desc {
+  font-size: 24px;
+}
+
+.word-suggestion-containier {
+  border-bottom: 2rpx solid #eee;
+  padding: 20rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40rpx;
+}
+.clear-history{
+  margin-top:40rpx;
+  padding:10rpx;
+  text-align: center;
+  background: #f5f5f5;
+  color:#bdbdbd;
+  font-size:30rpx;
+}

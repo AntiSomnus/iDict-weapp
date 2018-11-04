@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "i-toast": "../../dist/toast/index",
+    "i-tabs": "../../dist/tabs/index",
+    "i-tab": "../../dist/tab/index",
+    "i-tag": "../../dist/tag/index",
+    "i-icon": "../../dist/icon/index",
+    "i-drawer": "../../dist/drawer/index"
+  }
+}
