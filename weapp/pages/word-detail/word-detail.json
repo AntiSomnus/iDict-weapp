@@ -1,10 +1,12 @@
 {
-    "usingComponents": {
-        "i-toast": "../../dist/toast/index",
-        "i-button": "../../dist/button/index",
-        "i-rate": "../../dist/rate/index",
-        "i-icon": "../../dist/icon/index",
-        "i-tag": "../../dist/tag/index",
-        "i-spin": "../../dist/spin/index"
-    }
+  "usingComponents": {
+    "i-toast": "../../dist/toast/index",
+    "i-button": "../../dist/button/index",
+    "i-rate": "../../dist/rate/index",
+    "i-icon": "../../dist/icon/index",
+    "i-tag": "../../dist/tag/index",
+    "i-spin": "../../dist/spin/index",
+    "i-collapse": "../../dist/collapse/index",
+    "i-collapse-item": "../../dist/collapse-item/index"
+  }
 }

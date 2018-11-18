@@ -35,6 +35,7 @@ function modifiedStrToList(modifiedStr) {
 Page({
   data: {
     detailedWord: null,
+    sentenceOnline: null,
     maxSentNumber: [10, 10, 10, 10, 10],
     feedbackSectionArray: [
       "内容有误",
@@ -101,7 +102,7 @@ Page({
             engDefList: engDefList,
             sourceArray: sourceArray
           })
-          app.updateHistory(wordDetail.wordBrief,param.isHistoryShow)
+          app.updateHistory(wordDetail.wordBrief, param.isHistoryShow)
         } else { //error
           defaultFeedbackWord = param.word
           wordNotCollected = true;
@@ -112,6 +113,40 @@ Page({
               msg: "抱歉，暂无该单词释义"
             }
           })
+        }
+
+      }
+    });
+    wx.request({
+      url: baseUrl+"word/example",
+      data: {
+        'word': param.word,
+      },
+      header: {
+        "Content-Type": "application/text"
+      },
+      success: function(res) {
+        if (res.statusCode === 200) {
+          if (res.data.result.sentences) {
+            let each,engStr,origSent
+            let engOnlineSents = []
+            for (var i = 0; i < res.data.result.sentences.length; i++) {
+              each = res.data.result.sentences[i]
+              origSent = each.sentence.replace(new RegExp("\u2019", "gm"), "'")
+              console.log(origSent)
+              console.log(each.sentence)
+              engStr = replaceAll(origSent, ' ', '&nbsp;');
+              engOnlineSents.push({
+                origSent: origSent,
+                sentence: modifiedStrToList(engStr),
+                source: each.volume.corpus.name,
+                datePublished: new Date(each.volume.datePublished).toLocaleDateString()
+              });
+            }
+            that.setData({
+              sentenceOnline: engOnlineSents
+            })
+          }
         }
 
       }

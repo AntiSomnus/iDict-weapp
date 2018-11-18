@@ -17,11 +17,11 @@
     </view>
     <view class='word-pron'>
       <view style='margin-right:10px' wx:if="{{detailedWord.wordBrief.usPron}}">
-        <i-icon type="systemprompt" size="44" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+detailedWord.wordBrief.wordOut+'&type=2'}}" catchtap='audioClicked' />
+        <i-icon type="systemprompt" size="22" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+detailedWord.wordBrief.wordOut+'&type=2'}}" catchtap='audioClicked' />
         <text class="word-ps">美 /{{detailedWord.wordBrief.usPron.ps}}/</text>
       </view>
       <view wx:if="{{detailedWord.wordBrief.ukPron}}">
-        <i-icon type="systemprompt" size="44" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+detailedWord.wordBrief.wordOut+'&type=1'}}" catchtap='audioClicked' />
+        <i-icon type="systemprompt" size="22" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+detailedWord.wordBrief.wordOut+'&type=1'}}" catchtap='audioClicked' />
         <text class="word-ps">英 /{{detailedWord.wordBrief.ukPron.ps}}/</text>
       </view>
     </view>
@@ -89,7 +89,7 @@
     </view>
     <view class="view-line" wx:if="{{detailedWord.collins}}">
       <view class='view-label'>柯林斯星级:</view>
-      <i-rate disabled="{{true}}" count="{{5}}" value="{{detailedWord.collins}}" style="display:flex" size="{{40}}">
+      <i-rate disabled="{{true}}" count="{{5}}" value="{{detailedWord.collins}}" style="display:flex" size="{{20}}">
         {{detailedWord.collins}}星
       </i-rate>
     </view>
@@ -100,13 +100,49 @@
       <view class='view-label'>当代语料库词频: {{detailedWord.frq}}/42229</view>
     </view>
   </view>
+  <!-- sentences samples(eng) from online-->
+
+  <view class="view-divider"></view>
+  <view class="card-detail">
+    <i-collapse name="{{name}}">
+      <i-collapse-item name="name1" title="地道用例" i-class-title="view-sentence-title">
+        <view slot="title">
+          <view class="view-sentence-title">地道用例
+            <text class="word-eng-def-source">来源：vocabulary.com</text>
+          </view>
+        </view>
+        <view slot="content">
+          <view wx:for="{{sentenceOnline}}" wx:for-item="item" wx:for-index="indexOnline" wx:key="{{item}}">
+            <view class="word-each-sentence-container">
+              <text class='word-sentence-index'>{{indexOnline+1}}.</text>
+              <view class="word-each-sentence">
+                <view class="father word-eng-sent-container" catchtap="wordClickedInWordDetail">
+                  <text class="word-eng-explain {{'online'===currentClickedWord.section&&index===currentClickedWord.indexWord&&indexOnline===currentClickedWord.indexSent?'text-clicked':''}}" decode="{{true}}" data-index-sent="{{indexOnline}}" data-index-word="{{index}}"
+                    data-section="online" data-word="{{item}}" wx:for="{{item.sentence}}" wx:key="{{item}}">{{item}}</text>
+                </view>
+                <view class="word-chn-explain" style='display:flex;justify-content:space-between'>
+                  <text> {{item.source}}</text>
+                  <text> {{item.datePublished}}</text>
+                </view>
+              </view>
+              <view>
+                <i-icon type="systemprompt" size="22" color='#0571b0' data-sent-index="{{indexOnline}}" data-src="{{'http://dict.youdao.com/dictvoice?audio='+item.origSent+'&type=2'}}" catchtap='audioClicked' />
+              </view>
+            </view>
+          </view>
+        </view>
+      </i-collapse-item>
+    </i-collapse>
+
+  </view>
+
   <view class="view-divider" wx:if="{{detailedWord.sentenceLists.length>0}}"></view>
   <view class="card-detail" wx:if="{{detailedWord.sentenceLists.length>0}}">
     <view style='display:flex;justify-content:space-between;align-items: flex-end'>
       <view class="view-sentence-title">双语例句</view>
       <picker bindchange="sourceChange" value="{{sourceIndex}}" range="{{sourceArray}}">
         <view class='word-sent-source'>{{sourceArray[sourceIndex]}}
-          <i-icon type="switch" size="36" />
+          <i-icon type="switch" size="18" />
         </view>
 
       </picker>
@@ -122,7 +158,7 @@
           <view class='word-chn-explain'>{{item.chn}}</view>
         </view>
         <view>
-          <i-icon type="systemprompt" size="44" color='#0571b0' data-sent-index="{{indexSent}}" data-src="{{'http://dict.youdao.com/dictvoice?audio='+item.eng+'&type=2'}}" catchtap='audioClicked' />
+          <i-icon type="systemprompt" size="22" color='#0571b0' data-sent-index="{{indexSent}}" data-src="{{'http://dict.youdao.com/dictvoice?audio='+item.eng+'&type=2'}}" catchtap='audioClicked' />
         </view>
       </view>
     </view>
@@ -136,17 +172,17 @@
         <text class="word-popup-lemma" wx:if="{{currentClickedWordInfo.lemma.relation}}">{{currentClickedWordInfo.wordIn}}是{{currentClickedWordInfo.wordOut}}的{{currentClickedWordInfo.lemma.relation}}</text>
       </view>
       <navigator url="../word-detail/word-detail?word={{currentClickedWordInfo.wordOut}}" hover-class='none' wx:if="{{currentClickedWordInfo.wordOut!==detailedWord.wordBrief.wordOut}}">
-        <i-icon type="enter" size='32' wx:if="{{!currentClickedWordInfo.notCollected}}" />
-        <view class='word-feedback' catchtap='feedbackClicked'  wx:if="{{currentClickedWordInfo.notCollected}}" data-type="not-collected">反馈</view>
+        <i-icon type="enter" size='16' wx:if="{{!currentClickedWordInfo.notCollected}}" />
+        <view class='word-feedback' catchtap='feedbackClicked' wx:if="{{currentClickedWordInfo.notCollected}}" data-type="not-collected">反馈</view>
       </navigator>
     </view>
     <view class='word-pron'>
       <view style='margin-right:10px' wx:if="{{currentClickedWordInfo.usPron}}">
-        <i-icon type="systemprompt" size="44" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+currentClickedWordInfo.wordOut+'&type=2'}}" catchtap='audioClicked' />
+        <i-icon type="systemprompt" size="22" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+currentClickedWordInfo.wordOut+'&type=2'}}" catchtap='audioClicked' />
         <text class="word-ps">美 /{{currentClickedWordInfo.usPron.ps}}/</text>
       </view>
       <view wx:if="{{currentClickedWordInfo.ukPron}}">
-        <i-icon type="systemprompt" size="44" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+currentClickedWordInfo.wordOut+'&type=1'}}" catchtap='audioClicked' />
+        <i-icon type="systemprompt" size="22" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+currentClickedWordInfo.wordOut+'&type=1'}}" catchtap='audioClicked' />
         <text class="word-ps">英 /{{currentClickedWordInfo.ukPron.ps}}/</text>
       </view>
     </view>
@@ -164,7 +200,7 @@
         <view class="feedback-section-title">类别</view>
         <picker bindchange="feedbackSectionChange" value="{{feedbackSectionIndex}}" range="{{feedbackSectionArray}}">
           <view class='feedback-section-content'>{{feedbackSectionArray[feedbackSectionIndex]}}
-            <i-icon type="unfold" size="36" />
+            <i-icon type="unfold" size="18" />
           </view>
         </picker>
       </view>

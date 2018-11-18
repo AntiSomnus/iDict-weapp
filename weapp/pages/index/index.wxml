@@ -10,10 +10,10 @@
       <input disabled class="search-input" placeholder="{{animation?'':'输入需要查询的内容'}}" wx:if="{{!isInitFinished}}" />
       <input focus='false' bindconfirm='goToKeyWord' bindinput='inputKeyword' class="search-input" value="{{inputVal}}" wx:if="{{isInitFinished}}" />
       <view class='icon-delete'>
-        <i-icon type="search" size="50" style='color: lightgrey;display:block' wx:if="{{!isInputExisted}}" />
+        <i-icon type="search" size="20" style='color: lightgrey;display:block' wx:if="{{!isInputExisted}}" />
       </view>
       <view class='icon-delete' bindtap='clearSearch'>
-        <i-icon type="close" size="30" style='color: lightgrey;display:block' wx:if="{{isInputExisted}}" />
+        <i-icon type="close" size="22" style='color: lightgrey;display:block' wx:if="{{isInputExisted}}" />
       </view>
     </view>
 
