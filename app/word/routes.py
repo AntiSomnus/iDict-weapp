@@ -3,7 +3,7 @@ import json
 from flask import Response
 from flask_restful import Resource, inputs, reqparse
 from google.protobuf.json_format import MessageToDict
-
+import requests
 from . import word_api
 from .word_parsing import GetWordBrief, GetWordDetail, GetWordList
 
@@ -45,9 +45,17 @@ parser_word_detail.add_argument(
 parser_word_detail.add_argument(
     'indent', type=int, help='json incident', default=4)
 
+parser_word_example = reqparse.RequestParser()
+parser_word_example.add_argument(
+    'word', type=str, help='The word for query', required=True)
+parser_word_example.add_argument(
+    'count', type=int, help='max count for example', default=5)
+
+
 get_word_brief = GetWordBrief()
 get_word_list = GetWordList()
 get_word_detail = GetWordDetail()
+
 
 
 class WordBrief(Resource):
@@ -110,6 +118,18 @@ class WordDetail(Resource):
         return Response(status=252)
 
 
+class WordExample(Resource):
+    def get(self):
+        args = parser_word_example.parse_args()
+        word = args['word']
+        count = args['count']
+        payload = {'maxResults': count, 'query': word}
+        if word:
+            result = requests.get("https://corpus.vocabulary.com/api/1.0/examples.json", params=payload)
+            return Response(result.text, content_type="application/json")
+
+
 word_api.add_resource(WordBrief, '/word/brief/')
 word_api.add_resource(WordList, '/word/list/')
 word_api.add_resource(WordDetail, '/word/detail/')
+word_api.add_resource(WordExample, '/word/example/')
