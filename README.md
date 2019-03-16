@@ -26,8 +26,8 @@ A better English-Chinese&Chinese-English Dictionary in Weapp.
 
   Chinese to English is the feature requested by enormous users and we added it on March, 2019.
 
-  <img src="/screenshots/chn1.jpg" alt="chn1" width="30%">
-  <img src="/screenshots/chn2.jpg" alt="chn2" width="30%">
+  <img src="/screenshots/chn1.png" alt="chn1" width="30%">
+  <img src="/screenshots/chn2.png" alt="chn2" width="30%">
 
 - Native & Authoritative examples
 
