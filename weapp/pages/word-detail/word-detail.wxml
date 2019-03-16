@@ -1,5 +1,4 @@
 <i-toast id="toast" />
-<audio src="{{src}}" id="myAudio" style='display:none'></audio>
 <loading hidden="{{isLoadingFinished}}">
   加载中
 </loading>
@@ -31,17 +30,20 @@
     </view>
   </view>
 
-  <view class="view-divider" wx:if="{{detailedWord.wordBrief.engDefinitions}}"></view>
-  <view class="card-detail" wx:if="{{detailedWord.wordBrief.engDefinitions}}">
+  <view class="view-divider" wx:if="{{detailedWord.wordBrief.engDefinitions.length>0}}"></view>
+  <view class="card-detail" wx:if="{{detailedWord.wordBrief.engDefinitions.length>0}}">
     <view class="view-sentence-title">英语释义
       <text class="word-eng-def-source">来源：vocabulary.com</text>
     </view>
-    <view class="word-def-container" wx:for="{{detailedWord.wordBrief.engDefinitions}}" wx:for-index="indexDef" wx:key="{{item}}">
-      <text class="word-def-pos" wx:if="{{item.pos}}">{{item.pos}}</text>
-      <view class="father word-def" catchtap="wordClickedInWordDetail">
-        <text class="word-eng-explain {{'def'==currentClickedWord.section&&index==currentClickedWord.indexWord&&indexDef==currentClickedWord.indexSent?'text-clicked':''}}" decode="{{true}}" data-index-sent="{{indexDef}}" data-index-word="{{index}}" data-section="def"
-          data-word="{{item}}" wx:if="{{item!='&nbnl;'}}" wx:for="{{engDefList[indexDef]}}" wx:key="{{item}}">{{item}}</text>
-      </view>
+    <view class="word-def-container" wx:for="{{detailedWord.wordBrief.engDefinitions}}" wx:for-index="indexDef" wx:key="{{indexDef}}" wx:for-item="endDef">
+      <text class="word-def-pos" wx:if="{{endDef.pos}}">{{endDef.pos}}</text>
+      <clickable-paragraph data="{{endDef.meaning}}" 
+          text-class="word-eng-explain" 
+          bind:clicked="wordClickedInWordDetail" 
+          section="{{'def-'+indexDef}}" 
+          current="{{current}}"
+       >
+        </clickable-paragraph>
     </view>
   </view>
   <view class="view-divider" wx:if="{{detailedWord.wordBrief.lemma.relation||detailedWord.derivatives.length>0}}"></view>
@@ -112,21 +114,24 @@
           </view>
         </view>
         <view slot="content">
-          <view wx:for="{{sentenceOnline}}" wx:for-item="item" wx:for-index="indexOnline" wx:key="{{item}}">
+          <view wx:for="{{sentenceOnline}}" wx:for-item="sentOnline" wx:for-index="indexOnline" wx:key="{{indexOnline}}">
             <view class="word-each-sentence-container">
               <text class='word-sentence-index'>{{indexOnline+1}}.</text>
               <view class="word-each-sentence">
-                <view class="father word-eng-sent-container" catchtap="wordClickedInWordDetail">
-                  <text class="word-eng-explain {{'online'===currentClickedWord.section&&index===currentClickedWord.indexWord&&indexOnline===currentClickedWord.indexSent?'text-clicked':''}}" decode="{{true}}" data-index-sent="{{indexOnline}}" data-index-word="{{index}}"
-                    data-section="online" data-word="{{item}}" wx:for="{{item.sentence}}" wx:key="{{item}}">{{item}}</text>
-                </view>
+               <clickable-paragraph data="{{sentOnline.origSent}}" 
+               text-class="word-eng-explain" 
+              bind:clicked="wordClickedInWordDetail" 
+              section="{{'online-'+indexOnline}}" 
+              current="{{current}}"
+              >
+             </clickable-paragraph>
                 <view class="word-chn-explain" style='display:flex;justify-content:space-between'>
-                  <text> {{item.source}}</text>
-                  <text> {{item.datePublished}}</text>
+                  <text> {{sentOnline.source}}</text>
+                  <text> {{sentOnline.datePublished}}</text>
                 </view>
               </view>
               <view>
-                <i-icon type="systemprompt" size="22" color='#0571b0' data-sent-index="{{indexOnline}}" data-src="{{'http://dict.youdao.com/dictvoice?audio='+item.origSent+'&type=2'}}" catchtap='audioClicked' />
+                <i-icon type="systemprompt" size="22" color='#0571b0' data-sent-index="{{indexOnline}}" data-src="{{'http://dict.youdao.com/dictvoice?audio='+sentOnline.origSent+'&type=2'}}" catchtap='audioClicked' />
               </view>
             </view>
           </view>
@@ -147,14 +152,17 @@
 
       </picker>
     </view>
-    <view wx:for="{{detailedWord.sentenceLists[sourceIndex].sentences}}" wx:for-item="item" wx:for-index="indexSent" wx:if="{{indexSent<maxSentNumber[sourceIndex]}}" wx:key="{{item}}">
+    <view wx:for="{{detailedWord.sentenceLists[sourceIndex].sentences}}" wx:for-item="item" wx:for-index="indexSent" wx:if="{{indexSent<maxSentNumber[sourceIndex]}}" wx:key="{{indexSent}}">
       <view class="word-each-sentence-container">
         <text class='word-sentence-index'>{{indexSent+1}}.</text>
         <view class="word-each-sentence">
-          <view class="father word-eng-sent-container" catchtap="wordClickedInWordDetail">
-            <text class="word-eng-explain {{'sent'==currentClickedWord.section&&index==currentClickedWord.indexWord&&indexSent==currentClickedWord.indexSent?'text-clicked':''}}" decode="{{true}}" data-index-sent="{{indexSent}}" data-index-word="{{index}}" data-section="sent"
-              data-word="{{item}}" wx:for="{{engList[sourceIndex][indexSent]}}" wx:key="{{item}}">{{item}}</text>
-          </view>
+        <clickable-paragraph data="{{item.eng}}" 
+              text-class="word-eng-explain" 
+              bind:clicked="wordClickedInWordDetail" 
+              section="{{'sent-'+sourceIndex+'-'+indexSent}}" 
+              current="{{current}}"
+              >
+             </clickable-paragraph>
           <view class='word-chn-explain'>{{item.chn}}</view>
         </view>
         <view>

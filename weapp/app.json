@@ -1,13 +1,13 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
-    "pages/word-detail/word-detail"
+    "pages/word-detail/word-detail",
+    "pages/chn-detail/chn-detail"
   ],
-  "window":{
-    "backgroundTextStyle":"dark",
+  "window": {
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "iDict",
-    "navigationBarTextStyle":"black"
-    
+    "navigationBarTextStyle": "black"
   }
 }

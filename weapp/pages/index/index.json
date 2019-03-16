@@ -5,6 +5,8 @@
     "i-tab": "../../dist/tab/index",
     "i-tag": "../../dist/tag/index",
     "i-icon": "../../dist/icon/index",
-    "i-drawer": "../../dist/drawer/index"
+    "i-drawer": "../../dist/drawer/index",
+    "i-modal": "../../dist/modal/index",
+    "word-item":"../../components/word-item/word-item"
   }
 }

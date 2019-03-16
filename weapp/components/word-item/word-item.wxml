@@ -1,0 +1,34 @@
+<view class='item-word-container' data-word="{{item.wordOut}}" data-index="{{index}}" catchtap="wordClick">
+  <view class='item-word-tags-container'>
+    <text class='item-word'>{{item.wordOut}} </text>
+    <view class='item-tags'>
+      <i-tag wx:if="{{item.tags[0]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
+        中考
+      </i-tag>
+      <i-tag wx:if="{{item.tags[1]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
+        高考
+      </i-tag>
+      <i-tag wx:if="{{item.tags[2]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
+        考研
+      </i-tag>
+      <i-tag wx:if="{{item.tags[3]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
+        四级
+      </i-tag>
+      <i-tag wx:if="{{item.tags[4]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
+        六级
+      </i-tag>
+      <i-tag wx:if="{{item.tags[5]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
+        托福
+      </i-tag>
+      <i-tag wx:if="{{item.tags[6]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
+        雅思
+      </i-tag>
+      <i-tag wx:if="{{item.tags[7]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
+        GRE
+      </i-tag>
+    </view>
+  </view>
+  <view class='item-meaning'>
+    {{item.chnDefinitions[0].pos? item.chnDefinitions[0].pos+item.chnDefinitions[0].meaning:item.chnDefinitions[0].meaning}}
+  </view>
+</view>

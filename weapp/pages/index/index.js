@@ -12,9 +12,15 @@ const {
 } = require('../../dist/base/index');
 var currentInputWord = '';
 
+function isChinese(temp) {
+  var re = /[^\u0020-\u007F]/;
+  if (re.test(temp)) return true;
+  return false;
+}
+
 function searchWordList(word, that) {
   wx.request({
-    url: baseUrl + 'word/list',
+    url: baseUrl + (isChinese(word) ? 'chn/list' : 'word/list'),
     responseType: "arraybuffer",
     data: {
       'word': word,
@@ -32,7 +38,7 @@ function searchWordList(word, that) {
         } else {
           wordSuggestions = [];
           for (var i = 0; i < Math.min(10, wordList.wordSuggestions.length); i++) {
-            wordSuggestions.push(wordList.wordSuggestions[i].wordOut)
+            wordSuggestions.push(wordList.wordSuggestions[i])
           }
         }
         that.setData({
@@ -55,6 +61,7 @@ Page({
   data: {
     wordList: [], //候选单词列表
     viewParam: {}, //关于view的参数字典
+    isSuggestionShow: false
 
   },
 
@@ -89,21 +96,28 @@ Page({
       inputVal: '',
       isHistoryShow: true,
       isInputExisted: false,
-      wordList: app.globalData.historyList
+      isSuggestionShow: false,
+      wordList: app.globalData.historyList,
+      wordSuggestions: [],
 
     })
   },
   goToKeyWord: function(event) {
     //用户在输入框中回车进入该单词详情页
-    wx.navigateTo({
-      url: '../word-detail/word-detail?word=' + event.detail.value,
-    })
+    const word = event.detail.value;
+    if (isChinese(word))
+      wx.navigateTo({
+        url: '../chn-detail/chn-detail?word=' + word + '&isHistoryShow=' + this.data.isHistoryShow
+      })
+    else
+      wx.navigateTo({
+        url: '../word-detail/word-detail?word=' + word + '&isHistoryShow=' + this.data.isHistoryShow
+      })
   },
   inputKeyword: function(event) {
     //用户在搜索框中输入，请求list
     currentInputWord = event.detail.value;
     this.setData({
-      wordSuggestions: null,
       isInputExisted: event.detail.value ? true : false,
     })
     if (event.detail.value) {
@@ -112,7 +126,7 @@ Page({
       setTimeout(function() {
         if (event.detail.value === currentInputWord && currentInputWord != '')
           searchWordList(event.detail.value, that)
-      }, 300)
+      }, 10)
     } else { //输入为空，清空List
       this.setData({
         wordList: app.globalData.historyList,
@@ -124,11 +138,15 @@ Page({
   },
 
   wordClick: function(e) {
-    //点击List中的单词，跳转到详情
-    var currentWord = e.currentTarget.dataset.word
-    wx.navigateTo({
-      url: '../word-detail/word-detail?word=' + currentWord +'&isHistoryShow='+this.data.isHistoryShow
-    })
+    const word = e.detail;
+    if (isChinese(word))
+      wx.navigateTo({
+        url: '../chn-detail/chn-detail?word=' + word + '&isHistoryShow=' + this.data.isHistoryShow
+      })
+    else
+      wx.navigateTo({
+        url: '../word-detail/word-detail?word=' + word + '&isHistoryShow=' + this.data.isHistoryShow
+      })
 
   },
 
@@ -138,10 +156,10 @@ Page({
       url: '../article-detail/article-detail'
     })
   },
-  onReady:function(){
+  onReady: function() {
     this.setData({
-      wordList:app.globalData.historyList,
-      isHistoryShow: app.globalData.historyList.length>0
+      wordList: app.globalData.historyList,
+      isHistoryShow: app.globalData.historyList.length > 0
     })
   },
   onLoad: function() {
@@ -165,7 +183,7 @@ Page({
         });
       }
     })
-    
+
   },
 
   onReachBottom: function() {
@@ -184,6 +202,16 @@ Page({
     })
     searchWordList(word, this)
 
+  },
+  openSuggestion: function(e) {
+    this.setData({
+      isSuggestionShow: true
+    })
+  },
+  suggestionOutClicked: function(e) {
+    this.setData({
+      isSuggestionShow: false
+    })
   },
   wordSuggestionClick: function(e) {
     let word = e.currentTarget.dataset.word
@@ -205,6 +233,11 @@ Page({
       isHistoryShow: false
     })
 
+  },
+  inputFocus: function() {
+    this.setData({
+      isSuggestionShow: false
+    })
   },
   onPullDownRefresh: function() {
     wx.stopPullDownRefresh();

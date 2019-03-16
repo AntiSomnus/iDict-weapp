@@ -1,0 +1,28 @@
+<wxs module="type">
+	var isString = function(s) {
+	return typeof s === "string";
+	}
+	module.exports.isString = isString;
+</wxs>
+
+<view class="individual-container container-class" catchtap="clicked">
+  <slot></slot>
+	<view
+	 wx:for="{{words}}"
+	 wx:for-item="word"
+	 wx:for-index="index"
+     wx:key="{{index}}"
+	>
+		<view
+            class="text-class {{current.section===section&&current.index===index?'clicked custom-clicked':''}}"
+            wx:if="{{type.isString(word)}}"
+            data-word="{{word}}"
+            data-index="{{index}}"
+            data-section="{{section}}">{{word}}</view>
+		<view class="no-break" wx:else>
+            <view data-index="{{index}}" data-section="{{section}}"  data-word="{{word[0]}}"
+ class="text-class {{current.section===section&&current.index===index?'clicked custom-clicked':''}}">{{word[0]}}</view>
+		    <view class="text-class"><text decode="{{true}}">{{word[1]}}</text></view>
+		</view>
+	</view>
+</view>

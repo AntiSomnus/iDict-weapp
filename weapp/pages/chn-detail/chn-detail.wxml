@@ -1,0 +1,114 @@
+<i-toast id="toast" />
+<loading hidden="{{isLoadingFinished}}">
+  加载中
+</loading>
+<view class="error container-detail" wx:if="{{errorInfo}}">
+  <view class="card-detail">
+    <view class='word-word'>{{errorInfo.word}}</view>
+    <view class='word-word'>{{errorInfo.msg}}</view>
+  </view>
+</view>
+<view class="container-detail" bindtap='detailOutClicked' style="min-height:{{windowHeight}}px" wx:if="{{isLoadingFinished}}">
+  <view class="card-detail">
+    <view class="flex-space-between">
+      <view class='word-word'>{{chnDetail.chn}}</view>
+      <view class='word-feedback' catchtap='feedbackClicked'>反馈</view>
+
+    </view>
+    <view class="meaning" wx:for="{{chnDetail.meanings}}" wx:for-item="meaning" wx:key="{{meaning}}" wx:for-index="meaningIndex">
+      <view class="meaning-definition" wx:if="{{meaning.definition}}">
+        <view class="meaning-indictor"></view>
+        <view>{{meaning.definition}}</view>
+      </view>
+      <view class="{{meaning.definition?'meaning-detail':''}}">
+        <view style='display:flex' wx:for="{{meaning.words}}"
+          wx:for-item="meaningWord"  
+          wx:for-index="meaningWordIndex" 
+          wx:key="{{meaningWordIndex}}">
+          <view class="indicator-wrapper">
+            <view class="meaning-individual-indictor"></view>
+          </view>
+         <clickable-paragraph data="{{meaningWord}}" 
+          text-class="individul-word" 
+          bind:clicked="wordClickedInDetail" 
+          section="{{meaningIndex+'-'+meaningWordIndex}}" 
+          current="{{current}}"
+          >
+        </clickable-paragraph>
+        </view>
+       
+        <view wx:for="{{meaning.examples}}" wx:for-item="example" wx:key="{{example.chn}}" wx:for-index="exampleIndex">
+          <view class="example-title">
+            <view class="example-indictor"></view>
+            <view class='example-chn'>{{example.chn}}</view>
+          </view>
+          <clickable-paragraph data="{{exampleSent}}" 
+          container-class="padding"
+          text-class="individul-word" 
+          bind:clicked="wordClickedInDetail" 
+          section="{{meaningIndex+'-'+exampleIndex+'-'+sentenceIndex}}" 
+          current="{{current}}"
+          wx:for="{{example.engs}}"
+          wx:for-item="exampleSent"  
+          wx:for-index="sentenceIndex" 
+          wx:key="{{sentenceIndex}}">
+        </clickable-paragraph>
+          
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view wx:if="{{isShowWordInDetail}}" class="word-info-popup" bindlongpress='longTapToWordDetail'>
+  <view class="card-detail">
+    <view style='display:flex;justify-content:space-between;'>
+      <view>
+        <text>{{currentClickedWordInfo.wordOut}} </text>
+        <text class="word-popup-lemma" wx:if="{{currentClickedWordInfo.lemma.relation}}">{{currentClickedWordInfo.wordIn}}是{{currentClickedWordInfo.wordOut}}的{{currentClickedWordInfo.lemma.relation}}</text>
+      </view>
+      <navigator url="../word-detail/word-detail?word={{currentClickedWordInfo.wordOut}}" hover-class='none' wx:if="{{currentClickedWordInfo.wordOut!==detailedWord.wordBrief.wordOut}}">
+        <i-icon type="enter" size='16' wx:if="{{!currentClickedWordInfo.notCollected}}" />
+        <view class='word-feedback' catchtap='feedbackClicked' wx:if="{{currentClickedWordInfo.notCollected}}" data-type="not-collected">反馈</view>
+      </navigator>
+    </view>
+    <view class='word-pron'>
+      <view style='margin-right:10px' wx:if="{{currentClickedWordInfo.usPron}}">
+        <i-icon type="systemprompt" size="22" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+currentClickedWordInfo.wordOut+'&type=2'}}" catchtap='audioClicked' />
+        <text class="word-ps">美 /{{currentClickedWordInfo.usPron.ps}}/</text>
+      </view>
+      <view wx:if="{{currentClickedWordInfo.ukPron}}">
+        <i-icon type="systemprompt" size="22" color='#0571b0' data-src="{{'http://dict.youdao.com/dictvoice?audio='+currentClickedWordInfo.wordOut+'&type=1'}}" catchtap='audioClicked' />
+        <text class="word-ps">英 /{{currentClickedWordInfo.ukPron.ps}}/</text>
+      </view>
+    </view>
+    <view class="word-def-container" wx:for="{{currentClickedWordInfo.chnDefinitions}}" wx:key="{{item}}">
+      <text class="word-def-pos" wx:if="{{item.pos}}">{{item.pos}}</text>
+      <text class="word-def">{{item.meaning}}</text>
+    </view>
+  </view>
+</view>
+<view id="overlay" class='overlay' hidden="{{!isFeedbackShow}}" bindtap='feedbackOutClicked'>
+  <view class='feedback-view'>
+    <view class='feedback-inside'>
+      <view class="feedback-title">反馈</view>
+      <view class="feedback-section">
+        <view class="feedback-section-title">类别</view>
+        <picker bindchange="feedbackSectionChange" value="{{feedbackSectionIndex}}" range="{{feedbackSectionArray}}">
+          <view class='feedback-section-content'>{{feedbackSectionArray[feedbackSectionIndex]}}
+            <i-icon type="unfold" size="18" />
+          </view>
+        </picker>
+      </view>
+      <view class="feedback-section">
+        <view class="feedback-section-title">单词</view>
+        <input class="feedback-word-input" value="{{feedbackWord}}" bindinput='inputFeedbackWord' />
+      </view>
+      <view class="feedback-section" style="align-items:flex-start">
+        <view class="feedback-section-title">内容</view>
+        <textarea class="feedback-content" show-confirm-bar='' bindinput='feedbackContentInput' value="{{feedbackContent}}" fixed="true" />
+      </view>
+      <button class="feedback-submit" hover-class="feedback-submit-hover" bindtap="feedbackSubmit">提交</button>
+    </view>
+
+  </view>
+</view>

@@ -7,6 +7,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -18,8 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='WordProto.proto',
   package='',
   syntax='proto3',
-  serialized_options=None,
-  serialized_pb=_b('\n\x0fWordProto.proto\"Q\n\x08WordList\x12\x1f\n\x0bword_briefs\x18\x01 \x03(\x0b\x32\n.WordBrief\x12$\n\x10word_suggestions\x18\x02 \x03(\x0b\x32\n.WordBrief\"\x93\x03\n\tWordBrief\x12\x0f\n\x07word_in\x18\x01 \x01(\t\x12\x10\n\x08word_out\x18\x02 \x01(\t\x12)\n\x07uk_pron\x18\x03 \x01(\x0b\x32\x18.WordBrief.Pronunciation\x12)\n\x07us_pron\x18\x04 \x01(\x0b\x32\x18.WordBrief.Pronunciation\x12.\n\x0f\x63hn_definitions\x18\x05 \x03(\x0b\x32\x15.WordBrief.Definition\x12.\n\x0f\x65ng_definitions\x18\x06 \x03(\x0b\x32\x15.WordBrief.Definition\x12\x0c\n\x04tags\x18\x07 \x03(\x08\x12\x1f\n\x05lemma\x18\x08 \x01(\x0b\x32\x10.WordBrief.Lemma\x1a(\n\rPronunciation\x12\n\n\x02ps\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x1a*\n\nDefinition\x12\x0b\n\x03pos\x18\x01 \x01(\t\x12\x0f\n\x07meaning\x18\x02 \x01(\t\x1a(\n\x05Lemma\x12\r\n\x05lemma\x18\x01 \x01(\t\x12\x10\n\x08relation\x18\x02 \x01(\t\"\xcd\x03\n\nWordDetail\x12\x1e\n\nword_brief\x18\x01 \x01(\x0b\x32\n.WordBrief\x12\x0f\n\x07\x63ollins\x18\x02 \x01(\x05\x12\x0b\n\x03\x62nc\x18\x03 \x01(\x05\x12\x0b\n\x03\x66rq\x18\x04 \x01(\x05\x12\x30\n\x0esentence_lists\x18\x05 \x03(\x0b\x32\x18.WordDetail.SentenceList\x12+\n\x0b\x64\x65rivatives\x18\x06 \x03(\x0b\x32\x16.WordDetail.Derivative\x1a\xe6\x01\n\x0cSentenceList\x12/\n\x06source\x18\x01 \x01(\x0e\x32\x1f.WordDetail.SentenceList.Source\x12\x34\n\tsentences\x18\x02 \x03(\x0b\x32!.WordDetail.SentenceList.Sentence\x1a$\n\x08Sentence\x12\x0b\n\x03\x65ng\x18\x01 \x01(\t\x12\x0b\n\x03\x63hn\x18\x02 \x01(\t\"I\n\x06Source\x12\n\n\x06OXFORD\x10\x00\x12\r\n\tCAMBRIDGE\x10\x01\x12\x0b\n\x07LONGMAN\x10\x02\x12\x0b\n\x07\x43OLLINS\x10\x03\x12\n\n\x06ONLINE\x10\x04\x1a,\n\nDerivative\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x10\n\x08relation\x18\x02 \x01(\tb\x06proto3')
+  serialized_pb=_b('\n\x0fWordProto.proto\"O\n\x08WordList\x12\x1e\n\nwordBriefs\x18\x01 \x03(\x0b\x32\n.WordBrief\x12#\n\x0fwordSuggestions\x18\x02 \x03(\x0b\x32\n.WordBrief\"\x8d\x03\n\tWordBrief\x12\x0e\n\x06wordIn\x18\x01 \x01(\t\x12\x0f\n\x07wordOut\x18\x02 \x01(\t\x12(\n\x06ukPron\x18\x03 \x01(\x0b\x32\x18.WordBrief.Pronunciation\x12(\n\x06usPron\x18\x04 \x01(\x0b\x32\x18.WordBrief.Pronunciation\x12-\n\x0e\x63hnDefinitions\x18\x05 \x03(\x0b\x32\x15.WordBrief.Definition\x12-\n\x0e\x65ngDefinitions\x18\x06 \x03(\x0b\x32\x15.WordBrief.Definition\x12\x0c\n\x04tags\x18\x07 \x03(\x08\x12\x1f\n\x05lemma\x18\x08 \x01(\x0b\x32\x10.WordBrief.Lemma\x1a(\n\rPronunciation\x12\n\n\x02ps\x18\x01 \x01(\t\x12\x0b\n\x03url\x18\x02 \x01(\t\x1a*\n\nDefinition\x12\x0b\n\x03pos\x18\x01 \x01(\t\x12\x0f\n\x07meaning\x18\x02 \x01(\t\x1a(\n\x05Lemma\x12\r\n\x05lemma\x18\x01 \x01(\t\x12\x10\n\x08relation\x18\x02 \x01(\t\"\xcb\x03\n\nWordDetail\x12\x1d\n\twordBrief\x18\x01 \x01(\x0b\x32\n.WordBrief\x12\x0f\n\x07\x63ollins\x18\x02 \x01(\x05\x12\x0b\n\x03\x62nc\x18\x03 \x01(\x05\x12\x0b\n\x03\x66rq\x18\x04 \x01(\x05\x12/\n\rsentenceLists\x18\x05 \x03(\x0b\x32\x18.WordDetail.SentenceList\x12+\n\x0b\x64\x65rivatives\x18\x06 \x03(\x0b\x32\x16.WordDetail.Derivative\x1a\xe6\x01\n\x0cSentenceList\x12/\n\x06source\x18\x01 \x01(\x0e\x32\x1f.WordDetail.SentenceList.Source\x12\x34\n\tsentences\x18\x02 \x03(\x0b\x32!.WordDetail.SentenceList.Sentence\x1a$\n\x08Sentence\x12\x0b\n\x03\x65ng\x18\x01 \x01(\t\x12\x0b\n\x03\x63hn\x18\x02 \x01(\t\"I\n\x06Source\x12\n\n\x06OXFORD\x10\x00\x12\r\n\tCAMBRIDGE\x10\x01\x12\x0b\n\x07LONGMAN\x10\x02\x12\x0b\n\x07\x43OLLINS\x10\x03\x12\n\n\x06ONLINE\x10\x04\x1a,\n\nDerivative\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x10\n\x08relation\x18\x02 \x01(\t\"(\n\x07\x43hnList\x12\x1d\n\tchnBriefs\x18\x01 \x03(\x0b\x32\n.ChnDetail\"\xef\x01\n\tChnDetail\x12\x0b\n\x03\x63hn\x18\x01 \x01(\t\x12\x11\n\treference\x18\x02 \x01(\t\x12$\n\x08meanings\x18\x03 \x03(\x0b\x32\x12.ChnDetail.Meaning\x12\"\n\x06usages\x18\x04 \x03(\x0b\x32\x12.ChnDetail.Example\x1aR\n\x07Meaning\x12\x12\n\ndefinition\x18\x01 \x01(\t\x12\r\n\x05words\x18\x02 \x03(\t\x12$\n\x08\x65xamples\x18\x03 \x03(\x0b\x32\x12.ChnDetail.Example\x1a$\n\x07\x45xample\x12\x0b\n\x03\x63hn\x18\x01 \x01(\t\x12\x0c\n\x04\x65ngs\x18\x02 \x03(\tb\x06proto3')
 )
 
 
@@ -32,29 +32,29 @@ _WORDDETAIL_SENTENCELIST_SOURCE = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='OXFORD', index=0, number=0,
-      serialized_options=None,
+      options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='CAMBRIDGE', index=1, number=1,
-      serialized_options=None,
+      options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='LONGMAN', index=2, number=2,
-      serialized_options=None,
+      options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='COLLINS', index=3, number=3,
-      serialized_options=None,
+      options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='ONLINE', index=4, number=4,
-      serialized_options=None,
+      options=None,
       type=None),
   ],
   containing_type=None,
-  serialized_options=None,
-  serialized_start=851,
-  serialized_end=924,
+  options=None,
+  serialized_start=841,
+  serialized_end=914,
 )
 _sym_db.RegisterEnumDescriptor(_WORDDETAIL_SENTENCELIST_SOURCE)
 
@@ -67,33 +67,33 @@ _WORDLIST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='word_briefs', full_name='WordList.word_briefs', index=0,
+      name='wordBriefs', full_name='WordList.wordBriefs', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='word_suggestions', full_name='WordList.word_suggestions', index=1,
+      name='wordSuggestions', full_name='WordList.wordSuggestions', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=19,
-  serialized_end=100,
+  serialized_end=98,
 )
 
 
@@ -110,28 +110,28 @@ _WORDBRIEF_PRONUNCIATION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='url', full_name='WordBrief.Pronunciation.url', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=380,
-  serialized_end=420,
+  serialized_start=372,
+  serialized_end=412,
 )
 
 _WORDBRIEF_DEFINITION = _descriptor.Descriptor(
@@ -147,28 +147,28 @@ _WORDBRIEF_DEFINITION = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='meaning', full_name='WordBrief.Definition.meaning', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=422,
-  serialized_end=464,
+  serialized_start=414,
+  serialized_end=456,
 )
 
 _WORDBRIEF_LEMMA = _descriptor.Descriptor(
@@ -184,28 +184,28 @@ _WORDBRIEF_LEMMA = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='relation', full_name='WordBrief.Lemma.relation', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=466,
-  serialized_end=506,
+  serialized_start=458,
+  serialized_end=498,
 )
 
 _WORDBRIEF = _descriptor.Descriptor(
@@ -216,75 +216,75 @@ _WORDBRIEF = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='word_in', full_name='WordBrief.word_in', index=0,
+      name='wordIn', full_name='WordBrief.wordIn', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='word_out', full_name='WordBrief.word_out', index=1,
+      name='wordOut', full_name='WordBrief.wordOut', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='uk_pron', full_name='WordBrief.uk_pron', index=2,
+      name='ukPron', full_name='WordBrief.ukPron', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='us_pron', full_name='WordBrief.us_pron', index=3,
+      name='usPron', full_name='WordBrief.usPron', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='chn_definitions', full_name='WordBrief.chn_definitions', index=4,
+      name='chnDefinitions', full_name='WordBrief.chnDefinitions', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='eng_definitions', full_name='WordBrief.eng_definitions', index=5,
+      name='engDefinitions', full_name='WordBrief.engDefinitions', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='tags', full_name='WordBrief.tags', index=6,
       number=7, type=8, cpp_type=7, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='lemma', full_name='WordBrief.lemma', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[_WORDBRIEF_PRONUNCIATION, _WORDBRIEF_DEFINITION, _WORDBRIEF_LEMMA, ],
   enum_types=[
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=103,
-  serialized_end=506,
+  serialized_start=101,
+  serialized_end=498,
 )
 
 
@@ -301,28 +301,28 @@ _WORDDETAIL_SENTENCELIST_SENTENCE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='chn', full_name='WordDetail.SentenceList.Sentence.chn', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=813,
-  serialized_end=849,
+  serialized_start=803,
+  serialized_end=839,
 )
 
 _WORDDETAIL_SENTENCELIST = _descriptor.Descriptor(
@@ -338,14 +338,14 @@ _WORDDETAIL_SENTENCELIST = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='sentences', full_name='WordDetail.SentenceList.sentences', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -353,14 +353,14 @@ _WORDDETAIL_SENTENCELIST = _descriptor.Descriptor(
   enum_types=[
     _WORDDETAIL_SENTENCELIST_SOURCE,
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=694,
-  serialized_end=924,
+  serialized_start=684,
+  serialized_end=914,
 )
 
 _WORDDETAIL_DERIVATIVE = _descriptor.Descriptor(
@@ -376,28 +376,28 @@ _WORDDETAIL_DERIVATIVE = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='relation', full_name='WordDetail.Derivative.relation', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=926,
-  serialized_end=970,
+  serialized_start=916,
+  serialized_end=960,
 )
 
 _WORDDETAIL = _descriptor.Descriptor(
@@ -408,72 +408,236 @@ _WORDDETAIL = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='word_brief', full_name='WordDetail.word_brief', index=0,
+      name='wordBrief', full_name='WordDetail.wordBrief', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='collins', full_name='WordDetail.collins', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='bnc', full_name='WordDetail.bnc', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='frq', full_name='WordDetail.frq', index=3,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='sentence_lists', full_name='WordDetail.sentence_lists', index=4,
+      name='sentenceLists', full_name='WordDetail.sentenceLists', index=4,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='derivatives', full_name='WordDetail.derivatives', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[_WORDDETAIL_SENTENCELIST, _WORDDETAIL_DERIVATIVE, ],
   enum_types=[
   ],
-  serialized_options=None,
+  options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=509,
-  serialized_end=970,
+  serialized_start=501,
+  serialized_end=960,
 )
 
-_WORDLIST.fields_by_name['word_briefs'].message_type = _WORDBRIEF
-_WORDLIST.fields_by_name['word_suggestions'].message_type = _WORDBRIEF
+
+_CHNLIST = _descriptor.Descriptor(
+  name='ChnList',
+  full_name='ChnList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='chnBriefs', full_name='ChnList.chnBriefs', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=962,
+  serialized_end=1002,
+)
+
+
+_CHNDETAIL_MEANING = _descriptor.Descriptor(
+  name='Meaning',
+  full_name='ChnDetail.Meaning',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='definition', full_name='ChnDetail.Meaning.definition', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='words', full_name='ChnDetail.Meaning.words', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='examples', full_name='ChnDetail.Meaning.examples', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1124,
+  serialized_end=1206,
+)
+
+_CHNDETAIL_EXAMPLE = _descriptor.Descriptor(
+  name='Example',
+  full_name='ChnDetail.Example',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='chn', full_name='ChnDetail.Example.chn', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='engs', full_name='ChnDetail.Example.engs', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1208,
+  serialized_end=1244,
+)
+
+_CHNDETAIL = _descriptor.Descriptor(
+  name='ChnDetail',
+  full_name='ChnDetail',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='chn', full_name='ChnDetail.chn', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='reference', full_name='ChnDetail.reference', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='meanings', full_name='ChnDetail.meanings', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='usages', full_name='ChnDetail.usages', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_CHNDETAIL_MEANING, _CHNDETAIL_EXAMPLE, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1005,
+  serialized_end=1244,
+)
+
+_WORDLIST.fields_by_name['wordBriefs'].message_type = _WORDBRIEF
+_WORDLIST.fields_by_name['wordSuggestions'].message_type = _WORDBRIEF
 _WORDBRIEF_PRONUNCIATION.containing_type = _WORDBRIEF
 _WORDBRIEF_DEFINITION.containing_type = _WORDBRIEF
 _WORDBRIEF_LEMMA.containing_type = _WORDBRIEF
-_WORDBRIEF.fields_by_name['uk_pron'].message_type = _WORDBRIEF_PRONUNCIATION
-_WORDBRIEF.fields_by_name['us_pron'].message_type = _WORDBRIEF_PRONUNCIATION
-_WORDBRIEF.fields_by_name['chn_definitions'].message_type = _WORDBRIEF_DEFINITION
-_WORDBRIEF.fields_by_name['eng_definitions'].message_type = _WORDBRIEF_DEFINITION
+_WORDBRIEF.fields_by_name['ukPron'].message_type = _WORDBRIEF_PRONUNCIATION
+_WORDBRIEF.fields_by_name['usPron'].message_type = _WORDBRIEF_PRONUNCIATION
+_WORDBRIEF.fields_by_name['chnDefinitions'].message_type = _WORDBRIEF_DEFINITION
+_WORDBRIEF.fields_by_name['engDefinitions'].message_type = _WORDBRIEF_DEFINITION
 _WORDBRIEF.fields_by_name['lemma'].message_type = _WORDBRIEF_LEMMA
 _WORDDETAIL_SENTENCELIST_SENTENCE.containing_type = _WORDDETAIL_SENTENCELIST
 _WORDDETAIL_SENTENCELIST.fields_by_name['source'].enum_type = _WORDDETAIL_SENTENCELIST_SOURCE
@@ -481,12 +645,20 @@ _WORDDETAIL_SENTENCELIST.fields_by_name['sentences'].message_type = _WORDDETAIL_
 _WORDDETAIL_SENTENCELIST.containing_type = _WORDDETAIL
 _WORDDETAIL_SENTENCELIST_SOURCE.containing_type = _WORDDETAIL_SENTENCELIST
 _WORDDETAIL_DERIVATIVE.containing_type = _WORDDETAIL
-_WORDDETAIL.fields_by_name['word_brief'].message_type = _WORDBRIEF
-_WORDDETAIL.fields_by_name['sentence_lists'].message_type = _WORDDETAIL_SENTENCELIST
+_WORDDETAIL.fields_by_name['wordBrief'].message_type = _WORDBRIEF
+_WORDDETAIL.fields_by_name['sentenceLists'].message_type = _WORDDETAIL_SENTENCELIST
 _WORDDETAIL.fields_by_name['derivatives'].message_type = _WORDDETAIL_DERIVATIVE
+_CHNLIST.fields_by_name['chnBriefs'].message_type = _CHNDETAIL
+_CHNDETAIL_MEANING.fields_by_name['examples'].message_type = _CHNDETAIL_EXAMPLE
+_CHNDETAIL_MEANING.containing_type = _CHNDETAIL
+_CHNDETAIL_EXAMPLE.containing_type = _CHNDETAIL
+_CHNDETAIL.fields_by_name['meanings'].message_type = _CHNDETAIL_MEANING
+_CHNDETAIL.fields_by_name['usages'].message_type = _CHNDETAIL_EXAMPLE
 DESCRIPTOR.message_types_by_name['WordList'] = _WORDLIST
 DESCRIPTOR.message_types_by_name['WordBrief'] = _WORDBRIEF
 DESCRIPTOR.message_types_by_name['WordDetail'] = _WORDDETAIL
+DESCRIPTOR.message_types_by_name['ChnList'] = _CHNLIST
+DESCRIPTOR.message_types_by_name['ChnDetail'] = _CHNDETAIL
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 WordList = _reflection.GeneratedProtocolMessageType('WordList', (_message.Message,), dict(
@@ -557,6 +729,36 @@ _sym_db.RegisterMessage(WordDetail)
 _sym_db.RegisterMessage(WordDetail.SentenceList)
 _sym_db.RegisterMessage(WordDetail.SentenceList.Sentence)
 _sym_db.RegisterMessage(WordDetail.Derivative)
+
+ChnList = _reflection.GeneratedProtocolMessageType('ChnList', (_message.Message,), dict(
+  DESCRIPTOR = _CHNLIST,
+  __module__ = 'WordProto_pb2'
+  # @@protoc_insertion_point(class_scope:ChnList)
+  ))
+_sym_db.RegisterMessage(ChnList)
+
+ChnDetail = _reflection.GeneratedProtocolMessageType('ChnDetail', (_message.Message,), dict(
+
+  Meaning = _reflection.GeneratedProtocolMessageType('Meaning', (_message.Message,), dict(
+    DESCRIPTOR = _CHNDETAIL_MEANING,
+    __module__ = 'WordProto_pb2'
+    # @@protoc_insertion_point(class_scope:ChnDetail.Meaning)
+    ))
+  ,
+
+  Example = _reflection.GeneratedProtocolMessageType('Example', (_message.Message,), dict(
+    DESCRIPTOR = _CHNDETAIL_EXAMPLE,
+    __module__ = 'WordProto_pb2'
+    # @@protoc_insertion_point(class_scope:ChnDetail.Example)
+    ))
+  ,
+  DESCRIPTOR = _CHNDETAIL,
+  __module__ = 'WordProto_pb2'
+  # @@protoc_insertion_point(class_scope:ChnDetail)
+  ))
+_sym_db.RegisterMessage(ChnDetail)
+_sym_db.RegisterMessage(ChnDetail.Meaning)
+_sym_db.RegisterMessage(ChnDetail.Example)
 
 
 # @@protoc_insertion_point(module_scope)

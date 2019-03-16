@@ -113,11 +113,47 @@
   align-items: center;
   height: 40rpx;
 }
-.clear-history{
-  margin-top:40rpx;
-  padding:10rpx;
+
+.clear-history {
+  margin-top: 40rpx;
+  padding: 10rpx;
   text-align: center;
   background: #f5f5f5;
-  color:#bdbdbd;
-  font-size:30rpx;
+  color: #bdbdbd;
+  font-size: 30rpx;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.103);
+}
+
+.suggestion-view {
+  position: absolute;
+  background: white;
+  left: 5vw;
+  top: 15vh;
+  z-index: 999;
+  width: 90vw;
+  box-shadow: #ccc 0 0 20rpx;
+  border-radius: 10rpx;
+  padding-bottom: 30rpx;
+}
+
+.suggestion-inside {
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+}
+
+.suggestion-title {
+  margin-top: 26rpx;
+  line-height: 36rpx;
+  font-size: 36rpx;
+  text-align: center;
+}
+
+

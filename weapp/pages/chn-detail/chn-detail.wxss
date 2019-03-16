@@ -1,0 +1,77 @@
+.meaning {
+  margin-bottom: 10rpx;
+}
+
+.individul-word {
+  font-size: 30rpx;
+  padding: 5rpx 0;
+  color: black;
+  height: 40rpx;
+  line-height: 40rpx;
+}
+
+.word-wrapper {
+  padding: 5rpx 0;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+}
+
+.meaning-individual-indictor {
+  background: #4285f4;
+  border-radius: 50%;
+  width: 10rpx;
+  margin-right: 10rpx;
+  height: 10rpx;
+}
+
+.meaning-definition {
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+}
+
+.meaning-indictor {
+  background: #fbbc05;
+  border-radius: 50%;
+  width: 15rpx;
+  margin: 5rpx 10rpx 5rpx 0;
+  height: 15rpx;
+}
+
+.meaning-detail {
+  padding: 0 20rpx;
+  font-size: 30rpx;
+}
+
+.example-title {
+  margin-top: 10rpx;
+  display: flex;
+  align-items: center;
+  color: #757575;
+}
+
+.example-indictor {
+  background: #34a853;
+  width: 10rpx;
+  margin: 5rpx 10rpx 5rpx 0;
+  height: 30rpx;
+}
+
+.examples {
+  padding: 5rpx 20rpx;
+}
+
+.padding {
+  padding-left: 20rpx;
+}
+
+.indicator-wrapper {
+  display: flex;
+  align-items: center;
+  height: 50rpx;
+}
+.example-chn{
+  height: 40rpx;
+  line-height: 40rpx;
+}

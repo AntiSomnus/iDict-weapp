@@ -8,7 +8,7 @@
   <view class="search-outside">
     <view class="search-inside" bindtap='initSearch'>
       <input disabled class="search-input" placeholder="{{animation?'':'输入需要查询的内容'}}" wx:if="{{!isInitFinished}}" />
-      <input focus='false' bindconfirm='goToKeyWord' bindinput='inputKeyword' class="search-input" value="{{inputVal}}" wx:if="{{isInitFinished}}" />
+      <input focus='false' bindconfirm='goToKeyWord' bindinput='inputKeyword' class="search-input" value="{{inputVal}}" wx:if="{{isInitFinished}}" bindfocus='inputFocus' />
       <view class='icon-delete'>
         <i-icon type="search" size="20" style='color: lightgrey;display:block' wx:if="{{!isInputExisted}}" />
       </view>
@@ -24,53 +24,30 @@
 <scroll-view scroll-y="true" style="height:{{viewParam.TotalHeight-viewParam.topHeight}}px;width:100%;margin-top:{{viewParam.topHeight}}px" scroll-top="{{scrollTop}}" wx:if='{{isInitFinished}}'>
   <view wx:if="{{wordSuggestions.length>0}}" class='word-suggestion-containier'>
     <view style='display:flex;align-items:center;'>
-      <i-icon type="prompt" size="32" color='lightgrey' bindtap='betaClicked' style='margin-right:10rpx'/>
+      <i-icon type="prompt" size="32" color='lightgrey' bindtap='betaClicked' style='margin-right:10rpx' />
       <text class='item-word'>你要找的是不是: </text>
-      <view bindtap='wordSuggestionClick' data-word="{{wordSuggestions[0]}}">
-        <text class='item-word' style='color:blue;text-decoration-line: underline;'>{{wordSuggestions[0]}}
+      <view bindtap='openSuggestion'>
+        <text class='item-word' style='color:blue;text-decoration-line: underline;'>{{wordSuggestions[0].wordOut}}
       </text>
       </view>
     </view>
-    <picker bindchange="wordSuggestionChange" value="{{0}}" range="{{wordSuggestions}}">
-      <i-icon type="unfold" size="32" color="lightgrey" wx:if="{{wordSuggestions.length>1}}" />
-    </picker>
+    <i-icon type="unfold" size="32" color="lightgrey" wx:if="{{wordSuggestions.length>1}}" bindtap="openSuggestion" />
   </view>
-  <view wx:for="{{wordList}}" wx:for-item="item">
-    <view class='item-word-container' data-word="{{item.wordOut}}" data-index="{{index}}" bindtap="wordClick">
-      <view class='item-word-tags-container'>
-        <text class='item-word'>{{item.wordOut}} </text>
-        <view class='item-tags'>
-          <i-tag wx:if="{{item.tags[0]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
-            中考
-          </i-tag>
-          <i-tag wx:if="{{item.tags[1]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
-            高考
-          </i-tag>
-          <i-tag wx:if="{{item.tags[2]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
-            考研
-          </i-tag>
-          <i-tag wx:if="{{item.tags[3]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
-            四级
-          </i-tag>
-          <i-tag wx:if="{{item.tags[4]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
-            六级
-          </i-tag>
-          <i-tag wx:if="{{item.tags[5]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
-            托福
-          </i-tag>
-          <i-tag wx:if="{{item.tags[6]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
-            雅思
-          </i-tag>
-          <i-tag wx:if="{{item.tags[7]}}" class='i-tags' type="border" color="red" style="margin-left:3px;">
-            GRE
-          </i-tag>
-        </view>
-      </view>
-      <view class='item-meaning'>
-        {{item.chnDefinitions[0].pos? item.chnDefinitions[0].pos+item.chnDefinitions[0].meaning:item.chnDefinitions[0].meaning}}
-      </view>
-    </view>
-  
+  <view wx:for="{{wordList}}" wx:for-item="item" wx:key="{{item.wordOut}}">
+    <word-item item="{{item}}" bind:click="wordClick"></word-item>
   </view>
   <view wx:if="{{isHistoryShow}}" class="clear-history" bindtap='clearHistory'>清空历史记录</view>
+  <view id="overlay" class='overlay' hidden="{{!isSuggestionShow}}" bindtap='suggestionOutClicked'>
+    <view class='suggestion-view'>
+      <view class='suggestion-inside'>
+        <view class="suggestion-title">你要找的是不是:</view>
+        <scroll-view style='height:60vh;margin-top:2vh' scroll-y="true">
+          <view wx:for="{{wordSuggestions}}" wx:key="{{item.wordOut}}">
+            <word-item item="{{item}}" bind:click="wordClick"></word-item>
+          </view>
+        </scroll-view>
+      </view>
+
+    </view>
+  </view>
 </scroll-view>

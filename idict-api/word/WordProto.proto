@@ -4,8 +4,8 @@ syntax = "proto3";
  * list of WordBrief
 */
 message WordList {
-    repeated WordBrief word_briefs = 1; //list of WordBrief entities
-    repeated WordBrief word_suggestions = 2; //list of suggestions
+    repeated WordBrief wordBriefs = 1; //list of WordBrief entities
+    repeated WordBrief wordSuggestions = 2; //list of suggestions
 }
 /**
  * WordBrief
@@ -16,12 +16,12 @@ message WordList {
  *      chn_definitions
 */
 message WordBrief {
-    string word_in = 1; //@required: input word from front-end
-    string word_out = 2; //@required: if findLamma == True: word_out = lemma, else: word_out = word_in
-    Pronunciation uk_pron = 3; //UK pronunciation for `word_out` if pron=True
-    Pronunciation us_pron = 4; //US pronunciation for `word_out` if pron=True
-    repeated Definition chn_definitions = 5; //@required: Chinese definitions for `word_out`
-    repeated Definition eng_definitions = 6; //English definitions for `word_out` if eng=True
+    string wordIn = 1; //@required: input word from front-end
+    string wordOut = 2; //@required: if findLamma == True: word_out = lemma, else: word_out = word_in
+    Pronunciation ukPron = 3; //UK pronunciation for `word_out` if pron=True
+    Pronunciation usPron = 4; //US pronunciation for `word_out` if pron=True
+    repeated Definition chnDefinitions = 5; //@required: Chinese definitions for `word_out`
+    repeated Definition engDefinitions = 6; //English definitions for `word_out` if eng=True
     repeated bool tags = 7; //tag list for `word_out` if tag=True
     Lemma lemma = 8; //describe `word_input` and its lemma if findLamma == True
 
@@ -48,11 +48,11 @@ message WordBrief {
  * @required: all of them if not otherwise specified
 */
 message WordDetail {
-    WordBrief word_brief = 1; //WordBrief entity, word_in = word_out, findLemma = True
+    WordBrief wordBrief = 1; //WordBrief entity, word_in = word_out, findLemma = True
     int32 collins = 2; //collins star
     int32 bnc = 3; //bnc index
     int32 frq = 4; //frq index
-    repeated SentenceList sentence_lists = 5; //sentence lists
+    repeated SentenceList sentenceLists = 5; //sentence lists
     repeated Derivative derivatives = 6; //all derivatives of `lemma`
 
     message SentenceList {
@@ -78,5 +78,25 @@ message WordDetail {
 
     }
 }
+message ChnList {
+    repeated ChnDetail chnBriefs = 1;
+}
+message ChnDetail {
+    string chn = 1;
+    string reference = 2;
+    repeated Meaning meanings = 3;
+    repeated Example usages = 4;
+
+    message Meaning {
+        string definition = 1;
+        repeated string words = 2;
+        repeated Example examples = 3;
+    }
 
 
+    message Example {
+        string chn = 1;
+        repeated string engs = 2;
+    }
+
+}

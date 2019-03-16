@@ -1,0 +1,23 @@
+.item-word-container {
+  border-bottom: 2rpx solid #eee;
+  padding: 20rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+
+.item-word-tags-container {
+  display: flex;
+  align-items: center;
+}
+
+.item-word {
+  display: flex;
+  font-size: 28rpx;
+  margin-right: 20rpx;
+}
+
+.item-meaning {
+  display: flex;
+  font-size: 26rpx;
+  color: #80848f;
+}

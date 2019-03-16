@@ -3,6 +3,8 @@ const app = getApp()
 var WordList = app.globalData.WordList;
 var WordDetail = app.globalData.WordDetail;
 var WordBrief = app.globalData.WordBrief;
+const myaudio = app.globalData.audio;
+
 var baseUrl = 'https://ireading.site/'
 
 const sourceDict = {
@@ -26,11 +28,24 @@ function replaceAll(str, find, replace) {
 }
 
 function modifiedStrToList(modifiedStr) {
-  return modifiedStr.split(/(&nbsp;)|([a-zA-z][a-zA-z-']*)/g).filter(function(n) {
+  return modifiedStr.split(/(&nbsp;)|([a-zA-Z][a-zA-Z-']*)/g).filter(function(n) {
     return n
   });
 
 }
+
+function separate(str) {
+  return str
+    .split(/([a-zA-Z][a-zA-Z-']*[\.,?!;\s]*)/g)
+    .filter(n => n)
+    .map(s => {
+      const r = /[\.,?!;\s]+$/.exec(s)
+      if (r)
+        return [s.slice(0, r.index), s.slice(r.index).replace(' ', '&nbsp;')]
+      return s
+    });
+}
+
 
 Page({
   data: {
@@ -50,9 +65,6 @@ Page({
 
 
   onLoad: function(param) {
-
-    this.myaudio = wx.createAudioContext('myAudio')
-
     var that = this;
     wx.request({
       url: baseUrl + 'word/detail',
@@ -65,41 +77,13 @@ Page({
       },
       success: function(res) {
         if (res.statusCode === 200) {
-          let wordDetail = WordDetail.decode(new Uint8Array(res.data))
-          let engList = []
-          let engDefList = []
-          let sourceArray = []
-          let eng_str = ''
-          if (wordDetail.wordBrief.engDefinitions) {
-            let engDefinitions = wordDetail.wordBrief.engDefinitions
-            for (var i = 0; i < engDefinitions.length; i++) {
-              //对所有英语释义
-              eng_str = replaceAll(engDefinitions[i].meaning, ' ', '&nbsp;');
-              engDefList.push(modifiedStrToList(eng_str));
-            }
-          }
-          if (wordDetail.sentenceLists) {
-            for (var l = 0; l < wordDetail.sentenceLists.length; l++) {
-              //对每一个分类
-              let sentenceList = wordDetail.sentenceLists[l];
-              eng_str = '';
-              let engCataList = []
-              sourceArray.push(sourceDict[sentenceList.source])
-              for (var i = 0; i < sentenceList.sentences.length; i++) {
-                //对改分类下的所有例句
-                eng_str = replaceAll(sentenceList.sentences[i].eng, ' ', '&nbsp;');
-                engCataList.push(modifiedStrToList(eng_str));
-              }
-              engList.push(engCataList)
-            }
+          const wordDetail = WordDetail.decode(new Uint8Array(res.data))
+          const sourceArray = wordDetail.sentenceLists.map(s => sourceDict[s.source])
 
-          }
           defaultFeedbackWord = wordDetail.wordBrief.wordOut
           that.setData({
             isLoadingFinished: true,
             detailedWord: wordDetail,
-            engList: engList,
-            engDefList: engDefList,
             sourceArray: sourceArray
           })
           app.updateHistory(wordDetail.wordBrief, param.isHistoryShow)
@@ -118,7 +102,7 @@ Page({
       }
     });
     wx.request({
-      url: baseUrl+"word/example",
+      url: baseUrl + "word/example",
       data: {
         'word': param.word,
       },
@@ -128,19 +112,17 @@ Page({
       success: function(res) {
         if (res.statusCode === 200) {
           if (res.data.result.sentences) {
-            let each,engStr,origSent
+            let each, engStr, origSent
             let engOnlineSents = []
             for (var i = 0; i < res.data.result.sentences.length; i++) {
               each = res.data.result.sentences[i]
-              origSent = each.sentence.replace(new RegExp("\u2019", "gm"), "'")
-              console.log(origSent)
-              console.log(each.sentence)
-              engStr = replaceAll(origSent, ' ', '&nbsp;');
+              origSent = each.sentence.replace(new RegExp("[\u2019‘’]", "gm"), "'").replace(new RegExp("[“”]", "gm"), '"')
+
               engOnlineSents.push({
                 origSent: origSent,
-                sentence: modifiedStrToList(engStr),
                 source: each.volume.corpus.name,
-                datePublished: new Date(each.volume.datePublished).toLocaleDateString()
+                datePublished: new Date(each.volume.datePublished).toLocaleDateString(),
+                url: each.volume.locator
               });
             }
             that.setData({
@@ -164,23 +146,21 @@ Page({
     })
   },
   audioClicked: function(e) {
-    this.setData({
-      src: e.target.dataset.src
-    })
-    this.myaudio.play();
+    myaudio.src = e.target.dataset.src
+    myaudio.play();
   },
   wordClickedInWordDetail: function(e) {
-    var data = e.target.dataset;
+    var data = e.detail;
     var that = this;
     var word = data.word;
-    if (/^([a-zA-Z][a-zA-z-']*)$/.test(e.target.dataset.word) && word) {
+    if (word !== undefined && /^([a-zA-Z][a-zA-z-']*)$/.test(word) && word) {
       var currentClickedWord = {};
       currentClickedWord.indexSent = data.indexSent;
       currentClickedWord.indexWord = data.indexWord;
       currentClickedWord.section = data.section;
       currentClickedWord.word = word;
       this.setData({
-        currentClickedWord: currentClickedWord,
+        current: data,
       });
       wx.request({
         url: baseUrl + 'word/brief',
@@ -210,6 +190,11 @@ Page({
           })
         }
       })
+    } else {
+      this.setData({
+        isShowWordInDetail: false,
+        current: {},
+      });
     }
 
 
@@ -224,7 +209,7 @@ Page({
   detailOutClicked: function() {
     this.setData({
       isShowWordInDetail: false,
-      currentClickedWord: {},
+      current: {},
     });
   },
   feedbackOutClicked: function(e) {

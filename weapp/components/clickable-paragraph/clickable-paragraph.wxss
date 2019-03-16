@@ -1,0 +1,18 @@
+.individual-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center
+}
+
+.no-break {
+    word-break: keep-all;
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+}
+
+.clicked {
+    background: #2d8cf0;
+    color: white;
+    border-radius: 8rpx;
+}
