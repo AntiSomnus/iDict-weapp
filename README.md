@@ -5,6 +5,7 @@ A better English-Chinese&Chinese-English Dictionary in Weapp.
 
 <img src="/screenshots/qrcode.jpg" alt="qrcode">
 
+<img src="/screenshots/idict.png" alt="Autocorrection" width="30%">
 
 如果你在使用中遇到任何问题，请使用界面中的反馈功能或者在Github上联系我。
 
