@@ -1,4 +1,4 @@
-aiohttp==3.5.1
+aiohttp==3.7.4
 aniso8601==3.0.2
 asn1crypto==0.24.0
 async-timeout==3.0.1
