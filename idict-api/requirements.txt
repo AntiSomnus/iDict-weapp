@@ -24,7 +24,7 @@ jedi==0.11.1
 Jinja2==2.10
 MarkupSafe==1.0
 multidict==4.5.2
-numpy==1.15.2
+numpy==1.22.0
 parso==0.1.1
 prompt-toolkit==2.0.7
 protobuf==3.6.1
